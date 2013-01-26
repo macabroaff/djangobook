@@ -63,7 +63,7 @@ Appendix A: Model Definition Reference - [@igocoelho] (https://github.com/igocoe
 
 Appendix B: Database API Reference - aberto
 
-Appendix C: Generic View Reference - aberto
+Appendix C: Generic View Reference - [@fernandovalente] (https://github.com/fernandovalente)
 
 Appendix D: Settings - aberto
 
