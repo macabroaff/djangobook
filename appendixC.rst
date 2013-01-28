@@ -5,60 +5,33 @@ Apêndice C: Generic View Reference
 No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não abordados anteriormente, porém é altamente recomendado que você leia o capítulo 11 antes de tentar entender a referência material que se segue. Você pode querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido neste capítulo, os exemplos a seguir usam esses modelos.
 
 
-Argumentos comuns para Generic Views
+Argumentos comuns nas Generic Views
 =================================
 
 A maioria dessas views possuem uma grande quantidade de argumentos que possibilitam a modificação do comportamento padrão das generic views. Muitos desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1 descreve os argumentos mais comuns; sempre que você encontrar um desse argumentos, ele funcionará da forma descrita abaixo
-
-
-.. table:: Table C-1. Common Arguments to Generic Views
+    
+.. table:: Tabela C-1. Argumentos comuns nas Generic Views
 
     ==========================  ===============================================
-    Argument                    Description
+    Argumentos                  Descrição
     ==========================  ===============================================
-    ``allow_empty``             A Boolean specifying whether to display the
-                                page if no objects are available. If this is
-                                ``False`` and no objects are available, the view
-                                will raise a 404 error instead of displaying an
-                                empty page. By default, this is ``True``.
+    ``allow_empty``             Um booleano que especifica se, para carregar a          								 página, existem ou não objetos disponíveis.
+    							 Se este for ``False`` e nenhum objeto estiver 
+      							 disponível, a view lançará um 404 ao invés de 								 mostrar uma página vazia. Por padrão, isso é 								 ``True``.
 
-    ``context_processors``      A list of additional template-context processors
-                                (besides the defaults) to apply to the view's
-                                template. See Chapter 9 for information on
-                                template context processors.
+    ``context_processors``      Uma lista adicional de ``template-context 								 processors`` (além dos padrões) que podem ser 								 aplicados nos templates das views. Para maiores 								 informações sobre ``template-context processors``, 								 consulte o capítulo 9.
 
-    ``extra_context``           A dictionary of values to add to the template
-                                context. By default, this is an empty
-                                dictionary. If a value in the dictionary is
-                                callable, the generic view will call it just
-                                before rendering the template.
+    ``extra_context``           Possibilita adicionar um dicionário de valores 								 extras no contexto do template. Por padrão, é um 								 dicionário vazio. Se for definido um valor no 								 dicionário, a genetic view irá chamá-lo antes de 								 renderizar o template.
 
-    ``mimetype``                The MIME type to use for the resulting
-                                document. It defaults to the value of the
-                                ``DEFAULT_MIME_TYPE`` setting, which is
-                                ``text/html`` if you haven't changed it.
+    ``mimetype``                O tipo MIME a ser usado para o documento 								 resultante. Caso nenhum valor seja fornecido, será 								 utilizado o valor de ``DEFAULT_CONTENT_TYPE`` do 								 arquivo de settings.py.
 
-    ``queryset``                A ``QuerySet`` (i.e., something like
-                                ``Author.objects.all()``) to read objects from.
-                                See Appendix B for more information about
-                                ``QuerySet`` objects. Most generic views require
-                                this argument.
+    ``queryset``                Um ``QuerySet`` (exemplo ``Author.objects.all()``) 								 que serve para ler a partir de objetos. Consulte o 								 Apêndice B para mais detalhes sobre ``QuerySet``. 								 As generic views exigem este argumento.
 
-    ``template_loader``         The template loader to use when loading the
-                                template. By default, it's
-                                ``django.template.loader``. See Chapter 9 for
-                                information on template loaders.
+    ``template_loader``         O template loarder é usado ao carregar um template. 								 É usado ``django.template.loader`` por padrão. 								 Consulte o capítulo 9 para maiores informações.
 
-    ``template_name``           The full name of a template to use in rendering
-                                the page. This lets you override the default
-                                template name derived from the ``QuerySet``.
+    ``template_name``           O nome completo de um template para renderizar uma								 página. Isso permite que você substitua o nome								 padrão do template derivado do ``QuerySet``.
 
-    ``template_object_name``    The name of the template variable to
-                                use in the template context. By default, this is
-                                ``'object'``. Views that list more than one
-                                object (i.e., ``object_list`` views and various
-                                objects-for-date views) will append ``'_list'``
-                                to the value of this parameter.
+    ``template_object_name``    Designa o nome da variável do template para 								 utilizar no contexto do template. Por padrão seu 								 parâmetro é um ``objeto``.
     ==========================  ===============================================
 
 "Simple" Generic Views
