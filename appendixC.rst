@@ -6,7 +6,7 @@ No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial 
 
 
 Argumentos comuns nas Generic Views
-=================================
+===================================
 
 A maioria dessas views possuem uma grande quantidade de argumentos que possibilitam a modificação do comportamento padrão das generic views. Muitos desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1 descreve os argumentos mais comuns; sempre que você encontrar um desse argumentos, ele funcionará da forma descrita abaixo
     
@@ -34,25 +34,25 @@ A maioria dessas views possuem uma grande quantidade de argumentos que possibili
     ``template_object_name``    Designa o nome da variável do template para 								 utilizar no contexto do template. Por padrão seu 								 parâmetro é um ``objeto``.
     ==========================  ===============================================
 
-"Simple" Generic Views
-======================
+"simples" Generic Views
+=======================
 
-The module``django.views.generic.simple`` contains simple views that handle a
-couple of common cases: rendering a template when no view logic is needed and
-issuing a redirect.
+O módulo ``django.views.generic.simple`` possui views simples que podem resolver os casos mais comuns: renderiza um template e, quando existe a necessidade, executar um redirecionamento.
 
-Rendering a Template
---------------------
+Renderizando um Template
+-------------------------
 
 *View function*: ``django.views.generic.simple.direct_to_template``
 
 This view renders a given template, passing it a ``{{ params }}`` template
 variable, which is a dictionary of the parameters captured in the URL.
 
-Example
+Está view renderiza o template indicado, passando ``{{ params }}`` na variável do template, criando assim um dicionário contendo os parâmetros obtidos na URL. 
+
+Exemplo
 ```````
 
-Given the following URLconf::
+Dada a seguinte URLconf::
 
     from django.conf.urls.defaults import *
     from django.views.generic.simple import direct_to_template
@@ -62,30 +62,29 @@ Given the following URLconf::
         (r'^foo/(?P<id>\d+)/$', direct_to_template, {'template': 'foo_detail.html'}),
     )
 
-a request to ``/foo/`` would render the template ``foo_index.html``, and a
-request to ``/foo/15/`` would render ``foo_detail.html`` with a context
-variable ``{{ params.id }}`` that is set to ``15``.
+veremos que a requisição feita para ``/foo/`` renderizará o template ``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará ``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor ``15`` será atribuido.
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``template``: The full name of a template to use.
+* ``template``: Nome completo de um template
 
-Redirecting to Another URL
---------------------------
+
+Redirecionando para outra URL
+------------------------------
 
 *View function*: ``django.views.generic.simple.redirect_to``
 
-This view redirects to another URL. The given URL may contain dictionary-style string
-formatting, which will be interpolated against the parameters captured in the
-URL.
+Está view redireciona para outra URL. A URL indicada pode conter 
 
-If the given URL is ``None``, Django will return an HTTP 410 ("Gone") message.
+This view redirects to another URL. The given URL may contain dictionary-style string formatting, which will be interpolated against the parameters captured in the URL.
 
-Example
+Se a URL dada for ``None``, o Django irá retornar o código HTTP 410 ("Gone").
+
+Exemplo
 ```````
 
-This URLconf redirects from ``/foo/<id>/`` to ``/bar/<id>/``::
+Esta URLconf redireciona de ``/foo/<id>/`` para ``/bar/<id>/``::
 
     from django.conf.urls.defaults import *
     from django.views.generic.simple import redirect_to
@@ -94,7 +93,7 @@ This URLconf redirects from ``/foo/<id>/`` to ``/bar/<id>/``::
         ('^foo/(?p<id>\d+)/$', redirect_to, {'url': '/bar/%(id)s/'}),
     )
 
-This example returns a "Gone" response for requests to ``/bar/``::
+Este exemplo retorna "Gone" como resposta a solicitação enviada a ``/bar/``::
 
     from django.views.generic.simple import redirect_to
 
@@ -102,28 +101,29 @@ This example returns a "Gone" response for requests to ``/bar/``::
         ('^bar/$', redirect_to, {'url': None}),
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``url``: The URL to redirect to, as a string. Or ``None`` to return a 410
-  ("Gone") HTTP response.
+* ``url``: URL que redireciona ``de`` para ``para``. Ou ``None``, que irá retornar 410 "Gone".
 
-List/Detail Generic Views
-=========================
+Lista/Detalhe Generic Views
+===========================
 
 The list/detail generic views (in the module
 ``django.views.generic.list_detail``) handle the common case of displaying a
 list of items at one view and individual "detail" views of those items at
 another.
 
-Lists of Objects
+A lista/detalhe da generic views (no módulo `` django.views.generic.list_detail ``) resolverá os casos mais comuns ao exibis uma lista de itens 
+
+Lista de Objetos
 ----------------
 
 *View function*: ``django.views.generic.list_detail.object_list``
 
-Use this view to display a page representing a list of objects.
+Utilize esta view para exibir uma página que representa uma lista de objetos.
 
-Example
+Exemplo
 ```````
 
 Given the ``Author`` object from Chapter 5, we can use the ``object_list`` view
