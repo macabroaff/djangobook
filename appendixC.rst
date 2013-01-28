@@ -1,22 +1,15 @@
 ==================================
-Appendix C: Generic View Reference
+Apêndice C: Generic View Reference
 ==================================
 
-Chapter 11 introduced generic views but leaves out some of the gory details.
-This appendix describes each generic view along with all the options each view can
-take. Be sure to read Chapter 11 before trying to understand the reference
-material that follows. You might want to refer back to the ``Book``,
-``Publisher``, and ``Author`` objects defined in that chapter; the examples that
-follow use these models.
+No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não abordados anteriormente, porém é altamente recomendado que você leia o capítulo 11 antes de tentar entender a referência material que se segue. Você pode querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido neste capítulo, os exemplos a seguir usam esses modelos.
 
-Common Arguments to Generic Views
+
+Argumentos comuns para Generic Views
 =================================
 
-Most of these views take a large number of arguments that can change the generic
-view's behavior. Many of these arguments work the same across a large number of
-views. Table C-1 describes each of these common arguments; anytime you see one
-of these arguments in a generic view's argument list, it will work as described in
-the table.
+A maioria dessas views possuem uma grande quantidade de argumentos que possibilitam a modificação do comportamento padrão das generic views. Muitos desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1 descreve os argumentos mais comuns; sempre que você encontrar um desse argumentos, ele funcionará da forma descrita abaixo
+
 
 .. table:: Table C-1. Common Arguments to Generic Views
 
