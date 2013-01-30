@@ -39,13 +39,10 @@ A maioria dessas views possuem uma grande quantidade de argumentos que possibili
 
 O módulo ``django.views.generic.simple`` possui views simples que podem resolver os casos mais comuns: renderiza um template e, quando existe a necessidade, executar um redirecionamento.
 
-Renderizando um Template
--------------------------
+Renderizando Template
+----------------------
 
 *View function*: ``django.views.generic.simple.direct_to_template``
-
-This view renders a given template, passing it a ``{{ params }}`` template
-variable, which is a dictionary of the parameters captured in the URL.
 
 Está view renderiza o template indicado, passando ``{{ params }}`` na variável do template, criando assim um dicionário contendo os parâmetros obtidos na URL. 
 
@@ -62,7 +59,7 @@ Dada a seguinte URLconf::
         (r'^foo/(?P<id>\d+)/$', direct_to_template, {'template': 'foo_detail.html'}),
     )
 
-veremos que a requisição feita para ``/foo/`` renderizará o template ``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará ``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor ``15`` será atribuido.
+Veremos que a requisição feita para ``/foo/`` renderizará o template ``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará ``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor ``15`` será atribuido.
 
 Argumentos obrigatórios
 ```````````````````````
@@ -75,7 +72,7 @@ Redirecionando para outra URL
 
 *View function*: ``django.views.generic.simple.redirect_to``
 
-Está view redireciona para outra URL. A URL indicada pode conter 
+Está view redireciona para outra URL. A URL indicada pode conter dictionary-style string formatting, que será interpolado com os parâmetros capturados na URL.
 
 This view redirects to another URL. The given URL may contain dictionary-style string formatting, which will be interpolated against the parameters captured in the URL.
 
@@ -83,7 +80,6 @@ Se a URL dada for ``None``, o Django irá retornar o código HTTP 410 ("Gone").
 
 Exemplo
 ```````
-
 Esta URLconf redireciona de ``/foo/<id>/`` para ``/bar/<id>/``::
 
     from django.conf.urls.defaults import *
@@ -109,12 +105,9 @@ Argumentos obrigatórios
 Lista/Detalhe Generic Views
 ===========================
 
-The list/detail generic views (in the module
-``django.views.generic.list_detail``) handle the common case of displaying a
-list of items at one view and individual "detail" views of those items at
-another.
+The list/detail generic views (in the module django.views.generic.list_detail) handle the common case of displaying a list of items at one view and individual "detail" views of those items at another.
 
-A lista/detalhe da generic views (no módulo `` django.views.generic.list_detail ``) resolverá os casos mais comuns ao exibis uma lista de itens 
+A lista/detalhe da generic views (no módulo `` django.views.generic.list_detail ``) pode lidar com o caso comum ao exibir uma lista de itens de uma só view e 
 
 Lista de Objetos
 ----------------
