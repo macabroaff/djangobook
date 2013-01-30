@@ -2,49 +2,87 @@
 Apêndice C: Generic View Reference
 ==================================
 
-No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não abordados anteriormente, porém é altamente recomendado que você leia o capítulo 11 antes de tentar entender a referência material que se segue. Você pode querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido neste capítulo, os exemplos a seguir usam esses modelos.
+No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e 
+sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não 
+abordados anteriormente, porém é altamente recomendado que você leia o capítulo 
+11 antes de tentar entender a referência material que se segue. Você pode 
+querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido 
+neste capítulo, os exemplos a seguir usam esses modelos.
 
 
 Argumentos comuns nas Generic Views
 ===================================
 
-A maioria dessas views possuem uma grande quantidade de argumentos que possibilitam a modificação do comportamento padrão das generic views. Muitos desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1 descreve os argumentos mais comuns; sempre que você encontrar um desse argumentos, ele funcionará da forma descrita abaixo
+A maioria dessas views possuem uma grande quantidade de argumentos que 
+possibilitam a modificação do comportamento padrão das generic views. Muitos 
+desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1 
+descreve os argumentos mais comuns; sempre que você encontrar um desse 
+argumentos, ele funcionará da forma descrita abaixo
     
 .. table:: Tabela C-1. Argumentos comuns nas Generic Views
 
     ==========================  ===============================================
     Argumentos                  Descrição
     ==========================  ===============================================
-    ``allow_empty``             Um booleano que especifica se, para carregar a          								 página, existem ou não objetos disponíveis.
-    							 Se este for ``False`` e nenhum objeto estiver 
-      							 disponível, a view lançará um 404 ao invés de 								 mostrar uma página vazia. Por padrão, isso é 								 ``True``.
+    ``allow_empty``             Um booleano que especifica se, para carregar a 
+                                página, existem ou não objetos disponíveis.
+                                Se este for ``False`` e nenhum objeto estiver 
+                                disponível, a view lançará um 404 ao invés de
+                                mostrar uma página vazia. Por padrão, isso é                                
+                                ``True``.
 
-    ``context_processors``      Uma lista adicional de ``template-context 								 processors`` (além dos padrões) que podem ser 								 aplicados nos templates das views. Para maiores 								 informações sobre ``template-context processors``, 								 consulte o capítulo 9.
+    ``context_processors``      Uma lista adicional de ``template-context                                
+                                processors`` (além dos padrões) que podem ser
+                                aplicados nos templates das views. Para maiores                                 
+                                informações sobre ``template-context 
+                                processors``, consulte o capítulo 9.
 
-    ``extra_context``           Possibilita adicionar um dicionário de valores 								 extras no contexto do template. Por padrão, é um 								 dicionário vazio. Se for definido um valor no 								 dicionário, a genetic view irá chamá-lo antes de 								 renderizar o template.
+    ``extra_context``           Possibilita adicionar um dicionário de valores                               
+                                extras no contexto do template. Por padrão, é 
+                                um dicionário vazio. Se for definido um valor 
+                                no dicionário, a genetic view irá chamá-lo 
+                                antes de renderizar o template.
 
-    ``mimetype``                O tipo MIME a ser usado para o documento 								 resultante. Caso nenhum valor seja fornecido, será 								 utilizado o valor de ``DEFAULT_CONTENT_TYPE`` do 								 arquivo de settings.py.
+    ``mimetype``                O tipo MIME a ser usado para o documento 
+                                resultante. Caso nenhum valor seja fornecido, 
+                                será utilizado o valor de 
+                                ``DEFAULT_CONTENT_TYPE`` do arquivo de 
+                                settings.py.
 
-    ``queryset``                Um ``QuerySet`` (exemplo ``Author.objects.all()``) 								 que serve para ler a partir de objetos. Consulte o 								 Apêndice B para mais detalhes sobre ``QuerySet``. 								 As generic views exigem este argumento.
+    ``queryset``                Um ``QuerySet`` (exemplo ``Author.objects.all()``)                               
+                                que serve para ler a partir de objetos. 
+                                Consulte o Apêndice B para mais detalhes sobre 
+                                ``QuerySet``. As generic views exigem este 
+                                argumento.
 
-    ``template_loader``         O template loarder é usado ao carregar um template. 								 É usado ``django.template.loader`` por padrão. 								 Consulte o capítulo 9 para maiores informações.
+    ``template_loader``         O template loarder é usado ao carregar um 
+                                template. É usado ``django.template.loader`` 
+                                por padrão. Consulte o capítulo 9 para maiores 
+                                informações.
 
-    ``template_name``           O nome completo de um template para renderizar uma								 página. Isso permite que você substitua o nome								 padrão do template derivado do ``QuerySet``.
+    ``template_name``           O nome completo de um template para renderizar uma                               
+                                página. Isso permite que você substitua o nome
+                                padrão do template derivado do ``QuerySet``.
 
-    ``template_object_name``    Designa o nome da variável do template para 								 utilizar no contexto do template. Por padrão seu 								 parâmetro é um ``objeto``.
+    ``template_object_name``    Designa o nome da variável do template para                                  
+                                utilizar no contexto do template. Por padrão 
+                                seu parâmetro é um ``objeto``.
     ==========================  ===============================================
 
 "simples" Generic Views
 =======================
 
-O módulo ``django.views.generic.simple`` possui views simples que podem resolver os casos mais comuns: renderiza um template e, quando existe a necessidade, executar um redirecionamento.
+O módulo ``django.views.generic.simple`` possui views simples que podem 
+resolver os casos mais comuns: renderiza um template e, quando existe a 
+necessidade, executar um redirecionamento.
 
 Renderizando Template
 ----------------------
 
 *View function*: ``django.views.generic.simple.direct_to_template``
 
-Está view renderiza o template indicado, passando ``{{ params }}`` na variável do template, criando assim um dicionário contendo os parâmetros obtidos na URL. 
+Está view renderiza o template indicado, passando ``{{ params }}`` na variável 
+do template, criando assim um dicionário contendo os parâmetros obtidos na URL. 
 
 Exemplo
 ```````
@@ -59,22 +97,24 @@ Dada a seguinte URLconf::
         (r'^foo/(?P<id>\d+)/$', direct_to_template, {'template': 'foo_detail.html'}),
     )
 
-Veremos que a requisição feita para ``/foo/`` renderizará o template ``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará ``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor ``15`` será atribuido.
+Veremos que a requisição feita para ``/foo/`` renderizará o template 
+``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará 
+``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor 
+``15`` será atribuido.
 
 Argumentos obrigatórios
 ```````````````````````
 
 * ``template``: Nome completo de um template
 
-
 Redirecionando para outra URL
 ------------------------------
 
 *View function*: ``django.views.generic.simple.redirect_to``
 
-Está view redireciona para outra URL. A URL indicada pode conter dictionary-style string formatting, que será interpolado com os parâmetros capturados na URL.
-
-This view redirects to another URL. The given URL may contain dictionary-style string formatting, which will be interpolated against the parameters captured in the URL.
+Está view redireciona para outra URL. A URL indicada pode conter uma string 
+formatada como um dictionary-style, que será interpolado com os parâmetros 
+capturados na URL.
 
 Se a URL dada for ``None``, o Django irá retornar o código HTTP 410 ("Gone").
 
@@ -100,14 +140,15 @@ Este exemplo retorna "Gone" como resposta a solicitação enviada a ``/bar/``::
 Argumentos obrigatórios
 ```````````````````````
 
-* ``url``: URL que redireciona ``de`` para ``para``. Ou ``None``, que irá retornar 410 "Gone".
+* ``url``: URL que redireciona ``de`` para ``para``. Ou ``None``, que irá 
+retornar 410 "Gone".
 
 Lista/Detalhe Generic Views
 ===========================
 
-The list/detail generic views (in the module django.views.generic.list_detail) handle the common case of displaying a list of items at one view and individual "detail" views of those items at another.
-
-A lista/detalhe da generic views (no módulo `` django.views.generic.list_detail ``) pode lidar com o caso comum ao exibir uma lista de itens de uma só view e 
+A lista/detalhe da generic views (no módulo ``django.views.generic.list_detail``) 
+lida com o caso comum de exibição de uma lista de itens em uma view e views
+de "detalhe" indivudual desses itens em outra.
 
 Lista de Objetos
 ----------------
