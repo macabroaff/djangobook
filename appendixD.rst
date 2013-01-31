@@ -25,21 +25,18 @@ Porque um arquivo de configuração é um módulo Python, o seguinte se aplica:
 
 * Valores de outros arquivos de configurações podem ser importados.
 
-Default Settings
-----------------
+Configurações padrão
+--------------------
 
-A Django settings file doesn't have to define any settings if it doesn't need
-to. Each setting has a sensible default value. These defaults live in the file
+Não é preciso definir nenhuma configuração em um arquivo de configurações do Django se ela não for necessária. Cada configuração tem um valor padrão. Essas predefinições estão no arquivo 
 ``django/conf/global_settings.py``.
 
-Here's the algorithm Django uses in compiling settings:
+Eis o algoritmo que o Django utiliza na compilação das configurações:
 
-* Load settings from ``global_settings.py``.
-* Load settings from the specified settings file, overriding the global
-  settings as necessary.
+* Carregue as configurações de ``global_settings.py``.
+* Carregue as configurações do arquivo de configurações específico, sobrescrevendo as configurações globais conforme necessário.
 
-Note that a settings file should *not* import from ``global_settings``, because
-that's redundant.
+Note que um arquivo de configurações *não* deve ter um import from ``global_settings``, porque isso é redundante.
 
 Seeing Which Settings You've Changed
 ------------------------------------
