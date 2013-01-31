@@ -160,8 +160,8 @@ Utilize esta view para exibir uma página que representa uma lista de objetos.
 Exemplo
 ```````
 
-Given the ``Author`` object from Chapter 5, we can use the ``object_list`` view
-to show a simple list of all authors given the following URLconf snippet::
+Dado o ``Autor`` objeto do capítulo 5, podemos usar o ``object_list`` view
+para mostrar uma lista simples de todos os autores::
 
     from mysite.books.models import Author
     from django.conf.urls.defaults import *
@@ -175,23 +175,23 @@ to show a simple list of all authors given the following URLconf snippet::
         (r'authors/$', list_detail.object_list, author_list_info)
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``queryset``: A ``QuerySet`` of objects to list (see Table C-1).
+* ``queryset``: A ``QuerySet`` da lista de objetos (veja na Tabela C-1).
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``paginate_by``: An integer specifying how many objects should be
-  displayed per page. If this is given, the view will paginate objects with
-  ``paginate_by`` objects per page. The view will expect either a ``page``
-  query string parameter (via ``GET``) containing a zero-indexed page
-  number, or a ``page`` variable specified in the URLconf. See the following
-  "Notes on Pagination" section.
+* ``paginate_by``: Um inteiro que especifica quantos objetos devem ser mostrados
+  ṕor página
+  ``paginate_by`` objetos por página. A view espera por uma página que possua 
+  uma query string (enviada via ``GET``) com indice zero ou uma página variável 
+  especificada na URLconf. Veja a seção "Notas de paginação".
 
 Additionally, this view may take any of these common arguments described in
 Table C-1:
+
 
 * ``allow_empty``
 * ``context_processors``
