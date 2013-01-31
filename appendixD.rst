@@ -1,10 +1,8 @@
 ====================
-Appendix D: Settings
+Apêndice D: Configurações
 ====================
 
-Your Django settings file contains all the configuration of your Django
-installation. This appendix explains how settings work and which settings are
-available.
+Seu arquivo de configurações do Django contém toda a configuração de sua instalação do Django. Esse apêndice descreve como as configurações funcionam e quais estão disponíveis.
 
 What's a Settings File?
 =======================
