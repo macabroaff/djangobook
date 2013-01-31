@@ -192,6 +192,8 @@ Argumentos opcionais
 Additionally, this view may take any of these common arguments described in
 Table C-1:
 
+Além destes, essa view pode utilizar qualquer um desses argumentos descritos na 
+descritos na Tabela C-1.
 
 * ``allow_empty``
 * ``context_processors``
@@ -204,25 +206,23 @@ Table C-1:
 Template Name
 `````````````
 
-If ``template_name`` isn't specified, this view will use the template
-``<app_label>/<model_name>_list.html`` by default. Both the application label and the
-model name are derived from the ``queryset`` parameter. The application label is the
-name of the application that the model is defined in, and the model name is the
-lowercased version of the name of the model class.
+Se ``template_name`` não for especificado, a view irá usar o template 
+``<app_label>/<model_name>_list.html`` por padrão. Tanto o rótulo da aplicação
+quanto o nome do modelo são derivados do parâmetro ``queryset``. O rótulo da
+aplicação é o nome do aplicativo que o medelo está definito, e o nome do modelo 
+é a versão minúsculas do nome do modelo de classe.
 
-In the previous example using ``Author.objects.all()`` as the ``queryset``, the application
-label would be ``books`` and the model name would be ``author``. This means
-the default template would be ``books/author_list.html``.
+No exemplo anterior usando `Author.objects.all()`` como uma ``queryset``, o
+rótulo da aplicação setia ``livros```e olivros/autor_list.html``.
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will contain the following:
+Além do ``extra_context``, o template context irá conter o seguinte:
 
-* ``object_list``: The list of objects. This variable's name depends on the
-  ``template_object_name`` parameter, which is ``'object'`` by default. If
-  ``template_object_name`` is ``'foo'``, this variable's name will be
-  ``foo_list``.
+* ``object_list``: Lista de objetos. O nome dessa variável depende do parametro 
+  ``template_object_name``, que é ``'object'`` por padrão. Se
+  ``template_object_name`` é ``'foo'``, o nome dessa variável será ``foo_list``.
 
 * ``is_paginated``: A Boolean representing whether the results are
   paginated. Specifically, this is set to ``False`` if the number of
