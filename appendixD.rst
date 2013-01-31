@@ -1,30 +1,29 @@
-====================
+=========================
 Apêndice D: Configurações
-====================
+=========================
 
 Seu arquivo de configurações do Django contém toda a configuração de sua instalação do Django. Esse apêndice descreve como as configurações funcionam e quais estão disponíveis.
 
-What's a Settings File?
-=======================
+O que é um arquivo de configuração?
+===================================
 
-A *settings file* is just a Python module with module-level variables.
+Um *arquivo de configuração* é apenas um módulo Python com variáveis no nível de módulo.
 
-Here are a couple of example settings::
+Eis aqui alguns exemplos de configurações::
 
     DEBUG = False
     DEFAULT_FROM_EMAIL = 'webmaster@example.com'
     TEMPLATE_DIRS = ('/home/templates/mike', '/home/templates/john')
 
-Because a settings file is a Python module, the following apply:
+Porque um arquivo de configuração é um módulo Python, o seguinte se aplica:
 
-* It must be valid Python code; syntax errors aren't allowed.
+* O código Python deve ser válido; erros de sintaxe não são permitidos.
 
-* It can assign settings dynamically using normal Python syntax,
-  for example::
+* Configurações podem ser dinamicamente declaradas usando a sintaxe normal do Python, por exemplo::
 
       MY_SETTING = [str(i) for i in range(30)]
 
-* It can import values from other settings files.
+* Valores de outros arquivos de configurações podem ser importados.
 
 Default Settings
 ----------------
