@@ -222,64 +222,63 @@ Além do ``extra_context``, o template context irá conter o seguinte:
 
 * ``object_list``: Lista de objetos. O nome dessa variável depende do parametro 
   ``template_object_name``, que é ``'object'`` por padrão. Se
-  ``template_object_name`` é ``'foo'``, o nome dessa variável será ``foo_list``.
+  ``template_object_name`` é ``foo``, o nome dessa variável será ``foo_list``.
 
-* ``is_paginated``: A Boolean representing whether the results are
-  paginated. Specifically, this is set to ``False`` if the number of
-  available objects is less than or equal to ``paginate_by``.
+* ``is_paginated``: Um booleano indica se o resultado é paginado. 
+  Especificamente, é atribuido ``False`` se o número de objetos é menor ou
+  igual ao ``paginate_by``.
 
-If the results are paginated, the context will contain these extra variables:
+Se os resultados forem paginados, possuirá essas variáveis adicionais:
 
-* ``results_per_page``: The number of objects per page. (This is the same as
-  the ``paginate_by`` parameter.)
+* ``results_per_page``: O número de objetos por página (Isso é igual ao
+  parâmetro ``paginate_by``)
 
-* ``has_next``: A Boolean representing whether there's a next page.
+* ``has_next``: Um booleano é apresentado se houver uma próxima página.
 
-* ``has_previous``: A Boolean representing whether there's a previous page.
+* ``has_previous``: Um booleano é apresentado se houver uma página anterior
 
-* ``page``: The current page number, as an integer. This is 1-based.
+* ``page``: Número da página atual, representado por um inteiro. 
 
-* ``next``: The next page number, as an integer. If there's no next page,
-  this will still be an integer representing the theoretical next-page
-  number. This is 1-based.
+* ``next``: Número da próxima página, representado por um inteiro. Se não houver
+  uma próxima página, este ainda será representado por um inteiro.
 
-* ``previous``: The previous page number, as an integer. This is 1-based.
+* ``previous``: Número da próxima página, representado por um inteiro.
 
-* ``pages``: The total number of pages, as an integer.
+* ``pages``: Número total de páginas, representado por um inteiro
 
-* ``hits``: The total number of objects across *all* pages, not just this
-  page.
+* ``hits``: O número total de objetos em *todas* as páginas, não apenas nesta
+  página
 
-.. admonition:: A Note on Pagination
+.. admonition:: Uma nota sobre a paginação
 
-    If ``paginate_by`` is specified, Django will paginate the results. You can
-    specify the page number in the URL in one of two ways:
+    Se o ``paginate_by`` for especificado, o Djando irá paginar o resultado.
+    VocÊ pode especificar o número da página na URL de duas maneiras:
 
-    * Use the ``page`` parameter in the URLconf. For example, this is what
-      your URLconf might look like::
+    * Use o parâmetro ``page`` dentro da URLcong. Sua URLconf ficará parecida
+      com isso, por exemplo::
 
         (r'^objects/page(?P<page>[0-9]+)/$', 'object_list', dict(info_dict))
 
-    * Pass the page number via the ``page`` query-string parameter. For
-      example, a URL would look like this::
+    * Passe o número da página pelo parâmetro ``page`` query-string. Assim,
+      sua URL ficará desta forma::
 
         /objects/?page=3
 
-    In both cases, ``page`` is 1-based, not 0-based, so the first page would be
-    represented as page ``1``.
+    Em ambos os casos, ``page`` será base 1 e não base 0, sendo assim a primeira
+    página seria representada como página ``1``.
 
 Detail Views
 ------------
 
 *View function*: ``django.views.generic.list_detail.object_detail``
 
-This view provides a "detail" view of a single object.
+Essa view fornece uma visão detalhada de um único objeto
 
-Example
+Exemplo
 ```````
 
-Continuing the previous ``object_list`` example, we could add a detail view for a
-given author by modifying the URLconf:
+Continuando o exemplo anterior, utilizado em ``object_list``, podemos adicionar
+uma visão detalhada modificando a URLconf:
 
 .. parsed-literal::
 
