@@ -389,9 +389,9 @@ Essa view fornece uma página de índice de nível superior mostrando
 Exemplo
 ```````
 
-Say a typical book publisher wants a page of recently published books. Given some
-``Book`` object with a ``publication_date`` field, we can use the
-``archive_index`` view for this common task:
+Digamos que uma editora de livros quer uma página de livros publicados
+recentemente. Dado algum objeto ``Book`` com o campo ``publication_date``,
+nós podemos usar a view ``archive_index`` para algumas tarefas comuns:
 
 .. parsed-literal::
 
@@ -408,25 +408,24 @@ Say a typical book publisher wants a page of recently published books. Given som
         (r'^books/$', date_based.archive_index, book_info),
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``date_field``: The name of the ``DateField`` or ``DateTimeField`` in the
-  ``QuerySet``'s model that the date-based archive should use to determine
-  the objects on the page.
+* ``date_field``: É o nome da ``DateField`` ou ``DateTimeField`` na model
+  ``QuerySet`` que o arquivo date-based deve usar para determinar os objetos
+  na página.
+* ``queryset``: A ``QuerySet`` dos objetos do arquivo.
 
-* ``queryset``: A ``QuerySet`` of objects for which the archive serves.
+Argumentos opcionais
+````````````````````
 
-Optional Arguments
-``````````````````
+* ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
+   nessa página, conforme descrito anteriormente.
 
-* ``allow_future``: A Boolean specifying whether to include "future" objects
-  on this page, as described in the previous note.
+* ``num_latest``: O número de novos objetos para enviar para ao template
+  context. São 15 por padrão.
 
-* ``num_latest``: The number of latest objects to send to the template
-  context. By default, it's 15.
-
-This view may also take these common arguments (see Table C-1):
+Essa view também pode ter os seguintes argumentos (veja a tabela C-1):
 
 * ``allow_empty``
 * ``context_processors``
@@ -438,39 +437,40 @@ This view may also take these common arguments (see Table C-1):
 Template Name
 `````````````
 
-If ``template_name`` isn't specified, this view will use the template
-``<app_label>/<model_name>_archive.html`` by default.
+Se o ``template_name`` não for especificado, essa view ira usar o template
+``<app_label>/<model_name>_archive.html`` por padrão.
+
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Além do ``extra_context``, o template context será como:
 
-* ``date_list``: A list of ``datetime.date`` objects representing all years
-  that have objects available according to ``queryset``. These are ordered
-  in reverse.
+* ``date_list``: Uma lista de objetos ``datetime.date`` representando todos
+  os anos que têm objetos disponíveis de acordo com a ``queryset``. Estas são
+  ordenados em sentido inverso.
 
-  For example, if you have blog entries from 2003 through 2006, this list
-  will contain four ``datetime.date`` objects: one for each of those years.
+  Por exemplo, se você tiver publicações de um blog de 2003 a 2006, essa lista
+  conterá quatro objetos ``datetime.date``: um para cada um dos anos.
 
-* ``latest``: The ``num_latest`` objects in the system, in descending order
-  by ``date_field``. For example, if ``num_latest`` is ``10``, then
-  ``latest`` will be a list of the latest ten objects in ``queryset``.
+* ``latest``: São os objetos ``num_latest`` do sistema, em ordem decrescente
+  por ``date_field``. Por exemplo, se ``num_latest`` é ``10``, o ``latest``
+  será uma lista com os últimos 10 objetos na ``queryset``.
 
-Year Archives
--------------
+Arquivos ano
+------------
 
 *View function*: ``django.views.generic.date_based.archive_year``
 
-Use this view for yearly archive pages. These pages have a list of months in
-which objects exists, and they can optionally display all the objects published in
-a given year.
+Use esta view para páginas anuais de arquivos. As paginas possuiem uma lista
+de meses nos objetos existentes, e eles podem mostar opcionalmente todos os
+objetos publicados em um determinado ano.
 
-Example
+Exemplo
 ```````
 
-Extending the ``archive_index`` example from earlier, we'll add a way to view all
-the books published in a given year:
+Aproveitando o exemplo ``archive_index`` utilizado anteriormente, vamos
+adicionar uma forma de ver todos os livros publicados em um determinado ano:
 
 .. parsed-literal::
 
@@ -488,30 +488,29 @@ the books published in a given year:
         **(r'^books/(?P<year>\d{4})/?$', date_based.archive_year, book_info),**
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``date_field``: As for ``archive_index`` (see the previous section).
+* ``date_field``: É como ``archive_index`` (veja na seção anterior).
 
-* ``queryset``: A ``QuerySet`` of objects for which the archive serves.
+* ``queryset``:  ``QuerySet`` dos objetos para os quais o arquivo serve.
 
-* ``year``: The four-digit year for which the archive serves (as in our
-  example, this is usually taken from a URL parameter).
+* ``year``: O ano de quatro dígitos para os quais o arquivo serve (como em
+  nosso exemplo, esta é geralmente tomada a partir de um parâmetro de URL).
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``make_object_list``: A Boolean specifying whether to retrieve the full
-  list of objects for this year and pass those to the template. If ``True``,
-  this list of objects will be made available to the template as
-  ``object_list``. (The name ``object_list`` may be different; see the
-  information about ``object_list`` in the following "Template Context"
-  section.) By default, this is ``False``.
+* ``make_object_list``: Um booleano para especificar a lista de objetos para
+  esse ano. Se for ``True``, essa lista de objetos será colocada à disposição
+  do  template conforme o ``object_list``. (O nome ``object_list`` pode ser
+  diferente; veja mais sobre ``object_list`` na seção "Template Context"). Seu
+  valor padrão é ``False``.
 
-* ``allow_future``: A Boolean specifying whether to include "future" objects
-  on this page.
+* ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
+   nesta página.
 
-This view may also take these common arguments (see Table C-1):
+Esta view também pode tomar os seguintes argumentos (veja a tabela C-1):
 
 * ``allow_empty``
 * ``context_processors``
@@ -530,35 +529,35 @@ If ``template_name`` isn't specified, this view will use the template
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Além do ``extra_context``, contexto do modelo será como se segue:
 
-* ``date_list``: A list of ``datetime.date`` objects representing all months
-  that have objects available in the given year, according to ``queryset``,
-  in ascending order.
+* ``date_list``: Uma lista de objetos ``datetime.date`` representando todos
+  os meses que têm objetos disponíves no ano, de acordo com a ``queryset``,
+  ordenada em ordem crescente.
 
-* ``year``: The given year, as a four-character string.
+* ``year``: O ano, com uma sequência de quatro caracteres.
 
-* ``object_list``: If the ``make_object_list`` parameter is ``True``, this
-  will be set to a list of objects available for the given year, ordered by
-  the date field. This variable's name depends on the
-  ``template_object_name`` parameter, which is ``'object'`` by default. If
-  ``template_object_name`` is ``'foo'``, this variable's name will be
-  ``foo_list``.
+* ``object_list``: Se o parâmetro ``make_object_list`` for ``True``, ele irá
+  atribuir uma lista de objetos disponíveis no ano em questão, ordenado pelo
+  campo data. O nome dessa variável depende do parâmetro
+  ``template_object_name``, que é ``'object'`` por padrão. Se o
+  ``template_object_name`` for ``'foo'``, o nome da variável será ``foo_list``.
 
-  If ``make_object_list`` is ``False``, ``object_list`` will be passed to
-  the template as an empty list.
+  Se o ``make_object_list`` for ``False``, o ``object_list`` irá passar uma
+  para lista vazia para o template.
 
-Month Archives
---------------
+Arquivos mês
+------------
 
 *View function*: ``django.views.generic.date_based.archive_month``
 
-This view provides monthly archive pages showing all objects for a given month.
+Essa view fornece páginas de arquivos mensais mostrando todos os objetos para
+,um determinado mês.
 
-Example
+Exemplo
 ```````
 
-Continuing with our example, adding month views should look familiar:
+Continuando o nosso exemplo, vamos adicionar na view os meses:
 
 .. parsed-literal::
 
@@ -572,34 +571,33 @@ Continuing with our example, adding month views should look familiar:
         **),**
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``year``: The four-digit year for which the archive serves (a string).
+* ``year``: O ano de quatro dígitos para que o arquivo serve (uma string).
 
-* ``month``: The month for which the archive serves, formatted according to
-  the ``month_format`` argument.
+* ``month``: O mês em que o arquivo serve, formatado de acordo com
+   o argumento ``month_format``.
 
-* ``queryset``: A ``QuerySet`` of objects for which the archive serves.
+* ``queryset``: A ``QuerySet`` de objetos para os quais o arquivo serve.
 
-* ``date_field``: The name of the ``DateField`` or ``DateTimeField`` in the
-  ``QuerySet``'s model that the date-based archive should use to determine
-  the objects on the page.
+* ``date_field``: É o nome do ``DateField`` ou ``DateTimeField`` na
+  ``QuerySet`` que o arquivo date-based deve usar para determinar
+   os objetos na página.
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``month_format``: A format string that regulates what format the ``month``
-  parameter uses. This should be in the syntax accepted by Python's
-  ``time.strftime``. (See Python's strftime documentation at
-  http://docs.python.org/library/time.html#time.strftime.) It's set
-  to ``"%b"`` by default, which is a three-letter month abbreviation (i.e.,
-  "jan", "feb", etc.). To change it to use numbers, use ``"%m"``.
+* ``month_format``: Um formato que regula o formato do parâmetro ``month`` é
+  usado. Esta deve ser na sintaxe aceita pelo Python ``time.strftime``.
+  (Veja sobre strftime em http://docs.python.org/library/time.html#time.strftime.)
+  Por padrão ``"%b"`` é definido, que é uma abreviação de mês de três letras
+  (i.e., "jan", "fev", etc.). Para usar números, use ``"%m"``.
 
-* ``allow_future``: A Boolean specifying whether to include "future" objects
-  on this page, as described in the previous note.
+* ``allow_future``: Um booleano que especifica se existem objetos do "futuro"
+  na página, mostrato anteriormente
 
-This view may also take these common arguments (see Table C-1):
+Está view também possui os seguintes argumentos (veja na tabela C-1):
 
 * ``allow_empty``
 * ``context_processors``
@@ -612,40 +610,41 @@ This view may also take these common arguments (see Table C-1):
 Template Name
 `````````````
 
-If ``template_name`` isn't specified, this view will use the template
-``<app_label>/<model_name>_archive_month.html`` by default.
+Se o ``template_name`` não for especificado, essa view irá usar o template
+``<app_label>/<model_name>_archive_month.html`` por padrão.
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Além do ``extra_context``, o template context seguirá o seguinte:
 
-* ``month``: A ``datetime.date`` object representing the given month.
+* ``month``: Um objeto ``datetime.date`` que represente um dado mês.
 
-* ``next_month``: A ``datetime.date`` object representing the first day of
-  the next month. If the next month is in the future, this will be ``None``.
+* ``next_month``: Um objeto ``datetime.date`` que representa o primeiro dia
+  do poróximo mês. Se o mês seguinte for no futuro, esta será ``None``.
 
-* ``previous_month``: A ``datetime.date`` object representing the first day
-  of the previous month. Unlike ``next_month``, this will never be ``None``.
+* ``previous_month``: Um objeto ``datetime.date`` representando o primeiro dia
+  do mês anterior. Ao contrátio do ``next_month``, ele nunca retornará
+  ``None``.
 
-* ``object_list``: A list of objects available for the given month. This
-  variable's name depends on the ``template_object_name`` parameter, which
-  is ``'object'`` by default. If ``template_object_name`` is ``'foo'``, this
-  variable's name will be ``foo_list``.
+* ``object_list``: Uma lista de objetos disponíveis para um dado mês. O nome
+  dessa variável depende do parâmetro ``template_object_name``, que é
+  ``'object'`` por padrão. Se o ``template_object_name`` for ``'foo'``, essa
+  o nome dessa variável será ``foo_list``.
 
-Week Archives
--------------
+Ârquivos semana
+---------------
 
 *View function*: ``django.views.generic.date_based.archive_week``
 
-This view shows all objects in a given week.
+Essa view mostrará todos os objetos em uma determinada semana.
 
-.. note::
+.. nota::
 
-    For the sake of consistency with Python's built-in date/time handling,
-    Django assumes that the first day of the week is Sunday.
+    Por uma questão de coerência com o built-in date/time do Python, o Django
+    assume que o primeiro dia da semana é o domingo.
 
-Example
+Exemplo
 ```````
 
 .. parsed-literal::
@@ -660,8 +659,8 @@ Example
     )
 
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
 * ``year``: The four-digit year for which the archive serves (a string).
 
