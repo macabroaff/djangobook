@@ -2,78 +2,78 @@
 Apêndice C: Generic View Reference
 ==================================
 
-No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e 
-sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não 
-abordados anteriormente, porém é altamente recomendado que você leia o capítulo 
-11 antes de tentar entender a referência material que se segue. Você pode 
-querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido 
+No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e
+sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não
+abordados anteriormente, porém é altamente recomendado que você leia o capítulo
+11 antes de tentar entender a referência material que se segue. Você pode
+querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido
 neste capítulo, os exemplos a seguir usam esses modelos.
 
 
 Argumentos comuns nas Generic Views
 ===================================
 
-A maioria dessas views possuem uma grande quantidade de argumentos que 
-possibilitam a modificação do comportamento padrão das generic views. Muitos 
-desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1 
-descreve os argumentos mais comuns; sempre que você encontrar um desse 
+A maioria dessas views possuem uma grande quantidade de argumentos que
+possibilitam a modificação do comportamento padrão das generic views. Muitos
+desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1
+descreve os argumentos mais comuns; sempre que você encontrar um desse
 argumentos, ele funcionará da forma descrita abaixo
-    
+
 .. table:: Tabela C-1. Argumentos comuns nas Generic Views
 
     ==========================  ===============================================
     Argumentos                  Descrição
     ==========================  ===============================================
-    ``allow_empty``             Um booleano que especifica se, para carregar a 
+    ``allow_empty``             Um booleano que especifica se, para carregar a
                                 página, existem ou não objetos disponíveis.
-                                Se este for ``False`` e nenhum objeto estiver 
+                                Se este for ``False`` e nenhum objeto estiver
                                 disponível, a view lançará um 404 ao invés de
-                                mostrar uma página vazia. Por padrão, isso é                                
+                                mostrar uma página vazia. Por padrão, isso é
                                 ``True``.
 
-    ``context_processors``      Uma lista adicional de ``template-context                                
+    ``context_processors``      Uma lista adicional de ``template-context
                                 processors`` (além dos padrões) que podem ser
-                                aplicados nos templates das views. Para maiores                                 
-                                informações sobre ``template-context 
+                                aplicados nos templates das views. Para maiores
+                                informações sobre ``template-context
                                 processors``, consulte o capítulo 9.
 
-    ``extra_context``           Possibilita adicionar um dicionário de valores                               
-                                extras no contexto do template. Por padrão, é 
-                                um dicionário vazio. Se for definido um valor 
-                                no dicionário, a genetic view irá chamá-lo 
+    ``extra_context``           Possibilita adicionar um dicionário de valores
+                                extras no contexto do template. Por padrão, é
+                                um dicionário vazio. Se for definido um valor
+                                no dicionário, a genetic view irá chamá-lo
                                 antes de renderizar o template.
 
-    ``mimetype``                O tipo MIME a ser usado para o documento 
-                                resultante. Caso nenhum valor seja fornecido, 
-                                será utilizado o valor de 
-                                ``DEFAULT_CONTENT_TYPE`` do arquivo de 
+    ``mimetype``                O tipo MIME a ser usado para o documento
+                                resultante. Caso nenhum valor seja fornecido,
+                                será utilizado o valor de
+                                ``DEFAULT_CONTENT_TYPE`` do arquivo de
                                 settings.py.
 
-    ``queryset``                Um ``QuerySet`` (exemplo ``Author.objects.all()``)                               
-                                que serve para ler a partir de objetos. 
-                                Consulte o Apêndice B para mais detalhes sobre 
-                                ``QuerySet``. As generic views exigem este 
+    ``queryset``                Um ``QuerySet`` (exemplo ``Author.objects.all()``)
+                                que serve para ler a partir de objetos.
+                                Consulte o Apêndice B para mais detalhes sobre
+                                ``QuerySet``. As generic views exigem este
                                 argumento.
 
-    ``template_loader``         O template loarder é usado ao carregar um 
-                                template. É usado ``django.template.loader`` 
-                                por padrão. Consulte o capítulo 9 para maiores 
+    ``template_loader``         O template loarder é usado ao carregar um
+                                template. É usado ``django.template.loader``
+                                por padrão. Consulte o capítulo 9 para maiores
                                 informações.
 
-    ``template_name``           O nome completo de um template para renderizar uma                               
+    ``template_name``           O nome completo de um template para renderizar uma
                                 página. Isso permite que você substitua o nome
                                 padrão do template derivado do ``QuerySet``.
 
-    ``template_object_name``    Designa o nome da variável do template para                                  
-                                utilizar no contexto do template. Por padrão 
+    ``template_object_name``    Designa o nome da variável do template para
+                                utilizar no contexto do template. Por padrão
                                 seu parâmetro é um ``objeto``.
     ==========================  ===============================================
 
 "simples" Generic Views
 =======================
 
-O módulo ``django.views.generic.simple`` possui views simples que podem 
-resolver os casos mais comuns: renderiza um template e, quando existe a 
+O módulo ``django.views.generic.simple`` possui views simples que podem
+resolver os casos mais comuns: renderiza um template e, quando existe a
 necessidade, executar um redirecionamento.
 
 Renderizando Template
@@ -81,8 +81,8 @@ Renderizando Template
 
 *View function*: ``django.views.generic.simple.direct_to_template``
 
-Está view renderiza o template indicado, passando ``{{ params }}`` na variável 
-do template, criando assim um dicionário contendo os parâmetros obtidos na URL. 
+Está view renderiza o template indicado, passando ``{{ params }}`` na variável
+do template, criando assim um dicionário contendo os parâmetros obtidos na URL.
 
 Exemplo
 ```````
@@ -97,9 +97,9 @@ Dada a seguinte URLconf::
         (r'^foo/(?P<id>\d+)/$', direct_to_template, {'template': 'foo_detail.html'}),
     )
 
-Veremos que a requisição feita para ``/foo/`` renderizará o template 
-``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará 
-``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor 
+Veremos que a requisição feita para ``/foo/`` renderizará o template
+``foo_index.html``, e a requisição feita para ``/foo/15/`` renderizará
+``foo_detail.html`` no contexto da variável ``{{ params.id }}`` o valor
 ``15`` será atribuido.
 
 Argumentos obrigatórios
@@ -112,8 +112,8 @@ Redirecionando para outra URL
 
 *View function*: ``django.views.generic.simple.redirect_to``
 
-Está view redireciona para outra URL. A URL indicada pode conter uma string 
-formatada como um dictionary-style, que será interpolado com os parâmetros 
+Está view redireciona para outra URL. A URL indicada pode conter uma string
+formatada como um dictionary-style, que será interpolado com os parâmetros
 capturados na URL.
 
 Se a URL dada for ``None``, o Django irá retornar o código HTTP 410 ("Gone").
@@ -140,13 +140,13 @@ Este exemplo retorna "Gone" como resposta a solicitação enviada a ``/bar/``::
 Argumentos obrigatórios
 ```````````````````````
 
-* ``url``: URL que redireciona ``de`` para ``para``. Ou ``None``, que irá 
+* ``url``: URL que redireciona ``de`` para ``para``. Ou ``None``, que irá
 retornar 410 "Gone".
 
 Lista/Detalhe Generic Views
 ===========================
 
-A lista/detalhe da generic views (no módulo ``django.views.generic.list_detail``) 
+A lista/detalhe da generic views (no módulo ``django.views.generic.list_detail``)
 lida com o caso comum de exibição de uma lista de itens em uma view e views
 de "detalhe" indivudual desses itens em outra.
 
@@ -184,15 +184,12 @@ Argumentos opcionais
 ````````````````````
 
 * ``paginate_by``: Um inteiro que especifica quantos objetos devem ser mostrados
-  ṕor página
-  ``paginate_by`` objetos por página. A view espera por uma página que possua 
-  uma query string (enviada via ``GET``) com indice zero ou uma página variável 
+  por página
+  ``paginate_by`` objetos por página. A view espera por uma página que possua
+  uma query string (enviada via ``GET``) com indice zero ou uma página variável
   especificada na URLconf. Veja a seção "Notas de paginação".
 
-Additionally, this view may take any of these common arguments described in
-Table C-1:
-
-Além destes, essa view pode utilizar qualquer um desses argumentos descritos na 
+Além destes, essa view pode utilizar qualquer um desses argumentos descritos na
 descritos na Tabela C-1.
 
 * ``allow_empty``
@@ -206,10 +203,10 @@ descritos na Tabela C-1.
 Template Name
 `````````````
 
-Se ``template_name`` não for especificado, a view irá usar o template 
+Se ``template_name`` não for especificado, a view irá usar o template
 ``<app_label>/<model_name>_list.html`` por padrão. Tanto o rótulo da aplicação
 quanto o nome do modelo são derivados do parâmetro ``queryset``. O rótulo da
-aplicação é o nome do aplicativo que o medelo está definito, e o nome do modelo 
+aplicação é o nome do aplicativo que o medelo está definito, e o nome do modelo
 é a versão minúsculas do nome do modelo de classe.
 
 No exemplo anterior usando `Author.objects.all()`` como uma ``queryset``, o
@@ -220,11 +217,11 @@ Template Context
 
 Além do ``extra_context``, o template context irá conter o seguinte:
 
-* ``object_list``: Lista de objetos. O nome dessa variável depende do parametro 
+* ``object_list``: Lista de objetos. O nome dessa variável depende do parametro
   ``template_object_name``, que é ``'object'`` por padrão. Se
   ``template_object_name`` é ``foo``, o nome dessa variável será ``foo_list``.
 
-* ``is_paginated``: Um booleano indica se o resultado é paginado. 
+* ``is_paginated``: Um booleano indica se o resultado é paginado.
   Especificamente, é atribuido ``False`` se o número de objetos é menor ou
   igual ao ``paginate_by``.
 
@@ -237,7 +234,7 @@ Se os resultados forem paginados, possuirá essas variáveis adicionais:
 
 * ``has_previous``: Um booleano é apresentado se houver uma página anterior
 
-* ``page``: Número da página atual, representado por um inteiro. 
+* ``page``: Número da página atual, representado por um inteiro.
 
 * ``next``: Número da próxima página, representado por um inteiro. Se não houver
   uma próxima página, este ainda será representado por um inteiro.
@@ -299,40 +296,41 @@ uma visão detalhada modificando a URLconf:
         **(r'^authors/(?P<object_id>\d+)/$', list_detail.object_detail, author_detail_info),**
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``queryset``: A ``QuerySet`` that will be searched for the object (see Table C-1).
+* ``queryset``: A ``QuerySet`` será pesquisada para o objeto (veja a Tabela C-1)
 
-and either
+ou
 
-* ``object_id``: The value of the primary-key field for the object.
+* ``object_id``: O valor do campo primary-key para o objecto.
 
-or
+ou
 
-* ``slug``: The slug of the given object. If you pass this field, then the
-  ``slug_field`` argument (see the following section) is also required.
+* ``slug``: O slug do objeto. Se você informar este campo, o argumento
+  ``slug_field`` (veja na seção seguinte) será obrigatório.
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``slug_field``: The name of the field on the object containing the slug.
-  This is required if you are using the ``slug`` argument, but it must be
-  absent if you're using the ``object_id`` argument.
+* ``slug_field``: Nome do campo no objeto contendo slug. Será obrigatório se
+  você usar o argumento ``slug``. Caso você utilize o argumento ``object_id``
+  esse argumento deverá ser ignorado.
 
-* ``template_name_field``: The name of a field on the object whose value is
-  the template name to use. This lets you store template names in your data.
 
-  In other words, if your object has a field ``'the_template'`` that
-  contains a string ``'foo.html'``, and you set ``template_name_field`` to
-  ``'the_template'``, then the generic view for this object will use the
-  template ``'foo.html'``.
+* ``template_name_field``: O nome de um campo no objeto cujo valor é
+   o usado pelo template name.
 
-  If the template named by ``template_name_field`` doesn't exist, the one
-  named by ``template_name`` is used instead.  It's a bit of a
-  brain-bender, but it's useful in some cases.
+  Em outras palavras, se seu objeto possui o campo ``'the_template'`` que
+  contenha a string ``'foo.html'``, e você informa ``template_name_field`` para
+  ``'the_template'``, a generic view para esse objeto irá usar o template
+  ``'foo.html'``.
 
-This view may also take these common arguments (see Table C-1):
+  Se o template nomeado por ``template_name_field`` não existir, um nome dado
+  ao ``template_name`` será usado. Isso é um pouco de ``'brain-bender'``,
+  mas é útil em alguns casos.
+
+Essa view também poderá usar esses argumentos (veja a tabela C-1):
 
 * ``context_processors``
 * ``extra_context``
@@ -344,51 +342,51 @@ This view may also take these common arguments (see Table C-1):
 Template Name
 `````````````
 
-If ``template_name`` and ``template_name_field`` aren't specified, this view
-will use the template ``<app_label>/<model_name>_detail.html`` by default.
+Se o ``template_name`` e ``template_name_field`` não forem especificados,
+essa view irá usar o template ``<app_label>/<model_name>_detail.html`` por
+padrão.
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Adicionalmente ao ``extra_context``, o template context será como:
 
-* ``object``: The object. This variable's name depends on the
-  ``template_object_name`` parameter, which is ``'object'`` by default. If
-  ``template_object_name`` is ``'foo'``, this variable's name will be
-  ``foo``.
+* ``object``: O objeto. O nome dessa variável depende do parametro
+  ``template_object_name``, que é ``'object'`` por padrão. se o
+  ``template_object_name`` for ``'foo'``, o nome dessa variável será ``foo``.
 
 Date-Based Generic Views
 ========================
 
-Date-based generic views are generally used to provide a set of "archive"
-pages for dated material. Think year/month/day archives for a newspaper, or a
-typical blog archive.
+Date-based generic views geralmente são usados ​​para fornecer um conjunto de
+"arquivo" páginas para material datado. Pense em arquivos de ano/mês/dia para
+um jornal, ou uma arquivo do blog típico.
 
 .. admonition:: Tip:
 
-    By default, these views ignore objects with dates in the future.
+    Por padrão, essa view ignora objetos com datas futuras.
 
-    This means that if you try to visit an archive page in the future, Django
-    will automatically show a 404 ("Page not found") error, even if there are objects
-    published that day.
+    Isso significa que se você tentar visitar arquivos futuros, o Django irá
+    mostrar automáticamente o erro 404 ("Page not found"), mesmo que exista
+    uma publicação para esta data.
 
-    Thus, you can publish postdated objects that don't appear publicly until
-    their desired publication date.
+    Assim, você pode publicar os objetos futuros que não aparecem publicamente
+    até sua desejada data de publicação.
 
-    However, for different types of date-based objects, this isn't appropriate
-    (e.g., a calendar of upcoming events). For these views, setting the
-    ``allow_future`` option to ``True`` will make the future objects appear (and
-    allow users to visit "future" archive pages).
+    Entretanto, para diferentes tipos de objetos date-based, isso não é
+    apropriado (e.g., um calendário de próximos eventos). Para estas views,
+    atribua ``True`` a opção ``allow_future``, que irá apresentar os objetos
+    futuros ( e permitir que o usuário visite "futuros" arquivos).
 
-Archive Index
+Arquivo Index
 -------------
 
 *View function*: ``django.views.generic.date_based.archive_index``
 
-This view provides a top-level index page showing the "latest" (i.e., most
-recent) objects by date.
+Essa view fornece uma página de índice de nível superior mostrando
+"mais recente" (ou seja, objetos mais recentes) por data.
 
-Example
+Exemplo
 ```````
 
 Say a typical book publisher wants a page of recently published books. Given some
