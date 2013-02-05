@@ -45,27 +45,21 @@ Há uma forma fácil de ver quais das suas configurações desviam das configura
 
 ``manage.py`` é descrito com mais detalhes no Apêndice F.
 
-Using Settings in Python Code
------------------------------
+Usando as configurações no código Python
+----------------------------------------
 
-In your Django applications, use settings by importing the object
-``django.conf.settings``, for example::
+Nas suas aplicações Django, use as configurações importando o objeto ``django.conf.settings``, por exemplo::
 
     from django.conf import settings
 
     if settings.DEBUG:
-        # Do something
+        # Faça algo
 
-Note that ``django.conf.settings`` isn't a module -- it's an object. So
-importing individual settings is not possible::
+Note que ``django.conf.settings`` não é um módulo -- é um objeto. Então não é possível importar configurações individuais::
 
-    from django.conf.settings import DEBUG  # This won't work.
+    from django.conf.settings import DEBUG  # Isso não vai funcionar.
 
-Also note that your code should *not* import from either ``global_settings`` or
-your own settings file. ``django.conf.settings`` abstracts the concepts of
-default settings and site-specific settings; it presents a single interface.
-It also decouples the code that uses settings from the location of your
-settings.
+Também note que seu código *não* deve importar de ``global_settings`` ou mesmo de seu próprio arquivo de configurações. ``django.conf.settings`` abstrai os conceitos das configurações padrão e das configurações específicas do projeto; apresenta uma interface única. Também dissocia o código que usa as configurações do local das suas configurações.
 
 Altering Settings at Runtime
 ----------------------------
