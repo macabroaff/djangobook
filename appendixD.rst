@@ -38,14 +38,12 @@ Eis o algoritmo que o Django utiliza na compilação das configurações:
 
 Note que um arquivo de configurações *não* deve ter um import from ``global_settings``, porque isso é redundante.
 
-Seeing Which Settings You've Changed
-------------------------------------
+Vendo quais configurações você alterou
+--------------------------------------
 
-There's an easy way to view which of your settings deviate from the default
-settings. The command ``manage.py diffsettings`` displays differences between
-the current settings file and Django's default settings.
+Há uma forma fácil de ver quais das suas configurações desviam das configurações padrão. O comando ``manage.py diffsettings`` mostra as diferenças entre o arquivo de configurações atual e o arquivo de configurações padrão do Django.
 
-``manage.py`` is described in more detail in Appendix F.
+``manage.py`` é descrito com mais detalhes no Apêndice F.
 
 Using Settings in Python Code
 -----------------------------
