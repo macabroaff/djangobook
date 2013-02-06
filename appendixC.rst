@@ -597,7 +597,7 @@ Argumentos opcionais
 * ``allow_future``: Um booleano que especifica se existem objetos do "futuro"
   na página, mostrato anteriormente
 
-Está view também possui os seguintes argumentos (veja na tabela C-1):
+Esta view também possui os seguintes argumentos (veja na tabela C-1):
 
 * ``allow_empty``
 * ``context_processors``
@@ -632,7 +632,7 @@ Além do ``extra_context``, o template context seguirá o seguinte:
   ``'object'`` por padrão. Se o ``template_object_name`` for ``'foo'``, essa
   o nome dessa variável será ``foo_list``.
 
-Ârquivos semana
+Arquivos semana
 ---------------
 
 *View function*: ``django.views.generic.date_based.archive_week``
@@ -662,23 +662,22 @@ Exemplo
 Argumentos obrigatórios
 ```````````````````````
 
-* ``year``: The four-digit year for which the archive serves (a string).
+* ``year``: O ano de quatro dígitos para que o arquivo serve (uma string).
 
-* ``week``: The week of the year for which the archive serves (a string).
+* ``week``: A semana do ano para o qual o arquivo serve (uma string).
 
-* ``queryset``: A ``QuerySet`` of objects for which the archive serves.
+* ``queryset``: Um ``QuerySet`` de objetos para os quais o arquivo serve.
 
-* ``date_field``: The name of the ``DateField`` or ``DateTimeField`` in the
-  ``QuerySet``'s model that the date-based archive should use to determine
-  the objects on the page.
+* ``date_field``: O nome do ``DateField`` ou ``DateTimeField`` na ``QuerySet``
+  que o arquivo data-base deve usar para determinar os objetos na página.
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``allow_future``: A Boolean specifying whether to include "future" objects
-  on this page, as described in the previous note.
+* ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
+   nessa página, conforme descrito anteriormente.
 
-This view may also take these common arguments (see Table C-1):
+Esta view também possui os seguintes argumentos (veja na tabela C-1):
 
 * ``allow_empty``
 * ``context_processors``
@@ -691,30 +690,30 @@ This view may also take these common arguments (see Table C-1):
 Template Name
 `````````````
 
-If ``template_name`` isn't specified, this view will use the template
-``<app_label>/<model_name>_archive_week.html`` by default.
+Se o ``template_name`` não for especificado, essa view irpa usar o template
+``<app_label>/<model_name>_archive_week.html`` por padrão.
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Além do ``extra_context``, o Template Context irá seguir o seguinte:
 
-* ``week``: A ``datetime.date`` object representing the first day of the
-  given week.
+* ``week``: Um objeto ``datetime.date`` que representa o primeiro dia de uma
+  dada semana.
 
-* ``object_list``: A list of objects available for the given week. This
-  variable's name depends on the ``template_object_name`` parameter, which
-  is ``'object'`` by default. If ``template_object_name`` is ``'foo'``, this
-  variable's name will be ``foo_list``.
+* ``object_list``: Uma lista de objetos disponíveis para uma dasa semana.
+  O nome dessa variável depende do parâmetro ``template_object_name``, que é
+  um ``'object'`` por padrão. Se o ``template_object_name`` for ``'foo'``,
+  o nome dessa variável será ``foo_list``.
 
-Day Archives
+Arquivos dia
 ------------
 
 *View function*: ``django.views.generic.date_based.archive_day``
 
-This view generates all objects in a given day.
+Essa view gera gera todos os objetos em um determinado dia.
 
-Example
+Exemplo
 ```````
 
 .. parsed-literal::
@@ -729,37 +728,35 @@ Example
     )
 
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``year``: The four-digit year for which the archive serves (a string).
+* ``year``: O ano de quatro dígitos para que o arquivo serve (uma string).
 
-* ``month``: The month for which the archive serves, formatted according to the
-  ``month_format`` argument.
+* ``month``: O mês em que o arquivo serve, formatado de acordo com o argumento
+  ``month_format``.
 
-* ``day``: The day for which the archive serves, formatted according to the
-  ``day_format`` argument.
+* ``day``: O dia em que o arquivo serve, formatado de acordo com o argumento
+  ``day_format``.
 
-* ``queryset``: A ``QuerySet`` of objects for which the archive serves.
+* ``queryset``: Uma ``QuerySet`` de objetos para os quais o arquivo serve.
 
-* ``date_field``: The name of the ``DateField`` or ``DateTimeField`` in the
-  ``QuerySet``'s model that the date-based archive should use to determine
-  the objects on the page.
+* ``date_field``: O nome do ``DateField`` ou ``DateTimeField`` na ``QuerySet``
+  que o arquivo data-base deve usar para determinar os objetos na página.
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``month_format``: A format string that regulates what format the ``month``
-  parameter uses. See the detailed explanation in the "Month Archives"
-  section, above.
+* ``month_format``: Um formato que regula o que o formato do parâmetro
+  ``month`` usa. Veja a explicação detalhada na seção "Arquivos Mês".
 
-* ``day_format``: Like ``month_format``, but for the ``day`` parameter. It
-  defaults to ``"%d"`` (the day of the month as a decimal number, 01-31).
+* ``day_format``: Como ``month_format``, mas para o parâmetro ``day``.
+  ele é padrão para ``"%d"`` (o dia do mês como um número decimal, 01-31).
 
-* ``allow_future``: A Boolean specifying whether to include "future" objects
-  on this page, as described in the previous note.
+* ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
+   nessa página, conforme descrito anteriormente.
 
-This view may also take these common arguments (see Table C-1):
+Esta view também possui os seguintes argumentos (veja na tabela C-1):
 
 * ``allow_empty``
 * ``context_processors``
@@ -772,36 +769,36 @@ This view may also take these common arguments (see Table C-1):
 Template Name
 `````````````
 
-If ``template_name`` isn't specified, this view will use the template
-``<app_label>/<model_name>_archive_day.html`` by default.
+Se o ``template_name`` não for especificado, essa view irá usar o template
+``<app_label>/<model_name>_archive_day.html`` por padrão.
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Além fo ``extra_context``, o Template Context seguirá o seguinte:
 
-* ``day``: A ``datetime.date`` object representing the given day.
+* ``day``: Um objeto ``datetime.date`` representando um dado dia.
 
-* ``next_day``: A ``datetime.date`` object representing the next day. If the
-  next day is in the future, this will be ``None``.
+* ``next_day``: Um objeto ``datetime.date`` representando o próximo dia. Se o
+  próximo dia for um dia futuro, ele retornará ``None``.
 
-* ``previous_day``: A ``datetime.date`` object representing the previous day.
-  Unlike ``next_day``, this will never be ``None``.
+* ``previous_day``: Um objeto ``datetime.date`` representando o dia anterior.
+  Diferente do ``next_day``, ele nunca retornará ``None``.
 
-* ``object_list``: A list of objects available for the given day. This
-  variable's name depends on the ``template_object_name`` parameter, which
-  is ``'object'`` by default. If ``template_object_name`` is ``'foo'``, this
-  variable's name will be ``foo_list``.
+* ``object_list``: Uma lista de objetos disponíveis para o dia. O nome da
+  variável depende do parâmetro ``template_object_name``, que é um ``'object'``
+  por padrão. Se o ``template_object_name`` for ``'foo'``, essa variável será
+  ``foo_list``.
 
-Archive for Today
------------------
+Arquivos para hoje
+------------------
 
-The ``django.views.generic.date_based.archive_today`` view shows all objects for
-*today*. This is exactly the same as ``archive_day``, except the
-``year``/``month``/``day`` arguments are not used, and today's date is used
-instead.
+A view ``django.views.generic.date_based.archive_today`` mostra todos os
+objetos de *hoje*. É exatamente igual a ``archive_day``, exeto os argumentos
+``year``/``month``/``day`` que não são utilizados, em vez disso será usada a
+data de hoje.
 
-Example
+Exemplo
 ```````
 
 .. parsed-literal::
@@ -812,34 +809,34 @@ Example
     )
 
 
-Date-Based Detail Pages
------------------------
+Página de detalhes Date-Based
+-----------------------------
 
 *View function*: ``django.views.generic.date_based.object_detail``
 
-Use this view for a page representing an individual object.
+Utilize esta view para uma página que representa um objeto individual.
 
-This has a different URL from the ``object_detail`` view; the ``object_detail``
-view uses URLs like ``/entries/<slug>/``, while this one uses URLs like
+Isto tem um URL diferente da view ``object_detail``; a view ``object_detail``
+usa URLs como ``/entries/<slug>/``, enquanto essa usa URLs como
 ``/entries/2006/aug/27/<slug>/``.
 
-.. note::
+.. nota::
 
-    If you're using date-based detail pages with slugs in the URLs, you probably
-    also want to use the ``unique_for_date`` option on the slug field to
-    validate that slugs aren't duplicated in a single day. See Appendix A for
-    details on ``unique_for_date``.
+    Se você estiver usando páginas date-based de detalhe com slugs nas URLs,
+    você provavelmente terá que usar como opção a ``unique_for_date`` no slug
+    para validar essa slugs não são duplicadas em um único dia. Veja o apêndice
+    A para maioresd informações sobre ``unique_for_date``.
 
-Example
+Exemplo
 ```````
 
-This one differs (slightly) from all the other date-based examples in that we
-need to provide either an object ID or a slug so that Django can look up the
-object in question.
+Esse é (ligeiramente) diferente de todos os outros exemplos de date-based em
+exemplos que precisamos fornecer o ID de um objeto ou uma slug para que o
+Django tenha formas de encontrar o objeto em questão.
 
-Since the object we're using doesn't have a slug field, we'll use ID-based URLs.
-It's considered a best practice to use a slug field, but in the interest of
-simplicity we'll let it go.
+Uma vez que o objeto que estamos usando não tem um campo de slug, usaremos ID
+baseado em URLs. É considerada uma boa prática usar um campo de slug, mas por
+questões de exemplo, vamos deixar sem.
 
 .. parsed-literal::
 
@@ -852,57 +849,54 @@ simplicity we'll let it go.
         **),**
     )
 
-Required Arguments
-``````````````````
+Argumentos obrigatórios
+```````````````````````
 
-* ``year``: The object's four-digit year (a string).
+* ``year``: Um objeto ano de quatro dígitos (uma string).
 
-* ``month``: The object's month, formatted according to the ``month_format``
-  argument.
+* ``month``: Um objeto mês, formatado de acordo com o argumento
+  ``month_format``
 
-* ``day``: The object's day, formatted according to the ``day_format`` argument.
+* ``day``: Um objeto dia, formatado de acordo com o argumento ``day_format``.
 
-* ``queryset``: A ``QuerySet`` that contains the object.
+* ``queryset``: Uma ``QuerySet`` que contém o objeto.
 
-* ``date_field``: The name of the ``DateField`` or ``DateTimeField`` in the
-  ``QuerySet``'s model that the generic view should use to look up the
-  object according to ``year``, ``month``, and ``day``.
+* ``date_field``: O nome do ``DateField`` ou ``DateTimeField`` na ``QuerySet``
+  que essa generic view utilizar para procurar o objeto conforme o ``ano``,
+  ``mês`` e ``dia``.
 
-You'll also need either:
+Você também precisa de:
 
-* ``object_id``: The value of the primary-key field for the object.
+* ``object_id``: O valor do campo primary-key para o objecto.
 
-or:
+ou:
 
-* ``slug``: The slug of the given object. If you pass this field, then the
-  ``slug_field`` argument (described in the following section) is also
-  required.
+* ``slug``: O slug de um determinado objeto. Se você informar este campo, o
+  argumento ``slug_field`` (descrito na próxima seção) será obrigatório.
 
-Optional Arguments
-``````````````````
+Argumentos opcionais
+````````````````````
 
-* ``allow_future``: A Boolean specifying whether to include "future" objects
-  on this page, as described in the previous note.
+* ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
+   nessa página, conforme descrito anteriormente.
 
-* ``day_format``: Like ``month_format``, but for the ``day`` parameter. It
-  defaults to ``"%d"`` (the day of the month as a decimal number, 01-31).
+* ``day_format``: Ogual ao ``month_format``, mas para o parâmetro ``day``. Ele
+  é padrão ``"%d"`` (o dia do mês como um número decimal, 01-31).
 
-* ``month_format``: A format string that regulates what format the ``month``
-  parameter uses. See the detailed explanation in the "Month Archives"
-  section, above.
+* ``month_format``: Um formato que regula o formato ``mês``. Veja a explicação
+  detalhada na seção "Arquivos Mês".
 
-* ``slug_field``: The name of the field on the object containing the slug.
-  This is required if you are using the ``slug`` argument, but it must be
-  absent if you're using the ``object_id`` argument.
+* ``slug_field``: O nome do campo que contenha o slug. Será obrigatório se você
+  usar o argumento ``slug``, mas não será se usar o parâmetro ``object_id``.
 
-* ``template_name_field``: The name of a field on the object whose value is
-  the template name to use. This lets you store template names in the data.
-  In other words, if your object has a field ``'the_template'`` that
-  contains a string ``'foo.html'``, and you set ``template_name_field`` to
-  ``'the_template'``, then the generic view for this object will use the
-  template ``'foo.html'``.
+* ``template_name_field``: O nome de um campo no objeto cujo valor é
+   o nome que o template irá usar. Isto permite armazenar nomes de modelo nos
+  dados. Em outras palavras, se o seu objeto tiver o campo ``'the_template'``,
+  este conterá a string ``'foo.html'``, e se você definir o
+  ``template_name_field``, a generic view para esse objeto irá usar o template
+  ``'foo.html'``.
 
-This view may also take these common arguments (see Table C-1):
+Esta view também possui os seguintes argumentos (veja na tabela C-1):
 
 * ``context_processors``
 * ``extra_context``
@@ -914,15 +908,15 @@ This view may also take these common arguments (see Table C-1):
 Template Name
 `````````````
 
-If ``template_name`` and ``template_name_field`` aren't specified, this view
-will use the template ``<app_label>/<model_name>_detail.html`` by default.
+Se o ``template_name`` e o ``template_name_field`` não forem especificados,
+essa view irá usar o template ``<app_label>/<model_name>_detail.html`` por
+padrão
 
 Template Context
 ````````````````
 
-In addition to ``extra_context``, the template's context will be as follows:
+Além do ``extra_context``, o template context irá seguir:
 
-* ``object``: The object. This variable's name depends on the
-  ``template_object_name`` parameter, which is ``'object'`` by default. If
-  ``template_object_name`` is ``'foo'``, this variable's name will be
-  ``foo``.
+* ``object``: Objeto. O nome dessa variável depende do parâmetro
+``template_object_name``, que é ``'object'`` por padrão. Se o
+``template_object_name`` for ``'foo'``, o nome dessa variável será ``foo``.
