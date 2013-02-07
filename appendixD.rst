@@ -72,13 +72,9 @@ Você não deve alterar as configurações em suas aplicações em tempo de exec
 
 O único lugar que as configurações devem ser definidas é em um arquivo de configuração.
 
-Security
---------
-
-Because a settings file contains sensitive information, such as the database
-password, you should make every attempt to limit access to it. For example,
-change its file permissions so that only you and your Web server's user can
-read it. This is especially important in a shared-hosting environment.
+Segurança
+---------
+Como um arquivo de configurações contém informações sensíveis, tal como a senha do banco de dados, você deve tentar de qualquer forma limitar o acesso a ele. Por exemplo, mude as permissões do arquivo para que somente você e seu usuário do servidor web possam lê-lo. Isso é especialmente importante em um ambiente de servidor de hospedagem compartilhado.
 
 Creating Your Own Settings
 --------------------------
