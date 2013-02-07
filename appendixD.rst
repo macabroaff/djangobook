@@ -61,17 +61,16 @@ Note que ``django.conf.settings`` não é um módulo -- é um objeto. Então nã
 
 Também note que seu código *não* deve importar de ``global_settings`` ou mesmo de seu próprio arquivo de configurações. ``django.conf.settings`` abstrai os conceitos das configurações padrão e das configurações específicas do projeto; apresenta uma interface única. Também dissocia o código que usa as configurações do local das suas configurações.
 
-Altering Settings at Runtime
-----------------------------
+Alterando configurações em tempo de execução
+--------------------------------------------
 
-You shouldn't alter settings in your applications at runtime. For example,
-don't do this in a view::
+Você não deve alterar as configurações em suas aplicações em tempo de execução. Por exemplo, não faça isto em uma view::
 
     from django.conf import settings
 
-    settings.DEBUG = True   # Don't do this!
+    settings.DEBUG = True   # Não faça isso!
 
-The only place that settings should be defined in is a settings file.
+O único lugar que as configurações devem ser definidas é em um arquivo de configuração.
 
 Security
 --------
