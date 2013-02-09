@@ -88,19 +88,16 @@ Não há nada que lhe impeça de criar suas próprias configurações, para suas
 
 * Não reinvente uma configuração que já existe.
 
-Designating the Settings: DJANGO_SETTINGS_MODULE
-================================================
+Designando as configurações: DJANGO_SETTINGS_MODULE
+===================================================
 
-When you use Django, you have to tell it which settings you're using. Do this
-by using the environment variable ``DJANGO_SETTINGS_MODULE``.
+Quando você usa Django, você tem de dizer a ele quais configurações você está usando. Faça isto por usar a variável de ambiente ``DJANGO_SETTINGS_MODULE``.
 
-The value of ``DJANGO_SETTINGS_MODULE`` should be in Python path syntax (e.g.,
-``mysite.settings``). Note that the settings module should be on the
-Python import search path (``PYTHONPATH``).
+O valor de ``DJANGO_SETTINGS_MODULE`` deve ser na sintaxe de caminhos do Python (por exemplo, ``mysite.settings``). Note que o módulo de configurações deve estar no caminho de pesquisa de importação do Python (``PYTHONPATH``).
 
-.. admonition:: Tip:
+.. admonition:: Dica:
 
-    A good guide to ``PYTHONPATH`` can be found at
+    Um bom guia para ``PYTHONPATH`` pode ser encontrada em 
     http://diveintopython.org/getting_to_know_python/everything_is_an_object.html.
 
 The django-admin.py Utility
