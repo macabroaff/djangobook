@@ -74,21 +74,19 @@ O único lugar que as configurações devem ser definidas é em um arquivo de co
 
 Segurança
 ---------
+
 Como um arquivo de configurações contém informações sensíveis, tal como a senha do banco de dados, você deve tentar de qualquer forma limitar o acesso a ele. Por exemplo, mude as permissões do arquivo para que somente você e seu usuário do servidor web possam lê-lo. Isso é especialmente importante em um ambiente de servidor de hospedagem compartilhado.
 
-Creating Your Own Settings
---------------------------
+Criando suas próprias configurações
+-----------------------------------
 
-There's nothing stopping you from creating your own settings, for your own
-Django applications. Just follow these conventions:
+Não há nada que lhe impeça de criar suas próprias configurações, para suas aplicações Django. Basta seguir estas convenções:
 
-* Use all uppercase for setting names.
+* Use todas as letras maiúsculas para definir os nomes das configurações.
 
-* For settings that are sequences, use tuples instead of lists. Settings
-  should be considered immutable and shouldn't be changed once they're
-  defined. Using tuples mirrors these semantics.
+* Para configurações que são sequências, use tuplas ao invés de listas. Configurações devem ser consideradas imutáveis e não devem ser alteradas uma vez que foram definidas. O uso de tuplas reflete essa semântica.
 
-* Don't reinvent an already existing setting.
+* Não reinvente uma configuração que já existe.
 
 Designating the Settings: DJANGO_SETTINGS_MODULE
 ================================================
