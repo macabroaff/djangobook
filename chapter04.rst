@@ -742,67 +742,67 @@ Dentro de cada laço ``{% for %}``, você tem acesso a variável de template cha
 do laço:
 
 * ``forloop.counter`` é sempre definido como um inteiro que representa
-    o número de vezes que loop foi inserido. Este é indexado como um,
-    então a primeira passada através do laço, ``forloop.counter`` será
-    setado como ``1``. Aqui está um exemplo::
+  o número de vezes que loop foi inserido. Este é indexado como um,
+  então a primeira passada através do laço, ``forloop.counter`` será
+  setado como ``1``. Aqui está um exemplo::
 
-        {% for item in todo_list %}
-            <p>{{ forloop.counter }}: {{ item }}</p>
-        {% endfor %}
+    {% for item in todo_list %}
+        <p>{{ forloop.counter }}: {{ item }}</p>
+    {% endfor %}
 
 * ``forloop.counter0`` é como ``forloop.counter``, exceto que é indexado
-    como zero. Seu valor será  setado como ``0`` na primeira vez que o laço
-    passar.
+  como zero. Seu valor será  setado como ``0`` na primeira vez que o laço
+  passar.
 
 * ``forloop.revcounter`` é sempre definido como um inteiro representando
-    o número restante de itens no laço. A primeira vez através do laço,
-    ``forloop.revcounter`` será definido o número totoal de itens na
-    sequência que você está atravessando. A ultima iteração do laço,
+  o número restante de itens no laço. A primeira vez através do laço,
+  ``forloop.revcounter`` será definido o número totoal de itens na
+  sequência que você está atravessando. A ultima iteração do laço,
   ``forloop.revcounter`` será definido como ``1``.
 
 * ``forloop.revcounter0`` é como ``forloop.revcounter``, exceto que é
-    indexado como zero. A primeira interação do loop, ``forloop.revcounter0``
-    será setado o número de elementos da sequência menos 1. A ultima iteração
-    do laço, será definido como ``0``.
+  indexado como zero. A primeira interação do loop, ``forloop.revcounter0``
+  será setado o número de elementos da sequência menos 1. A ultima iteração
+  do laço, será definido como ``0``.
 
 * ``forloop.first`` é um valor booleano definido como ``True`` se está é a
-    primeira iteração do laço. Isso é conveniente para casos especiais::
+  primeira iteração do laço. Isso é conveniente para casos especiais::
 
-        {% for object in objects %}
-            {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
-            {{ object }}
-            </li>
-        {% endfor %}
+    {% for object in objects %}
+        {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
+        {{ object }}
+        </li>
+    {% endfor %}
 
 * ``forloop.last`` é um valor booleano definido como ``True`` se está for a
-    ultima iteração do laço. Um uso comum para isso, é colocar caracteres de
-    tabulação entre uma lista de links::
+  ultima iteração do laço. Um uso comum para isso, é colocar caracteres de
+  tabulação entre uma lista de links::
 
-        {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
+    {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
 
-    O código do template acima pode imprimir algo assim::
+  O código do template acima pode imprimir algo assim::
 
-        Link1 | Link2 | Link3 | Link4
+    Link1 | Link2 | Link3 | Link4
 
-    Outro uso comum para isso é colocar vírgula entre palavras em uma lista::
+  Outro uso comum para isso é colocar vírgula entre palavras em uma lista::
 
-      Favorite places:
-      {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
+    Favorite places:
+    {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
 
-*  ``forloop.parentloop`` é uma referência ao objeto ``forloop`` para o
-    laço *pai*, em caso de laços aninhados. Abaixo um exemplo::
+* ``forloop.parentloop`` é uma referência ao objeto ``forloop`` para o
+  laço *pai*, em caso de laços aninhados. Abaixo um exemplo::
 
-        {% for country in countries %}
-            <table>
-            {% for city in country.city_list %}
-                <tr>
+    {% for country in countries %}
+        <table>
+        {% for city in country.city_list %}
+            <tr>
                 <td>Country #{{ forloop.parentloop.counter }}</td>
                 <td>City #{{ forloop.counter }}</td>
                 <td>{{ city }}</td>
-                </tr>
-            {% endfor %}
-            </table>
+            </tr>
         {% endfor %}
+        </table>
+    {% endfor %}
 
 A magia da variável ``forloop`` está disponível dentro do laço. Depois de
 o analizador de templates atingir ``{% endfor %}``, ``forloop`` desaparece.
