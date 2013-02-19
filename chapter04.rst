@@ -821,24 +821,24 @@ o analizador de templates atingir ``{% endfor %}``, ``forloop`` desaparece.
 ifequal/ifnotequal
 ~~~~~~~~~~~~~~~~~~
 
-The Django template system deliberately is not a full-fledged programming
-language and thus does not allow you to execute arbitrary Python statements.
-(More on this idea in the section "Philosophies and Limitations.") However,
-it's quite a common template requirement to compare two values and display
-something if they're equal -- and Django provides an ``{% ifequal %}`` tag for
-that purpose.
+O sistema de template do Django deliberadamente  não é uma linguagem de
+programação completa e portanto não é permite que vocẽ execute declarações
+arbitrárias Python (Mais informações sobre esta idéia na seção "Filosofias
+e limitações"). No entanto, é muito comum requisitar que o template compare
+dois valores e exiba algo se eles forem iguais -- e o Django fornece uma tag
+``{% ifequal %}`` para esse fim.
 
-The ``{% ifequal %}`` tag compares two values and displays everything between
-``{% ifequal %}`` and ``{% endifequal %}`` if the values are equal.
+A tag ``{% ifequal %}`` compara dois valores e exibe tudo entre ``{% ifequal %}``
+e ``{% endifequal %}`` se os valores são iguais.
 
-This example compares the template variables ``user`` and ``currentuser``::
+Esse exemplo compara as variáveis de template ``user`` e ``currentuser``::
 
     {% ifequal user currentuser %}
         <h1>Welcome!</h1>
     {% endifequal %}
 
-The arguments can be hard-coded strings, with either single or double quotes,
-so the following is valid::
+Os argumentos podem ser strings em código fixo, com aspas simples ou duplas,
+então o seguinte é válido::
 
     {% ifequal section 'sitenews' %}
         <h1>Site News</h1>
@@ -848,7 +848,7 @@ so the following is valid::
         <h1>Community</h1>
     {% endifequal %}
 
-Just like ``{% if %}``, the ``{% ifequal %}`` tag supports an optional
+Assim como ``{% if %}``, a tag ``{% ifequal %}`` tem suporte opcional a tag
 ``{% else %}``::
 
     {% ifequal section 'sitenews' %}
@@ -857,33 +857,36 @@ Just like ``{% if %}``, the ``{% ifequal %}`` tag supports an optional
         <h1>No News Here</h1>
     {% endifequal %}
 
-Only template variables, strings, integers, and decimal numbers are allowed as
-arguments to ``{% ifequal %}``. These are valid examples::
+Apenas variáveis de template, strings, números inteiros e decimais são permitidos
+como argumetos para ``{% ifequal %}``. Estes são exemplos válidos::
 
     {% ifequal variable 1 %}
     {% ifequal variable 1.23 %}
     {% ifequal variable 'foo' %}
     {% ifequal variable "foo" %}
 
-Any other types of variables, such as Python dictionaries, lists, or Booleans,
-can't be hard-coded in ``{% ifequal %}``. These are invalid examples::
+Quaisquer outros tipos de variáveis, tais como dicionários Python, listas ou
+booleanos, não pode ser codificados em ``{% ifequal %}``. Estes são exemplos válidos::
 
     {% ifequal variable True %}
     {% ifequal variable [1, 2, 3] %}
     {% ifequal variable {'key': 'value'} %}
 
-If you need to test whether something is true or false, use the ``{% if %}``
-tags instead of ``{% ifequal %}``.
+Se você precisa testar se algo é verdadeiro ou falso, use a tag ``{% if %}``
+em vez de ``{% ifequal %}``.
 
-Comments
+Comentários
 ~~~~~~~~
 
-Just as in HTML or Python, the Django template language allows for comments. To
-designate a comment, use ``{# #}``::
+Assim como em HTML ou Python, a linguagem de template do Django permite
+comentários. Para designar um comentário, use ``{# #}``::
 
     {# This is a comment #}
 
-The comment will not be output when the template is rendered.
+O comentário não será emitido quando o modelo é processado.
+
+Comentários usando essa sintaxe não podem ocupar várias linhas. Esta limitação
+melhora o desempenho análise do template.
 
 Comments using this syntax cannot span multiple lines. This limitation improves
 template parsing performance. In the following template, the rendered output
