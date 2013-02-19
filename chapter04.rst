@@ -610,57 +610,56 @@ E a tag ``{% else %}`` é opcional::
    * Zero (``0``)
    * O objeto especial ``None``
    * O objeto ``False`` (obviamente)
-   * Objetos customizados que definem seu próprio contexto de comportamento
-   booleano (isso é um uso avançado do Python)
+   * Objetos customizados que definem seu próprio contexto de comportamento booleano (isso é um uso avançado do Python)
 
    Todo o resto é avaliado com ``True``.
 
-The ``{% if %}`` tag accepts ``and``, ``or``, or ``not`` for testing multiple
-variables, or to negate a given variable. For example::
+A tag ``{% if %}`` aceita ``and``, ``or`` ou ``not`` para testar multiplas
+váriaveis ou para negar uma determinada váriavel. Por exemplo::
 
     {% if athlete_list and coach_list %}
-        Both athletes and coaches are available.
+        Ambos os atletas e treinadores estão disponíveis.
     {% endif %}
 
     {% if not athlete_list %}
-        There are no athletes.
+        Não existem atletas.
     {% endif %}
 
     {% if athlete_list or coach_list %}
-        There are some athletes or some coaches.
+        Existem alguns atletas ou treinadores.
     {% endif %}
 
     {% if not athlete_list or coach_list %}
-        There are no athletes or there are some coaches.
+        Não existem atletas ou existem alguns treinadores.
     {% endif %}
 
     {% if athlete_list and not coach_list %}
-        There are some athletes and absolutely no coaches.
+        Existem alguns atletas e absulutamente nenhum treinador.
     {% endif %}
 
-``{% if %}`` tags don't allow ``and`` and ``or`` clauses within the same tag,
-because the order of logic would be ambiguous. For example, this is invalid::
+Tags ``{% if %}`` não permitem cláusulas ``and`` e ``or`` juntas,
+porque a ordem da lógica pode ser ambigua. Por exemplo, isso é inválido::
 
     {% if athlete_list and coach_list or cheerleader_list %}
 
-The use of parentheses for controlling order of operations is not supported. If
-you find yourself needing parentheses, consider performing logic outside the
-template and passing the result of that as a dedicated template variable. Or,
-just use nested ``{% if %}`` tags, like this::
+O uso de parênteses para controlar a ordem das operações não é suportado. Se
+você achar que precisa de parênteses, considere a realização da lógica fora do
+template e passe o resultado disso em uma variável de template dedicada. Ou,
+apenas use tags ``{% if %}`` aninhadas, como isso::
 
     {% if athlete_list %}
         {% if coach_list or cheerleader_list %}
-            We have athletes, and either coaches or cheerleaders!
+            Nós temos atletas, e treinadores ou líderes de torcida!
         {% endif %}
     {% endif %}
 
-Multiple uses of the same logical operator are fine, but you can't
-combine different operators. For example, this is valid::
+Multiplo uso de mesmo operador lógica é bom, mas você não pode combinar
+diferentes operadores. Por exemplo, isso é válido::
 
     {% if athlete_list or coach_list or parent_list or teacher_list %}
 
-There is no ``{% elif %}`` tag. Use nested ``{% if %}`` tags to accomplish
-the same thing::
+Não há tag ``{% elif %}``. Use tags aninhadas ``{% if %}`` para realizar a
+mesma coisa::
 
     {% if athlete_list %}
         <p>Here are the athletes: {{ athlete_list }}.</p>
@@ -671,20 +670,20 @@ the same thing::
         {% endif %}
     {% endif %}
 
-Make sure to close each ``{% if %}`` with an ``{% endif %}``. Otherwise, Django
-will throw a ``TemplateSyntaxError``.
+Certifique-se de que fechou cada ``{% if %}`` com um ``{% endif %}``. Senão,
+o Django irá lançar um ``TemplateSyntaxError``.
 
 for
 ~~~
 
-The ``{% for %}`` tag allows you to loop over each item in a sequence. As in
-Python's ``for`` statement, the syntax is ``for X in Y``, where ``Y`` is the
-sequence to loop over and ``X`` is the name of the variable to use for a
-particular cycle of the loop. Each time through the loop, the template system
-will render everything between ``{% for %}`` and ``{% endfor %}``.
+A tag ``{% for %}`` permite você fazer loop sobre cada item em uma sequência.
+Como na declaração ``for`` em Python, a sintaxe é ``for X in Y``, onde ``Y`` é
+a sequência para ser passada pelo loop e ``X`` é o nome da variável a ser usada para
+um ciclo particular do loop. Cada vez que passar pelo loop, o sistema de template irá
+exibir tudo entre ``{% for %}`` e ``{% endfor %}``.
 
-For example, you could use the following to display a list of athletes given a
-variable ``athlete_list``::
+Por exemplo, você pode usar o seguinte para exibir um lista de atletas dada a
+variável ``athlete_list``::
 
     <ul>
     {% for athlete in athlete_list %}
@@ -692,13 +691,13 @@ variable ``athlete_list``::
     {% endfor %}
     </ul>
 
-Add ``reversed`` to the tag to loop over the list in reverse::
+E ``reversed`` para marcar o loop sobre a lista no sentido inverso::
 
     {% for athlete in athlete_list reversed %}
     ...
     {% endfor %}
 
-It's possible to nest ``{% for %}`` tags::
+É possível aninhar tags ``{% for %}``::
 
     {% for athlete in athlete_list %}
         <h1>{{ athlete.name }}</h1>
@@ -709,8 +708,8 @@ It's possible to nest ``{% for %}`` tags::
         </ul>
     {% endfor %}
 
-A common pattern is to check the size of the list before looping over it, and
-outputting some special text if the list is empty::
+Um padrão comum é verificar o tamanho da lista antes de fazer o looping
+sobre ela e produzir um texto especial, se a lista é vazia::
 
     {% if athlete_list %}
         {% for athlete in athlete_list %}
@@ -720,9 +719,9 @@ outputting some special text if the list is empty::
         <p>There are no athletes. Only computer programmers.</p>
     {% endif %}
 
-Because this pattern is so common, the ``for`` tag supports an optional
-``{% empty %}`` clause that lets you define what to output if the list is
-empty. This example is equivalent to the previous one::
+Devido esse padrão ser bastante comum, a tag ``for`` suporta uma cláusula
+opcional ``{% empty %}``, que permite você definir o que será exibido se
+a lista é vazia. Este exemplo é equivalente ao anterior::
 
     {% for athlete in athlete_list %}
         <p>{{ athlete.name }}</p>
@@ -730,93 +729,94 @@ empty. This example is equivalent to the previous one::
         <p>There are no athletes. Only computer programmers.</p>
     {% endfor %}
 
-There is no support for "breaking out" of a loop before the loop is finished.
-If you want to accomplish this, change the variable you're looping over so that
-it includes only the values you want to loop over. Similarly, there is no
-support for a "continue" statement that would instruct the loop processor to
-return immediately to the front of the loop. (See the section "Philosophies and
-Limitations" later in this chapter for the reasoning behind this design
-decision.)
+Não existe suporte para "sair (breaking out)" em um laço antes do laço ser concluído.
+Se você quer fazer isso, altere a variável que está em looping de forma que
+contenha apenas os valores que você deseja varrer. Da mesma forma, não há
+suporte para a declaração "continue", que instrue o processo de laço voltar
+imediatamente para para o laço (Veja a seção "Filosofia e limitações" mais
+tarde nesse capítulo para compreender o raciocínio por trás dessa decisão
+de design).
 
-Within each ``{% for %}`` loop, you get access to a template variable called
-``forloop``. This variable has a few attributes that give you information about
-the progress of the loop:
+Dentro de cada laço ``{% for %}``, você tem acesso a variável de template chamada
+``forloop``. Essa variável tem atributos que lhe dão informações sobre o progresso
+do laço:
 
-* ``forloop.counter`` is always set to an integer representing the number
-  of times the loop has been entered. This is one-indexed, so the first
-  time through the loop, ``forloop.counter`` will be set to ``1``.
-  Here's an example::
+* ``forloop.counter`` é sempre definido como um inteiro que representa
+    o número de vezes que loop foi inserido. Este é indexado como um,
+    então a primeira passada através do laço, ``forloop.counter`` será
+    setado como ``1``. Aqui está um exemplo::
 
-      {% for item in todo_list %}
-          <p>{{ forloop.counter }}: {{ item }}</p>
-      {% endfor %}
+        {% for item in todo_list %}
+            <p>{{ forloop.counter }}: {{ item }}</p>
+        {% endfor %}
 
-* ``forloop.counter0`` is like ``forloop.counter``, except it's
-  zero-indexed. Its value will be set to ``0`` the first time through the
-  loop.
+* ``forloop.counter0`` é como ``forloop.counter``, exceto que é indexado
+    como zero. Seu valor será  setado como ``0`` na primeira vez que o laço
+    passar.
 
-* ``forloop.revcounter`` is always set to an integer representing the
-  number of remaining items in the loop. The first time through the loop,
-  ``forloop.revcounter`` will be set to the total number of items in the
-  sequence you're traversing. The last time through the loop,
-  ``forloop.revcounter`` will be set to ``1``.
+* ``forloop.revcounter`` é sempre definido como um inteiro representando
+    o número restante de itens no laço. A primeira vez através do laço,
+    ``forloop.revcounter`` será definido o número totoal de itens na
+    sequência que você está atravessando. A ultima iteração do laço,
+  ``forloop.revcounter`` será definido como ``1``.
 
-* ``forloop.revcounter0`` is like ``forloop.revcounter``, except it's
-  zero-indexed. The first time through the loop, ``forloop.revcounter0``
-  will be set to the number of elements in the sequence minus 1. The last
-  time through the loop, it will be set to ``0``.
+* ``forloop.revcounter0`` é como ``forloop.revcounter``, exceto que é
+    indexado como zero. A primeira interação do loop, ``forloop.revcounter0``
+    será setado o número de elementos da sequência menos 1. A ultima iteração
+    do laço, será definido como ``0``.
 
-* ``forloop.first`` is a Boolean value set to ``True`` if this is the first
-  time through the loop. This is convenient for special-casing::
+* ``forloop.first`` é um valor booleano definido como ``True`` se está é a
+    primeira iteração do laço. Isso é conveniente para casos especiais::
 
-      {% for object in objects %}
-          {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
-          {{ object }}
-          </li>
-      {% endfor %}
+        {% for object in objects %}
+            {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
+            {{ object }}
+            </li>
+        {% endfor %}
 
-* ``forloop.last`` is a Boolean value set to ``True`` if this is the last
-  time through the loop. A common use for this is to put pipe
-  characters between a list of links::
+* ``forloop.last`` é um valor booleano definido como ``True`` se está for a
+    ultima iteração do laço. Um uso comum para isso, é colocar caracteres de
+    tabulação entre uma lista de links::
 
-      {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
+        {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
 
-  The above template code might output something like this::
+    O código do template acima pode imprimir algo assim::
 
-      Link1 | Link2 | Link3 | Link4
+        Link1 | Link2 | Link3 | Link4
 
-  Another common use for this is to put a comma between words in a list::
+    Outro uso comum para isso é colocar vírgula entre palavras em uma lista::
 
       Favorite places:
       {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
 
-*  ``forloop.parentloop`` is a reference to the ``forloop`` object for the
-   *parent* loop, in case of nested loops. Here's an example::
+*  ``forloop.parentloop`` é uma referência ao objeto ``forloop`` para o
+    laço *pai*, em caso de laços aninhados. Abaixo um exemplo::
 
-      {% for country in countries %}
-          <table>
-          {% for city in country.city_list %}
-              <tr>
-              <td>Country #{{ forloop.parentloop.counter }}</td>
-              <td>City #{{ forloop.counter }}</td>
-              <td>{{ city }}</td>
-              </tr>
-          {% endfor %}
-          </table>
-      {% endfor %}
+        {% for country in countries %}
+            <table>
+            {% for city in country.city_list %}
+                <tr>
+                <td>Country #{{ forloop.parentloop.counter }}</td>
+                <td>City #{{ forloop.counter }}</td>
+                <td>{{ city }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% endfor %}
 
-The magic ``forloop`` variable is only available within loops. After the
-template parser has reached ``{% endfor %}``, ``forloop`` disappears.
+A magia da variável ``forloop`` está disponível dentro do laço. Depois de
+o analizador de templates atingir ``{% endfor %}``, ``forloop`` desaparece.
 
-.. admonition:: Context and the forloop Variable
+.. admonition:: Contexto e a variável forloop
 
-   Inside the ``{% for %}`` block, the existing variables are moved
-   out of the way to avoid overwriting the magic ``forloop``
-   variable. Django exposes this moved context in
-   ``forloop.parentloop``. You generally don't need to worry about
-   this, but if you supply a template variable named ``forloop``
-   (though we advise against it), it will be named
-   ``forloop.parentloop`` while inside the ``{% for %}`` block.
+    Dentro do bloco ``{% for %}``, as variáveis existentes são
+    movidas para fora do caminho evitando sobrescrever a magia
+    da váriavel ``forloop``. Django expõe este contexto movido
+    em ``forloop.parentloop``. Você geralmente não precisa se
+    preocupar com isso, mas se você fornecer uma variável de
+    template chamada ``forloop`` (embora nós tenhamos aconselhado
+    contra), ele vai ser nomeado ``forloop.parentloop`` enquanto
+    dentro do bloco ``{% for %}``.
 
 ifequal/ifnotequal
 ~~~~~~~~~~~~~~~~~~
