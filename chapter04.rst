@@ -739,7 +739,7 @@ de design).
 
 Dentro de cada laço ``{% for %}``, você tem acesso a variável de template chamada
 ``forloop``. Essa variável tem atributos que lhe dão informações sobre o progresso
-do laço:
+do laço::
 
 * ``forloop.counter`` é sempre definido como um inteiro que representa
     o número de vezes que loop foi inserido. Este é indexado como um,
