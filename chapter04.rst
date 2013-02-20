@@ -886,75 +886,77 @@ comentários. Para designar um comentário, use ``{# #}``::
 O comentário não será emitido quando o modelo é processado.
 
 Comentários usando essa sintaxe não podem ocupar várias linhas. Esta limitação
-melhora o desempenho análise do template.
-
-Comments using this syntax cannot span multiple lines. This limitation improves
-template parsing performance. In the following template, the rendered output
-will look exactly the same as the template (i.e., the comment tag will
-not be parsed as a comment)::
+melhora o desempenho análise do template. No template a seguir, a saída processada
+será exatamente igual ao template, ou seja, a tag de comentário não será analizada
+como um comentário::
 
     This is a {# this is not
     a comment #}
     test.
 
-If you want to use multi-line comments, use the ``{% comment %}`` template tag,
-like this::
+Se você quiser usar comentários em várias linhas, use o template tag ``{% comment %}``,
+dessa forma::
 
     {% comment %}
     This is a
     multi-line comment.
     {% endcomment %}
 
-Filters
+Filtros
 -------
 
-As explained earlier in this chapter, template filters are simple ways of
-altering the value of variables before they're displayed. Filters use a pipe
-character, like this::
+Como explicado anteriormente nesse capítulo, filtros de template são caminhos
+simples para alterar os valores de variáveis antes que sejam exibidas. Filtros
+usam o caracter pipe, dessa forma::
 
     {{ name|lower }}
 
-This displays the value of the ``{{ name }}`` variable after being filtered
-through the ``lower`` filter, which converts text to lowercase.
+Isso exibe o valor da variável ``{{ name }}`` depois de ser filtrada através
+do filtro ``lower``, que converte o texto para letras minúsculas.
 
-Filters can be *chained* -- that is, they can be used in tandem such that the
-output of one filter is applied to the next. Here's an example that takes the
-first element in a list and converts it to uppercase::
+Filtros podem ser *acorrentados*, ou seja, eles podem ser usados em conjunto
+de tal modo que a saída de um filtro é aplicado ao seguinte. Aqui um exemplo
+que pega o primeiro elemento em uma lista e converte para letras minúsculas::
 
     {{ my_list|first|upper }}
 
-Some filters take arguments. A filter argument comes after a colon and is
-always in double quotes. For example::
+Alguns filtros devem ter argumentos. O argumento para o filtros deve vir
+após dois pontos e estar sempre entre aspas duplas. Por exemplo::
 
     {{ bio|truncatewords:"30" }}
 
-This displays the first 30 words of the ``bio`` variable.
+Isso exibe as 30 primeiras palavras da váriavel ``bio``.
 
-The following are a few of the most important filters. Appendix E covers the rest.
+A seguir estão alguns dos filtros mais importantes. Apêndice E cobre o resto.
 
-* ``addslashes``: Adds a backslash before any backslash, single quote, or
-  double quote. This is useful if the produced text is included in
-  a JavaScript string.
+* ``addslashes``: Adiciona contrabarra antes de alguma contrabarra, aspas
+  simples ou aspas duplas. Isso é útil se o texto produzido é incluído em
+  um string Javascript.
 
-* ``date``: Formats a ``date`` or ``datetime`` object according to a
-  format string given in the parameter, for example::
+* ``date``: Formata objeto ``date`` ou ``datetime`` de acordo com a string
+  de formatação passada no parâmetro, por exemplo::
 
       {{ pub_date|date:"F j, Y" }}
 
-  Format strings are defined in Appendix E.
+  Formatação de strings são definidas no Apêndice E.
 
-* ``length``: Returns the length of the value. For a list, this returns the
-  number of elements. For a string, this returns the number of characters.
-  (Python experts, take note that this works on any Python object that
-  knows how to determine its length -- i.e., any object that has a
-  ``__len__()`` method.)
+* ``length``: Retorna o comprimento do valor. Para lista, este retorna o número
+  de elementos. Para string, este retorna o número de caracteres (Expecialistas em
+  Python, lembrem-se de que isso funciona em qualque objeto Python que saiba como
+  determinar o seu comprimento -- ex. qualquer objeto que tenha o
+  método ``__len__()``).
 
-Philosophies and Limitations
+Filosofia e limitações
 ============================
 
-Now that you've gotten a feel for the Django template language, we should point
-out some of its intentional limitations, along with some philosophies behind why
-it works the way it works.
+Agora que você ja tem uma idéia sobre a linguagem de template do Django, devemos
+destacar algumas de suas limitações intencionais, juntamente com algumas filosofias
+sobre porque funciona da maneira que funciona.
+
+Mais do que qualquer outro componente de aplicação Web, sintaxe de template é
+muito subjetiva e as opiniões do programadores variam muito. Fato é que o Python
+possui dezenas, se não centenas, de implementações de linguagem de templates em código
+aberto dando suporte a isso.
 
 More than any other component of Web applications, template syntax is highly
 subjective, and programmers' opinions vary wildly. The fact that Python alone
