@@ -100,30 +100,26 @@ O valor de ``DJANGO_SETTINGS_MODULE`` deve ser na sintaxe de caminhos do Python 
     Um bom guia para ``PYTHONPATH`` pode ser encontrada em 
     http://diveintopython.org/getting_to_know_python/everything_is_an_object.html.
 
-The django-admin.py Utility
----------------------------
+O utilitário django-admin.py
+----------------------------
 
-When using ``django-admin.py`` (see Appendix F), you can either set the
-environment variable once or explicitly pass in the settings module each time
-you run the utility.
+Ao usar o ``django-admin.py`` (veja o Apêndice F), você pode definir a variável de ambiente uma vez ou mesmo pode passar explicitamente no módulo de configurações cada vez que você executar o utilitário.
 
-Here's an example using the Unix Bash shell::
+Eis um exemplo usando o shell do Unix::
 
     export DJANGO_SETTINGS_MODULE=mysite.settings
     django-admin.py runserver
 
-Here's an example using the Windows shell::
+Eis um exemplo usando o shell do Windows::
 
     set DJANGO_SETTINGS_MODULE=mysite.settings
     django-admin.py runserver
 
-Use the ``--settings`` command-line argument to specify the settings manually::
+Use o argumento de linha de comando ``--settings`` para especificar a configuração manualmente::
 
     django-admin.py runserver --settings=mysite.settings
 
-The ``manage.py`` utility created by ``startproject`` as part of the project
-skeleton sets ``DJANGO_SETTINGS_MODULE`` automatically; see Appendix F for more
-about ``manage.py``.
+O utilitário ``manage.py`` criado pelo ``startproject`` como parte do esqueleto do projeto define o ``DJANGO_SETTINGS_MODULE`` automaticamente; veja o Apêndice F para mais informações sobre o ``manage.py``.
 
 On the Server (mod_python)
 --------------------------
