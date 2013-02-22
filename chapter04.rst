@@ -955,69 +955,67 @@ sobre porque funciona da maneira que funciona.
 
 Mais do que qualquer outro componente de aplicação Web, sintaxe de template é
 muito subjetiva e as opiniões do programadores variam muito. Fato é que o Python
-possui dezenas, se não centenas, de implementações de linguagem de templates em código
-aberto dando suporte a isso.
+possui dezenas, se não centenas, de implementações de linguagem de templates em
+código aberto dando suporte a isso. Cada uma que foi criada deve-se ao fato de que
+o desenvolvedor cosiderava as linguagens existentes inadequadas (Na verdade, diz-se
+ser um rito de passagem desenvolvedores Python escrever a sua própria linguagem de
+template! Se você não tiver feito isso ainda, considere. É um exercicio divertido).
 
-More than any other component of Web applications, template syntax is highly
-subjective, and programmers' opinions vary wildly. The fact that Python alone
-has dozens, if not hundreds, of open source template-language implementations
-supports this point. Each was likely created because its developer deemed all
-existing template languages inadequate. (In fact, it is said to be a rite of
-passage for a Python developer to write his or her own template language! If
-you haven't done this yet, consider it. It's a fun exercise.)
+Com isso em mente, você pode estar interessado em saber que o Django não requer que
+você utilize a sua linguagem de template. Como o Django se destina a ser o Web
+framework full-stack que fornece todas as partes necessárias para desenvolvedores
+Web serem produtivos, muitas vezes é *mais conveniente* usar o sistema de template
+do Django do que outra biblioteca de templates Python, mas não é uma obrigação
+restrita em qualquer sentido. Como vocẽ verá na próxima seção "Usando templates na
+visão", é muito fácil usar outra linguagem de templates com o Django.
 
-With that in mind, you might be interested to know that Django doesn't require
-that you use its template language. Because Django is intended to be a
-full-stack Web framework that provides all the pieces necessary for Web
-developers to be productive, many times it's *more convenient* to use Django's
-template system than other Python template libraries, but it's not a strict
-requirement in any sense. As you'll see in the upcoming section "Using Templates
-in Views", it's very easy to use another template language with Django.
+Assim, é claro que temos uma forte preferência pela forma como a linguagem de
+templates do Django funciona. O sistema de templates possui raizes na forma como
+o desenvolvimento Web é feito no mundo online e combina a experiência dos criadores
+do Django. Aqui estão algumas dessas filosofias:
 
-Still, it's clear we have a strong preference for the way Django's template
-language works. The template system has roots in how Web development is done at
-World Online and the combined experience of Django's creators. Here are a few of
-those philosophies:
+* *Lógica de negócios deve ser separada da lógica de apresentação*.
+  Desenvolvedores Django enchergam o sistema de templates como uma ferramenta
+  de controle da apresentação e apresentação relacionada com lógica -- e é isso.
+  O sistema de templates não deve suportar funcionalidades que vão além dos
+  seus objetivos básicos.
 
-* *Business logic should be separated from presentation logic*. Django's
-  developers see a  template system as a tool that controls presentation and
-  presentation-related logic -- and that's it. The template system shouldn't
-  support functionality that goes beyond this basic goal.
+  Por essa razão, é impossível chamar código Python diretamente dentro
+  de templates Django. Toda a "programação" é limitada fundamentalmente no
+  escopo do que as tags de template podem fazer. Isso *é* possível escrevendo
+  template tags personalizadas que fazem coisas arbitrárias, mas o out-of-the-box
+  template tags do Django não permite a execução de código arbitrário Python.
 
-  For that reason, it's impossible to call Python code directly within
-  Django templates. All "programming" is fundamentally limited to the scope
-  of what template tags can do. It *is* possible to write custom template
-  tags that do arbitrary things, but the out-of-the-box Django template
-  tags intentionally do not allow for arbitrary Python code execution.
+* *Sintaxe deve ser desacoplada de HTML/XML*. Embora o sistema de templates
+  do Django é usado para produzir principalmente HTML, ele tem a intenção
+  de ser útil em formatos não HTML, como texto simples. Algumas outras
+  linguagens de templates são baseadas em XML, colocam todas á lógica de
+  template dento de tags XML ou atributos, mas o Django evita essa limitação
+  deliberadamente. Exigir XML válido para escrever templates introduz um
+  mundo de erros humanos e mensagens de erro difíceis de entender, e usando
+  uma engine XML para analisar templates incorre em um nível inaceitável
+  de sobrecarga no processamento do template.
 
-* *Syntax should be decoupled from HTML/XML*. Although Django's template
-  system is used primarily to produce HTML, it's intended to be just as
-  usable for non-HTML formats, such as plain text. Some other template
-  languages are XML based, placing all template logic within XML tags or
-  attributes, but Django deliberately avoids this limitation. Requiring
-  valid XML to write templates introduces a world of human mistakes and
-  hard-to-understand error messages, and using an XML engine to parse
-  templates incurs an unacceptable level of overhead in template processing.
+* *Designers são assumidamente mais confortáveis com código HTML*. O sistema
+  de templates não foi projetado para ser necessáriamente exibindo de maneira
+  agradável em editores WYSIWYG como o Dreamweaver. Isso é uma limitação muito
+  grave e não permite que a sintaxe seja amigável como ela é. Django expera que
+  os autores de templates estejam confortáveis editando diretamento HTML.
 
-* *Designers are assumed to be comfortable with HTML code*. The template
-  system isn't designed so that templates necessarily are displayed nicely
-  in WYSIWYG editors such as Dreamweaver. That is too severe a limitation
-  and wouldn't allow the syntax to be as friendly as it is. Django expects
-  template authors to be comfortable editing HTML directly.
+* *Designers são assumidamente não programadores Python*. Os autores do sistema
+  de templates reconhecem que templates de páginas web são mais frequentemente
+  escritas por *designers*, não *programadores* e portanto não devem assumir
+  conhecimento em Python.
 
-* *Designers are assumed not to be Python programmers*. The template system
-  authors recognize that Web page templates are most often written by
-  *designers*, not *programmers*, and therefore should not assume Python
-  knowledge.
+  No entanto, o sistema também tem a intenção de acomodar pequenas equipes
+  em que os templates *são* criados por programadores Python. Ele oferece
+  uma maneira de extender a sintaxe do sistema, escrevendo em código Python puro
+  (Mais sobre isso no capítulo 9).
 
-  However, the system also intends to accommodate small teams in which the
-  templates *are* created by Python programmers. It offers a way to extend
-  the system's syntax by writing raw Python code. (More on this in Chapter
-  9.)
+* *O objetivo é não inventar uma linguagem de programação*. O objetivo é de
+  oferecer apenas o suficiente de funcionalidades de programação, como branching e
+  looping, que é essencial para tomada de decisões relacionada a apresentação.
 
-* *The goal is not to invent a programming language*. The goal is to offer
-  just enough programming-esque functionality, such as branching and
-  looping, that is essential for making presentation-related decisions.
 
 Using Templates in Views
 ========================
