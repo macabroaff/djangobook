@@ -121,11 +121,10 @@ Use o argumento de linha de comando ``--settings`` para especificar a configura�
 
 O utilitário ``manage.py`` criado pelo ``startproject`` como parte do esqueleto do projeto define o ``DJANGO_SETTINGS_MODULE`` automaticamente; veja o Apêndice F para mais informações sobre o ``manage.py``.
 
-On the Server (mod_python)
---------------------------
+No servidor (mod_python)
+------------------------
 
-In your live server environment, you'll need to tell Apache/mod_python which
-settings file to use. Do that with ``SetEnv``::
+No seu ambiente de produção, você vai precisar dizer ao Apache/mod_python qual arquivo de configuração usar. Faça isso com ``SetEnv``::
 
     <Location "/mysite/">
         SetHandler python-program
@@ -133,8 +132,7 @@ settings file to use. Do that with ``SetEnv``::
         SetEnv DJANGO_SETTINGS_MODULE mysite.settings
     </Location>
 
-For more information, read the Django mod_python documentation online at
-http://docs.djangoproject.com/en/dev/howto/deployment/modpython/.
+Para mais informações, leia a documentação online do Django mod_python em http://docs.djangoproject.com/en/dev/howto/deployment/modpython/.
 
 Using Settings Without Setting DJANGO_SETTINGS_MODULE
 =====================================================
