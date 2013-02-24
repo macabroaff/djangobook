@@ -610,57 +610,56 @@ E a tag ``{% else %}`` é opcional::
    * Zero (``0``)
    * O objeto especial ``None``
    * O objeto ``False`` (obviamente)
-   * Objetos customizados que definem seu próprio contexto de comportamento
-   booleano (isso é um uso avançado do Python)
+   * Objetos customizados que definem seu próprio contexto de comportamento booleano (isso é um uso avançado do Python)
 
    Todo o resto é avaliado com ``True``.
 
-The ``{% if %}`` tag accepts ``and``, ``or``, or ``not`` for testing multiple
-variables, or to negate a given variable. For example::
+A tag ``{% if %}`` aceita ``and``, ``or`` ou ``not`` para testar multiplas
+váriaveis ou para negar uma determinada váriavel. Por exemplo::
 
     {% if athlete_list and coach_list %}
-        Both athletes and coaches are available.
+        Ambos os atletas e treinadores estão disponíveis.
     {% endif %}
 
     {% if not athlete_list %}
-        There are no athletes.
+        Não existem atletas.
     {% endif %}
 
     {% if athlete_list or coach_list %}
-        There are some athletes or some coaches.
+        Existem alguns atletas ou treinadores.
     {% endif %}
 
     {% if not athlete_list or coach_list %}
-        There are no athletes or there are some coaches.
+        Não existem atletas ou existem alguns treinadores.
     {% endif %}
 
     {% if athlete_list and not coach_list %}
-        There are some athletes and absolutely no coaches.
+        Existem alguns atletas e absulutamente nenhum treinador.
     {% endif %}
 
-``{% if %}`` tags don't allow ``and`` and ``or`` clauses within the same tag,
-because the order of logic would be ambiguous. For example, this is invalid::
+Tags ``{% if %}`` não permitem cláusulas ``and`` e ``or`` juntas,
+porque a ordem da lógica pode ser ambigua. Por exemplo, isso é inválido::
 
     {% if athlete_list and coach_list or cheerleader_list %}
 
-The use of parentheses for controlling order of operations is not supported. If
-you find yourself needing parentheses, consider performing logic outside the
-template and passing the result of that as a dedicated template variable. Or,
-just use nested ``{% if %}`` tags, like this::
+O uso de parênteses para controlar a ordem das operações não é suportado. Se
+você achar que precisa de parênteses, considere a realização da lógica fora do
+template e passe o resultado disso em uma variável de template dedicada. Ou,
+apenas use tags ``{% if %}`` aninhadas, como isso::
 
     {% if athlete_list %}
         {% if coach_list or cheerleader_list %}
-            We have athletes, and either coaches or cheerleaders!
+            Nós temos atletas, e treinadores ou líderes de torcida!
         {% endif %}
     {% endif %}
 
-Multiple uses of the same logical operator are fine, but you can't
-combine different operators. For example, this is valid::
+Multiplo uso de mesmo operador lógica é bom, mas você não pode combinar
+diferentes operadores. Por exemplo, isso é válido::
 
     {% if athlete_list or coach_list or parent_list or teacher_list %}
 
-There is no ``{% elif %}`` tag. Use nested ``{% if %}`` tags to accomplish
-the same thing::
+Não há tag ``{% elif %}``. Use tags aninhadas ``{% if %}`` para realizar a
+mesma coisa::
 
     {% if athlete_list %}
         <p>Here are the athletes: {{ athlete_list }}.</p>
@@ -671,20 +670,20 @@ the same thing::
         {% endif %}
     {% endif %}
 
-Make sure to close each ``{% if %}`` with an ``{% endif %}``. Otherwise, Django
-will throw a ``TemplateSyntaxError``.
+Certifique-se de que fechou cada ``{% if %}`` com um ``{% endif %}``. Senão,
+o Django irá lançar um ``TemplateSyntaxError``.
 
 for
 ~~~
 
-The ``{% for %}`` tag allows you to loop over each item in a sequence. As in
-Python's ``for`` statement, the syntax is ``for X in Y``, where ``Y`` is the
-sequence to loop over and ``X`` is the name of the variable to use for a
-particular cycle of the loop. Each time through the loop, the template system
-will render everything between ``{% for %}`` and ``{% endfor %}``.
+A tag ``{% for %}`` permite você fazer loop sobre cada item em uma sequência.
+Como na declaração ``for`` em Python, a sintaxe é ``for X in Y``, onde ``Y`` é
+a sequência para ser passada pelo loop e ``X`` é o nome da variável a ser usada para
+um ciclo particular do loop. Cada vez que passar pelo loop, o sistema de template irá
+exibir tudo entre ``{% for %}`` e ``{% endfor %}``.
 
-For example, you could use the following to display a list of athletes given a
-variable ``athlete_list``::
+Por exemplo, você pode usar o seguinte para exibir um lista de atletas dada a
+variável ``athlete_list``::
 
     <ul>
     {% for athlete in athlete_list %}
@@ -692,13 +691,13 @@ variable ``athlete_list``::
     {% endfor %}
     </ul>
 
-Add ``reversed`` to the tag to loop over the list in reverse::
+E ``reversed`` para marcar o loop sobre a lista no sentido inverso::
 
     {% for athlete in athlete_list reversed %}
     ...
     {% endfor %}
 
-It's possible to nest ``{% for %}`` tags::
+É possível aninhar tags ``{% for %}``::
 
     {% for athlete in athlete_list %}
         <h1>{{ athlete.name }}</h1>
@@ -709,8 +708,8 @@ It's possible to nest ``{% for %}`` tags::
         </ul>
     {% endfor %}
 
-A common pattern is to check the size of the list before looping over it, and
-outputting some special text if the list is empty::
+Um padrão comum é verificar o tamanho da lista antes de fazer o looping
+sobre ela e produzir um texto especial, se a lista é vazia::
 
     {% if athlete_list %}
         {% for athlete in athlete_list %}
@@ -720,9 +719,9 @@ outputting some special text if the list is empty::
         <p>There are no athletes. Only computer programmers.</p>
     {% endif %}
 
-Because this pattern is so common, the ``for`` tag supports an optional
-``{% empty %}`` clause that lets you define what to output if the list is
-empty. This example is equivalent to the previous one::
+Devido esse padrão ser bastante comum, a tag ``for`` suporta uma cláusula
+opcional ``{% empty %}``, que permite você definir o que será exibido se
+a lista é vazia. Este exemplo é equivalente ao anterior::
 
     {% for athlete in athlete_list %}
         <p>{{ athlete.name }}</p>
@@ -730,115 +729,116 @@ empty. This example is equivalent to the previous one::
         <p>There are no athletes. Only computer programmers.</p>
     {% endfor %}
 
-There is no support for "breaking out" of a loop before the loop is finished.
-If you want to accomplish this, change the variable you're looping over so that
-it includes only the values you want to loop over. Similarly, there is no
-support for a "continue" statement that would instruct the loop processor to
-return immediately to the front of the loop. (See the section "Philosophies and
-Limitations" later in this chapter for the reasoning behind this design
-decision.)
+Não existe suporte para "sair (breaking out)" em um laço antes do laço ser concluído.
+Se você quer fazer isso, altere a variável que está em looping de forma que
+contenha apenas os valores que você deseja varrer. Da mesma forma, não há
+suporte para a declaração "continue", que instrue o processo de laço voltar
+imediatamente para para o laço (Veja a seção "Filosofia e limitações" mais
+tarde nesse capítulo para compreender o raciocínio por trás dessa decisão
+de design).
 
-Within each ``{% for %}`` loop, you get access to a template variable called
-``forloop``. This variable has a few attributes that give you information about
-the progress of the loop:
+Dentro de cada laço ``{% for %}``, você tem acesso a variável de template chamada
+``forloop``. Essa variável tem atributos que lhe dão informações sobre o progresso
+do laço:
 
-* ``forloop.counter`` is always set to an integer representing the number
-  of times the loop has been entered. This is one-indexed, so the first
-  time through the loop, ``forloop.counter`` will be set to ``1``.
-  Here's an example::
+* ``forloop.counter`` é sempre definido como um inteiro que representa
+  o número de vezes que loop foi inserido. Este é indexado como um,
+  então a primeira passada através do laço, ``forloop.counter`` será
+  setado como ``1``. Aqui está um exemplo::
 
-      {% for item in todo_list %}
-          <p>{{ forloop.counter }}: {{ item }}</p>
-      {% endfor %}
+    {% for item in todo_list %}
+        <p>{{ forloop.counter }}: {{ item }}</p>
+    {% endfor %}
 
-* ``forloop.counter0`` is like ``forloop.counter``, except it's
-  zero-indexed. Its value will be set to ``0`` the first time through the
-  loop.
+* ``forloop.counter0`` é como ``forloop.counter``, exceto que é indexado
+  como zero. Seu valor será  setado como ``0`` na primeira vez que o laço
+  passar.
 
-* ``forloop.revcounter`` is always set to an integer representing the
-  number of remaining items in the loop. The first time through the loop,
-  ``forloop.revcounter`` will be set to the total number of items in the
-  sequence you're traversing. The last time through the loop,
-  ``forloop.revcounter`` will be set to ``1``.
+* ``forloop.revcounter`` é sempre definido como um inteiro representando
+  o número restante de itens no laço. A primeira vez através do laço,
+  ``forloop.revcounter`` será definido o número totoal de itens na
+  sequência que você está atravessando. A ultima iteração do laço,
+  ``forloop.revcounter`` será definido como ``1``.
 
-* ``forloop.revcounter0`` is like ``forloop.revcounter``, except it's
-  zero-indexed. The first time through the loop, ``forloop.revcounter0``
-  will be set to the number of elements in the sequence minus 1. The last
-  time through the loop, it will be set to ``0``.
+* ``forloop.revcounter0`` é como ``forloop.revcounter``, exceto que é
+  indexado como zero. A primeira interação do loop, ``forloop.revcounter0``
+  será setado o número de elementos da sequência menos 1. A ultima iteração
+  do laço, será definido como ``0``.
 
-* ``forloop.first`` is a Boolean value set to ``True`` if this is the first
-  time through the loop. This is convenient for special-casing::
+* ``forloop.first`` é um valor booleano definido como ``True`` se está é a
+  primeira iteração do laço. Isso é conveniente para casos especiais::
 
-      {% for object in objects %}
-          {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
-          {{ object }}
-          </li>
-      {% endfor %}
+    {% for object in objects %}
+        {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
+        {{ object }}
+        </li>
+    {% endfor %}
 
-* ``forloop.last`` is a Boolean value set to ``True`` if this is the last
-  time through the loop. A common use for this is to put pipe
-  characters between a list of links::
+* ``forloop.last`` é um valor booleano definido como ``True`` se está for a
+  ultima iteração do laço. Um uso comum para isso, é colocar caracteres de
+  tabulação entre uma lista de links::
 
-      {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
+    {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
 
-  The above template code might output something like this::
+  O código do template acima pode imprimir algo assim::
 
-      Link1 | Link2 | Link3 | Link4
+    Link1 | Link2 | Link3 | Link4
 
-  Another common use for this is to put a comma between words in a list::
+  Outro uso comum para isso é colocar vírgula entre palavras em uma lista::
 
-      Favorite places:
-      {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
+    Favorite places:
+    {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
 
-*  ``forloop.parentloop`` is a reference to the ``forloop`` object for the
-   *parent* loop, in case of nested loops. Here's an example::
+* ``forloop.parentloop`` é uma referência ao objeto ``forloop`` para o
+  laço *pai*, em caso de laços aninhados. Abaixo um exemplo::
 
-      {% for country in countries %}
-          <table>
-          {% for city in country.city_list %}
-              <tr>
-              <td>Country #{{ forloop.parentloop.counter }}</td>
-              <td>City #{{ forloop.counter }}</td>
-              <td>{{ city }}</td>
-              </tr>
-          {% endfor %}
-          </table>
-      {% endfor %}
+    {% for country in countries %}
+        <table>
+        {% for city in country.city_list %}
+            <tr>
+                <td>Country #{{ forloop.parentloop.counter }}</td>
+                <td>City #{{ forloop.counter }}</td>
+                <td>{{ city }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
 
-The magic ``forloop`` variable is only available within loops. After the
-template parser has reached ``{% endfor %}``, ``forloop`` disappears.
+A magia da variável ``forloop`` está disponível dentro do laço. Depois de
+o analizador de templates atingir ``{% endfor %}``, ``forloop`` desaparece.
 
-.. admonition:: Context and the forloop Variable
+.. admonition:: Contexto e a variável forloop
 
-   Inside the ``{% for %}`` block, the existing variables are moved
-   out of the way to avoid overwriting the magic ``forloop``
-   variable. Django exposes this moved context in
-   ``forloop.parentloop``. You generally don't need to worry about
-   this, but if you supply a template variable named ``forloop``
-   (though we advise against it), it will be named
-   ``forloop.parentloop`` while inside the ``{% for %}`` block.
+    Dentro do bloco ``{% for %}``, as variáveis existentes são
+    movidas para fora do caminho evitando sobrescrever a magia
+    da váriavel ``forloop``. Django expõe este contexto movido
+    em ``forloop.parentloop``. Você geralmente não precisa se
+    preocupar com isso, mas se você fornecer uma variável de
+    template chamada ``forloop`` (embora nós tenhamos aconselhado
+    contra), ele vai ser nomeado ``forloop.parentloop`` enquanto
+    dentro do bloco ``{% for %}``.
 
 ifequal/ifnotequal
 ~~~~~~~~~~~~~~~~~~
 
-The Django template system deliberately is not a full-fledged programming
-language and thus does not allow you to execute arbitrary Python statements.
-(More on this idea in the section "Philosophies and Limitations.") However,
-it's quite a common template requirement to compare two values and display
-something if they're equal -- and Django provides an ``{% ifequal %}`` tag for
-that purpose.
+O sistema de template do Django deliberadamente  não é uma linguagem de
+programação completa e portanto não é permite que vocẽ execute declarações
+arbitrárias Python (Mais informações sobre esta idéia na seção "Filosofias
+e limitações"). No entanto, é muito comum requisitar que o template compare
+dois valores e exiba algo se eles forem iguais -- e o Django fornece uma tag
+``{% ifequal %}`` para esse fim.
 
-The ``{% ifequal %}`` tag compares two values and displays everything between
-``{% ifequal %}`` and ``{% endifequal %}`` if the values are equal.
+A tag ``{% ifequal %}`` compara dois valores e exibe tudo entre ``{% ifequal %}``
+e ``{% endifequal %}`` se os valores são iguais.
 
-This example compares the template variables ``user`` and ``currentuser``::
+Esse exemplo compara as variáveis de template ``user`` e ``currentuser``::
 
     {% ifequal user currentuser %}
         <h1>Welcome!</h1>
     {% endifequal %}
 
-The arguments can be hard-coded strings, with either single or double quotes,
-so the following is valid::
+Os argumentos podem ser strings em código fixo, com aspas simples ou duplas,
+então o seguinte é válido::
 
     {% ifequal section 'sitenews' %}
         <h1>Site News</h1>
@@ -848,7 +848,7 @@ so the following is valid::
         <h1>Community</h1>
     {% endifequal %}
 
-Just like ``{% if %}``, the ``{% ifequal %}`` tag supports an optional
+Assim como ``{% if %}``, a tag ``{% ifequal %}`` tem suporte opcional a tag
 ``{% else %}``::
 
     {% ifequal section 'sitenews' %}
@@ -857,162 +857,165 @@ Just like ``{% if %}``, the ``{% ifequal %}`` tag supports an optional
         <h1>No News Here</h1>
     {% endifequal %}
 
-Only template variables, strings, integers, and decimal numbers are allowed as
-arguments to ``{% ifequal %}``. These are valid examples::
+Apenas variáveis de template, strings, números inteiros e decimais são permitidos
+como argumetos para ``{% ifequal %}``. Estes são exemplos válidos::
 
     {% ifequal variable 1 %}
     {% ifequal variable 1.23 %}
     {% ifequal variable 'foo' %}
     {% ifequal variable "foo" %}
 
-Any other types of variables, such as Python dictionaries, lists, or Booleans,
-can't be hard-coded in ``{% ifequal %}``. These are invalid examples::
+Quaisquer outros tipos de variáveis, tais como dicionários Python, listas ou
+booleanos, não pode ser codificados em ``{% ifequal %}``. Estes são exemplos válidos::
 
     {% ifequal variable True %}
     {% ifequal variable [1, 2, 3] %}
     {% ifequal variable {'key': 'value'} %}
 
-If you need to test whether something is true or false, use the ``{% if %}``
-tags instead of ``{% ifequal %}``.
+Se você precisa testar se algo é verdadeiro ou falso, use a tag ``{% if %}``
+em vez de ``{% ifequal %}``.
 
-Comments
+Comentários
 ~~~~~~~~
 
-Just as in HTML or Python, the Django template language allows for comments. To
-designate a comment, use ``{# #}``::
+Assim como em HTML ou Python, a linguagem de template do Django permite
+comentários. Para designar um comentário, use ``{# #}``::
 
     {# This is a comment #}
 
-The comment will not be output when the template is rendered.
+O comentário não será emitido quando o modelo é processado.
 
-Comments using this syntax cannot span multiple lines. This limitation improves
-template parsing performance. In the following template, the rendered output
-will look exactly the same as the template (i.e., the comment tag will
-not be parsed as a comment)::
+Comentários usando essa sintaxe não podem ocupar várias linhas. Esta limitação
+melhora o desempenho análise do template. No template a seguir, a saída processada
+será exatamente igual ao template, ou seja, a tag de comentário não será analizada
+como um comentário::
 
     This is a {# this is not
     a comment #}
     test.
 
-If you want to use multi-line comments, use the ``{% comment %}`` template tag,
-like this::
+Se você quiser usar comentários em várias linhas, use o template tag ``{% comment %}``,
+dessa forma::
 
     {% comment %}
     This is a
     multi-line comment.
     {% endcomment %}
 
-Filters
+Filtros
 -------
 
-As explained earlier in this chapter, template filters are simple ways of
-altering the value of variables before they're displayed. Filters use a pipe
-character, like this::
+Como explicado anteriormente nesse capítulo, filtros de template são caminhos
+simples para alterar os valores de variáveis antes que sejam exibidas. Filtros
+usam o caracter pipe, dessa forma::
 
     {{ name|lower }}
 
-This displays the value of the ``{{ name }}`` variable after being filtered
-through the ``lower`` filter, which converts text to lowercase.
+Isso exibe o valor da variável ``{{ name }}`` depois de ser filtrada através
+do filtro ``lower``, que converte o texto para letras minúsculas.
 
-Filters can be *chained* -- that is, they can be used in tandem such that the
-output of one filter is applied to the next. Here's an example that takes the
-first element in a list and converts it to uppercase::
+Filtros podem ser *acorrentados*, ou seja, eles podem ser usados em conjunto
+de tal modo que a saída de um filtro é aplicado ao seguinte. Aqui um exemplo
+que pega o primeiro elemento em uma lista e converte para letras minúsculas::
 
     {{ my_list|first|upper }}
 
-Some filters take arguments. A filter argument comes after a colon and is
-always in double quotes. For example::
+Alguns filtros devem ter argumentos. O argumento para o filtros deve vir
+após dois pontos e estar sempre entre aspas duplas. Por exemplo::
 
     {{ bio|truncatewords:"30" }}
 
-This displays the first 30 words of the ``bio`` variable.
+Isso exibe as 30 primeiras palavras da váriavel ``bio``.
 
-The following are a few of the most important filters. Appendix E covers the rest.
+A seguir estão alguns dos filtros mais importantes. Apêndice E cobre o resto.
 
-* ``addslashes``: Adds a backslash before any backslash, single quote, or
-  double quote. This is useful if the produced text is included in
-  a JavaScript string.
+* ``addslashes``: Adiciona contrabarra antes de alguma contrabarra, aspas
+  simples ou aspas duplas. Isso é útil se o texto produzido é incluído em
+  um string Javascript.
 
-* ``date``: Formats a ``date`` or ``datetime`` object according to a
-  format string given in the parameter, for example::
+* ``date``: Formata objeto ``date`` ou ``datetime`` de acordo com a string
+  de formatação passada no parâmetro, por exemplo::
 
       {{ pub_date|date:"F j, Y" }}
 
-  Format strings are defined in Appendix E.
+  Formatação de strings são definidas no Apêndice E.
 
-* ``length``: Returns the length of the value. For a list, this returns the
-  number of elements. For a string, this returns the number of characters.
-  (Python experts, take note that this works on any Python object that
-  knows how to determine its length -- i.e., any object that has a
-  ``__len__()`` method.)
+* ``length``: Retorna o comprimento do valor. Para lista, este retorna o número
+  de elementos. Para string, este retorna o número de caracteres (Expecialistas em
+  Python, lembrem-se de que isso funciona em qualque objeto Python que saiba como
+  determinar o seu comprimento -- ex. qualquer objeto que tenha o
+  método ``__len__()``).
 
-Philosophies and Limitations
+Filosofia e limitações
 ============================
 
-Now that you've gotten a feel for the Django template language, we should point
-out some of its intentional limitations, along with some philosophies behind why
-it works the way it works.
+Agora que você ja tem uma idéia sobre a linguagem de template do Django, devemos
+destacar algumas de suas limitações intencionais, juntamente com algumas filosofias
+sobre porque funciona da maneira que funciona.
 
-More than any other component of Web applications, template syntax is highly
-subjective, and programmers' opinions vary wildly. The fact that Python alone
-has dozens, if not hundreds, of open source template-language implementations
-supports this point. Each was likely created because its developer deemed all
-existing template languages inadequate. (In fact, it is said to be a rite of
-passage for a Python developer to write his or her own template language! If
-you haven't done this yet, consider it. It's a fun exercise.)
+Mais do que qualquer outro componente de aplicação Web, sintaxe de template é
+muito subjetiva e as opiniões do programadores variam muito. Fato é que o Python
+possui dezenas, se não centenas, de implementações de linguagem de templates em
+código aberto dando suporte a isso. Cada uma que foi criada deve-se ao fato de que
+o desenvolvedor cosiderava as linguagens existentes inadequadas (Na verdade, diz-se
+ser um rito de passagem desenvolvedores Python escrever a sua própria linguagem de
+template! Se você não tiver feito isso ainda, considere. É um exercicio divertido).
 
-With that in mind, you might be interested to know that Django doesn't require
-that you use its template language. Because Django is intended to be a
-full-stack Web framework that provides all the pieces necessary for Web
-developers to be productive, many times it's *more convenient* to use Django's
-template system than other Python template libraries, but it's not a strict
-requirement in any sense. As you'll see in the upcoming section "Using Templates
-in Views", it's very easy to use another template language with Django.
+Com isso em mente, você pode estar interessado em saber que o Django não requer que
+você utilize a sua linguagem de template. Como o Django se destina a ser o Web
+framework full-stack que fornece todas as partes necessárias para desenvolvedores
+Web serem produtivos, muitas vezes é *mais conveniente* usar o sistema de template
+do Django do que outra biblioteca de templates Python, mas não é uma obrigação
+restrita em qualquer sentido. Como vocẽ verá na próxima seção "Usando templates na
+visão", é muito fácil usar outra linguagem de templates com o Django.
 
-Still, it's clear we have a strong preference for the way Django's template
-language works. The template system has roots in how Web development is done at
-World Online and the combined experience of Django's creators. Here are a few of
-those philosophies:
+Assim, é claro que temos uma forte preferência pela forma como a linguagem de
+templates do Django funciona. O sistema de templates possui raizes na forma como
+o desenvolvimento Web é feito no mundo online e combina a experiência dos criadores
+do Django. Aqui estão algumas dessas filosofias:
 
-* *Business logic should be separated from presentation logic*. Django's
-  developers see a  template system as a tool that controls presentation and
-  presentation-related logic -- and that's it. The template system shouldn't
-  support functionality that goes beyond this basic goal.
+* *Lógica de negócios deve ser separada da lógica de apresentação*.
+  Desenvolvedores Django enchergam o sistema de templates como uma ferramenta
+  de controle da apresentação e apresentação relacionada com lógica -- e é isso.
+  O sistema de templates não deve suportar funcionalidades que vão além dos
+  seus objetivos básicos.
 
-  For that reason, it's impossible to call Python code directly within
-  Django templates. All "programming" is fundamentally limited to the scope
-  of what template tags can do. It *is* possible to write custom template
-  tags that do arbitrary things, but the out-of-the-box Django template
-  tags intentionally do not allow for arbitrary Python code execution.
+  Por essa razão, é impossível chamar código Python diretamente dentro
+  de templates Django. Toda a "programação" é limitada fundamentalmente no
+  escopo do que as tags de template podem fazer. Isso *é* possível escrevendo
+  template tags personalizadas que fazem coisas arbitrárias, mas o out-of-the-box
+  template tags do Django não permite a execução de código arbitrário Python.
 
-* *Syntax should be decoupled from HTML/XML*. Although Django's template
-  system is used primarily to produce HTML, it's intended to be just as
-  usable for non-HTML formats, such as plain text. Some other template
-  languages are XML based, placing all template logic within XML tags or
-  attributes, but Django deliberately avoids this limitation. Requiring
-  valid XML to write templates introduces a world of human mistakes and
-  hard-to-understand error messages, and using an XML engine to parse
-  templates incurs an unacceptable level of overhead in template processing.
+* *Sintaxe deve ser desacoplada de HTML/XML*. Embora o sistema de templates
+  do Django é usado para produzir principalmente HTML, ele tem a intenção
+  de ser útil em formatos não HTML, como texto simples. Algumas outras
+  linguagens de templates são baseadas em XML, colocam todas á lógica de
+  template dento de tags XML ou atributos, mas o Django evita essa limitação
+  deliberadamente. Exigir XML válido para escrever templates introduz um
+  mundo de erros humanos e mensagens de erro difíceis de entender, e usando
+  uma engine XML para analisar templates incorre em um nível inaceitável
+  de sobrecarga no processamento do template.
 
-* *Designers are assumed to be comfortable with HTML code*. The template
-  system isn't designed so that templates necessarily are displayed nicely
-  in WYSIWYG editors such as Dreamweaver. That is too severe a limitation
-  and wouldn't allow the syntax to be as friendly as it is. Django expects
-  template authors to be comfortable editing HTML directly.
+* *Designers são assumidamente mais confortáveis com código HTML*. O sistema
+  de templates não foi projetado para ser necessáriamente exibindo de maneira
+  agradável em editores WYSIWYG como o Dreamweaver. Isso é uma limitação muito
+  grave e não permite que a sintaxe seja amigável como ela é. Django expera que
+  os autores de templates estejam confortáveis editando diretamento HTML.
 
-* *Designers are assumed not to be Python programmers*. The template system
-  authors recognize that Web page templates are most often written by
-  *designers*, not *programmers*, and therefore should not assume Python
-  knowledge.
+* *Designers são assumidamente não programadores Python*. Os autores do sistema
+  de templates reconhecem que templates de páginas web são mais frequentemente
+  escritas por *designers*, não *programadores* e portanto não devem assumir
+  conhecimento em Python.
 
-  However, the system also intends to accommodate small teams in which the
-  templates *are* created by Python programmers. It offers a way to extend
-  the system's syntax by writing raw Python code. (More on this in Chapter
-  9.)
+  No entanto, o sistema também tem a intenção de acomodar pequenas equipes
+  em que os templates *são* criados por programadores Python. Ele oferece
+  uma maneira de extender a sintaxe do sistema, escrevendo em código Python puro
+  (Mais sobre isso no capítulo 9).
 
-* *The goal is not to invent a programming language*. The goal is to offer
-  just enough programming-esque functionality, such as branching and
-  looping, that is essential for making presentation-related decisions.
+* *O objetivo é não inventar uma linguagem de programação*. O objetivo é de
+  oferecer apenas o suficiente de funcionalidades de programação, como branching e
+  looping, que é essencial para tomada de decisões relacionada a apresentação.
+
 
 Using Templates in Views
 ========================
