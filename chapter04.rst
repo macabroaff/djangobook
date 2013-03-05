@@ -1017,13 +1017,13 @@ do Django. Aqui estão algumas dessas filosofias:
   looping, que é essencial para tomada de decisões relacionada a apresentação.
 
 
-Using Templates in Views
-========================
+Usando templates na visão
+=========================
 
-You've learned the basics of using the template system; now let's use this
-knowledge to create a view. Recall the ``current_datetime`` view in
-``mysite.views``, which we started in the previous chapter. Here's what it looks
-like::
+Você já aprendeu o básico do uso do sistema de template, agora vamos usar esse
+conhecimento para criar uma view. Lembre-se da view ``current_datetime`` em
+``mysite.views``, que nós começamos no capítulo anterior. Aqui está o que se
+parece::
 
     from django.http import HttpResponse
     import datetime
@@ -1033,8 +1033,8 @@ like::
         html = "<html><body>It is now %s.</body></html>" % now
         return HttpResponse(html)
 
-Let's change this view to use Django's template system. At first, you might
-think to do something like this::
+Vamos modificar essa view para usar o sistema de template do Django. De primeira,
+você poderia pensar em fazer algo assim::
 
     from django.template import Template, Context
     from django.http import HttpResponse
@@ -1046,16 +1046,16 @@ think to do something like this::
         html = t.render(Context({'current_date': now}))
         return HttpResponse(html)
 
-Sure, that uses the template system, but it doesn't solve the problems we
-pointed out in the introduction of this chapter. Namely, the template is still
-embedded in the Python code, so true separation of data and presentation isn't
-achieved. Let's fix that by putting the template in a *separate file*, which
-this view will load.
+Certo, isso usa o sistema de template, mas não resolver os problemas que nós
+apontamos no introdução deste capítulo. Ou seja, o template está ainda incorporado
+ao código Python, então a separação real de dados e apresentação não é alcaçada.
+Vamos corrigir isso, colocando o template em um *arquivo separado*, que essa
+view irá carregar.
 
-You might first consider saving your template somewhere on your
-filesystem and using Python's built-in file-opening functionality to read
-the contents of the template. Here's what that might look like, assuming the
-template was saved as the file ``/home/djangouser/templates/mytemplate.html``::
+Você pode considerar primeiro salvar o seu template em algum lugar do
+seu sistema de arquivos e usar o Python built-in com a funcionalidade de abertura
+de arquivos para ler o conteúdo do template. Aqui está como deve parecer, assumindo
+que o template está salvo no arquivo ``/home/djangouser/templates/mytemplate.html``::
 
     from django.template import Template, Context
     from django.http import HttpResponse
@@ -1071,37 +1071,40 @@ template was saved as the file ``/home/djangouser/templates/mytemplate.html``::
         html = t.render(Context({'current_date': now}))
         return HttpResponse(html)
 
-This approach, however, is inelegant for these reasons:
+Esta abordagem, no entanto, é deselegante pelas seguintes razões::
 
-* It doesn't handle the case of a missing file. If the file
-  ``mytemplate.html`` doesn't exist or isn't readable, the ``open()`` call
-  will raise an ``IOError`` exception.
+* Ela não lida com o caso de um arquivo que está faltando. Se o arquivo
+  ``mytemplate.html`` não existe ou não pode ser lido, a chamada ``open()``
+  irá levantar uma excessão ``IOError``.
 
-* It hard-codes your template location. If you were to use this
-  technique for every view function, you'd be duplicating the template
-  locations. Not to mention it involves a lot of typing!
+* Ela usa códigos fixos na localização do seu template. Se você estivesse usando
+  essa técnica para cada view function, você estaria duplicando a localização
+  do template. Sem mencionar que envolve bastante digitação!
 
-* It includes a lot of boring boilerplate code. You've got better things to
-  do than to write calls to ``open()``, ``fp.read()``, and ``fp.close()``
-  each time you load a template.
+* Ela incluí um série de código clichê chato. Você tem coisa melhor para
+  fazer do que escrever chamadas para ``open()``, ``fp.read()`` e ``fp.close()``
+  cada vez que você carrega um template.
 
-To solve these issues, we'll use *template loading* and *template directories*.
+Para resolver estas questões, nós vamos usar *carregamento de template* e
+*diretório de template*.
 
-Template Loading
-================
+Carregando Template
+===================
 
-Django provides a convenient and powerful API for loading templates from the
-filesystem, with the goal of removing redundancy both in your template-loading
-calls and in your templates themselves.
+Django fornece uma API conveniente e poderosa para carregamento de templates
+apartir do sistema de arquivos, com o objetivo de remover a redundância, tanto na
+chamada do carregamento de template e bem como em seus templates propriamente
+ditos.
 
-In order to use this template-loading API, first you'll need to tell the
-framework where you store your templates. The place to do this is in your
-settings file -- the ``settings.py`` file that we mentioned last chapter, when
-we introduced the ``ROOT_URLCONF`` setting.
+Para poder utilizar esse API de carregamento de template, primeiro você
+precisa dizer ao framework onde você armazena seus templates. O local para
+fazer isso é em seu arquivo de configurações -- o arquivo ``settings.py``
+que mencionamos no último capítulo, quando nós introduzimos a configuração
+``ROOT_URLCONF``.
 
-If you're following along, open your ``settings.py`` and find the
-``TEMPLATE_DIRS`` setting. By default, it's an empty tuple, likely containing
-some auto-generated comments::
+Se voce está acompanhando, abra seu ``settings.py`` e encontre a
+configuração ``TEMPLATE_DIRS``. Por padrão, é uma tupla vazia, provavelmente
+contendo alguns comentários gerados automaticamente::
 
     TEMPLATE_DIRS = (
         # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -1109,56 +1112,56 @@ some auto-generated comments::
         # Don't forget to use absolute paths, not relative paths.
     )
 
-This setting tells Django's template-loading mechanism where to look for
-templates. Pick a directory where you'd like to store your templates and add it
-to ``TEMPLATE_DIRS``, like so::
+Essa configuração informa o mecanismo de carregamento de template do Django onde
+procurar por templates. Escolha o diretório onde você gostaria de armazenar seus templates
+e adicione ele ao ``TEMPLATE_DIRS``, dessa forma::
 
     TEMPLATE_DIRS = (
         '/home/django/mysite/templates',
     )
 
-There are a few things to note:
+Existem algumas coisas para serem observadas:
 
-* You can specify any directory you want, as long as the directory and
-  templates within that directory are readable by the user account under
-  which your Web server runs. If you can't think of an appropriate
-  place to put your templates, we recommend creating a ``templates``
-  directory within your project (i.e., within the ``mysite`` directory you
-  created in Chapter 2).
+* Você pode especificar qualquer diretório que você deseja, contanto que
+  o diretório e os templates dentro desse diretório possam ser lidos pela
+  conta de usuário sob o qual o servidor web é executado. Se você não pensa
+  em um local apropriado para colocar seus templates, nós recomendamos a
+  criação de um diretório ``templates`` dentro de seu projeto, ou seja,
+  dentro do diretório ``mysite`` criador por você no capítulo 2.
 
-* If your ``TEMPLATE_DIRS`` contains only one directory, don't forget the
-  comma at the end of the directory string!
+* Se o seu ``TEMPLATE_DIRS`` contém somente um diretório, não esqueça da
+  vírgula ao final da string do diretório!
 
-  Bad::
+  Ruim::
 
-      # Missing comma!
+      # Faltando vírgula!
       TEMPLATE_DIRS = (
           '/home/django/mysite/templates'
       )
 
-  Good::
+  Bom::
 
-      # Comma correctly in place.
+      # Vírgula corretamente no lugar.
       TEMPLATE_DIRS = (
           '/home/django/mysite/templates',
       )
 
-  The reason for this is that Python requires commas within single-element
-  tuples to disambiguate the tuple from a parenthetical expression. This is
-  a common newbie gotcha.
+  O motivo para isso é que o Python exige vírgula dentro de tuplas com
+  elemento unico para remover ambigüidade da tupla de uma expressão entre
+  parênteses. Isso é uma pegadinha para novatos muito comum.
 
-* If you're on Windows, include your drive letter and use Unix-style
-  forward slashes rather than backslashes, as follows::
+* Se você está no Windows, inclua a letra da unidade e use o estilo
+  Unix de barras ao invés de barras invertidas, como segue::
 
       TEMPLATE_DIRS = (
           'C:/www/django/templates',
       )
 
-* It's simplest to use absolute paths (i.e., directory paths that start at
-  the root of the filesystem). If you want to be a bit more flexible and
-  decoupled, though, you can take advantage of the fact that Django
-  settings files are just Python code by constructing the contents of
-  ``TEMPLATE_DIRS`` dynamically. For example::
+* É mais simples usar caminhos absolutos, ou seja, caminhos de diretório
+  que começam na raiz do sistema de arquivos. Se você quiser ser mais
+  flexível, dissociado, você pode tirar vantagem do fato de que os arquivos
+  de configuração do Django são apenas código Python empregados para contrução
+  dos conteúdos de ``TEMPLATE_DIRS`` dinâmicamente. Por exemplo::
 
       import os.path
 
@@ -1166,22 +1169,22 @@ There are a few things to note:
           os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
       )
 
-  This example uses the "magic" Python variable ``__file__``, which is
-  automatically set to the file name of the Python module in which the code
-  lives. It gets the name of the directory that contains ``settings.py``
-  (``os.path.dirname``), then joins that with ``templates`` in a
-  cross-platform way (``os.path.join``), then ensures that everything uses
-  forward slashes instead of backslashes (in case of Windows).
+  Esse exemplo usa a variável mágica Python ``__file__``, que é automaticamente
+  definida para o nome do arquivo do módulo Python em que o código vive. Ela
+  recebe o nome do diretório que contém``settings.py`` (``os.path.dirname``),
+  depois junta com ``templates`` em um caminho cross-platform (``os.path.join``),
+  então assegura que tudo usa barras ao invés de barras invertidas (no
+  caso do Windows).
 
-  While we're on the topic of dynamic Python code in settings files, we
-  should point out that it's very important to avoid Python errors in your
-  settings file. If you introduce a syntax error, or a runtime error, your
-  Django-powered site will likely crash.
+  Enquanto estamos no tópico de código Python dinâmico em arquivos de
+  configuraçôes, devemos salientar que é muito importante evitar erros
+  Python em seu arquivo de configuração. Se você introduzir erro de sintaxe,
+  ou erro de execução, seu site em Django provavelmente vai falhar.
 
-With ``TEMPLATE_DIRS`` set, the next step is to change the view code to
-use Django's template-loading functionality rather than hard-coding the
-template paths. Returning to our ``current_datetime`` view, let's change it
-like so::
+Com a definição de ``TEMPLATE_DIRS``, o próximo passo é modificar o código
+da view para usar a funcionalidade de carregamento de template do Django,
+em vez de embutir códigos fixos nos caminhos de template. Voltando à nossa
+view ``current_datetime``, vamos modificar para algo assim::
 
     from django.template.loader import get_template
     from django.template import Context
@@ -1194,70 +1197,71 @@ like so::
         html = t.render(Context({'current_date': now}))
         return HttpResponse(html)
 
-In this example, we're using the function
-``django.template.loader.get_template()`` rather than loading the template from
-the filesystem manually. The ``get_template()`` function takes a template name
-as its argument, figures out where the template lives on the filesystem, opens
-that file, and returns a compiled ``Template`` object.
+Neste exemplo, estamos usando a função
+``django.template.loader.get_template()`` em vez de carregar o template do
+sistema de arquivo manualmente. A função ``get_template()`` recebe o nome do
+template como argumento, descobre onde o template vive no sistema de arquivo,
+abre o arquivo e devolve um objeto ``Template`` compilado.
 
-Our template in this example is ``current_datetime.html``, but there's nothing
-special about that ``.html`` extension. You can give your templates whatever
-extension makes sense for your application, or you can leave off extensions
-entirely.
+Nosso template nesse exemplo é  ``current_datetime.html``, mas não há nada
+especial sobre a extensão ``.html``. Você pode passar em seus templates qualquer
+extensão que faça sentido para sua aplicação, ou você pode deixar de fora as
+extensões completamente.
 
-To determine the location of the template on your filesystem,
-``get_template()`` combines your template directories from ``TEMPLATE_DIRS``
-with the template name that you pass to ``get_template()``. For example, if
-your ``TEMPLATE_DIRS`` is set to ``'/home/django/mysite/templates'``, the above
-``get_template()`` call would look for the template
+Para determinar a localização do template em seu sistema de arquivo,
+``get_template()`` combina seus diretórios de template apartir de ``TEMPLATE_DIRS``
+com o nome do template que você passou para ``get_template()``. Por exemplo, se
+seu ``TEMPLATE_DIRS`` está definido para ``'/home/django/mysite/templates'``, a
+chamada acima ``get_template()`` ficaria para o template de
 ``/home/django/mysite/templates/current_datetime.html``.
 
-If ``get_template()`` cannot find the template with the given name, it raises
-a ``TemplateDoesNotExist`` exception. To see what that looks like, fire up the
-Django development server again by running ``python manage.py runserver``
-within your Django project's directory. Then, point your browser at the page
-that activates the ``current_datetime`` view (e.g.,
-``http://127.0.0.1:8000/time/``). Assuming your ``DEBUG`` setting is set to
-``True`` and you haven't yet created a ``current_datetime.html`` template, you
-should see a Django error page highlighting the ``TemplateDoesNotExist`` error.
+Se ``get_template()`` não encontrar o template com o nome informado, ele levantará
+uma exceção ``TemplateDoesNotExist``. Para ver como se parece, dispare o servidor
+de desenvolvimento do Django novamente rodando ``python manage.py runserver``
+dentro do diretório do seu projeto Django. Depois, aponte seu browser para a página
+que ativa a view ``current_datetime`` (por exemplo, ``http://127.0.0.1:8000/time/``).
+Assumindo que a sua configuração ``DEBUG`` está definida como ``True`` e você
+ainda não tenha criado um template ``current_datetime.html``, você deverá ver uma
+página de erro Django destacando o erro ``TemplateDoesNotExist``.
 
 .. figure:: graphics/chapter04/missing_template.png
    :alt: Screenshot of a "TemplateDoesNotExist" error.
 
-   Figure 4-1: The error page shown when a template cannot be found.
+   Figura 4-1: A página de erro é mostrada quando um template não pode ser encontrado.
 
-This error page is similar to the one we explained in Chapter 3, with one
-additional piece of debugging information: a "Template-loader postmortem"
-section. This section tells you which templates Django tried to load, along with
-the reason each attempt failed (e.g., "File does not exist"). This information
-is invaluable when you're trying to debug template-loading errors.
+Esta página de erro é semelhante ao que explanamos no Capítulo 3, com um pedaço
+adicional de informação de debugging: uma seção "Template-loader postmortem".
+Esta seção informa você quais templates Django tentou-se carregar, juntamente
+com o motivo de cada tentativa fracassada (por exemplo, "File does not exist").
+Esta informação é inestimável quando você está tentando depurar erros no carregamento
+de template.
 
-Moving along, create the ``current_datetime.html`` file within your template
-directory using the following template code::
+Continuando, crie o arquivo ``current_datetime.html`` dentro seu diretório
+de templates usando o seguinte código de template::
 
     <html><body>It is now {{ current_date }}.</body></html>
 
-Refresh the page in your Web browser, and you should see the fully rendered
-page.
+Atualize a página em seu web browser e você deverá ver a renderização completa
+da página.
 
 render()
 --------
 
-We've shown you how to load a template, fill a ``Context`` and return an
-``HttpResponse`` object with the result of the rendered template. We've
-optimized it to use ``get_template()`` instead of hard-coding templates and
-template paths. But it still requires a fair amount of typing to do those
-things. Because this is such a common idiom, Django provides a shortcut that
-lets you load a template, render it and return an ``HttpResponse`` -- all in
-one line of code.
+Nós mostramos para você como carregar um template, preencher um ``Context``
+e retornar um objeto ``HttpResponse`` com os resultados da renderização do
+template. Nós otimizamos para usar ``get_template()`` ao invés de códigos
+fixos em templates e caminhos de templates. Mas ainda requer uma boa quantidade
+de codificação para fazer essas coisas. Devido ser um idioma comum, Django
+fornece um atalho que permite você carregar um template, renderizar e retornar
+um ``HttpResponse`` -- tudo em uma linha de código.
 
-This shortcut is a function called ``render()``, which lives in the
-module ``django.shortcuts``. Most of the time, you'll be using
-``render()`` rather than loading templates and creating ``Context``
-and ``HttpResponse`` objects manually -- unless your employer judges your work
-by total lines of code written, that is.
+Esse atalho é uma função chamada ``render()``, que vive no módulo
+``django.shortcuts``. Na maioria das vezes, você estará usando
+``render()`` em vez de carregar templates e criar objetos ``Context``
+e ``HttpResponse`` manualmente -- a não ser que seu chefe julgue o seu trabalho
+pelo total de linhas de código escritas, então tudo bem.
 
-Here's the ongoing ``current_datetime`` example rewritten to use
+Aqui está a continuação do exemplo ``current_datetime``, reescrito para usar
 ``render()``::
 
     from django.shortcuts import render
@@ -1267,55 +1271,55 @@ Here's the ongoing ``current_datetime`` example rewritten to use
         now = datetime.datetime.now()
         return render(request, 'current_datetime.html', {'current_date': now})
 
-What a difference! Let's step through the code changes:
+Que diferença! Vamos percorrer as alterações de código:
 
-* We no longer have to import ``get_template``, ``Template``, ``Context``,
-  or ``HttpResponse``. Instead, we import
-  ``django.shortcuts.render``. The ``import datetime`` remains.
+* Não temos mais que importar ``get_template``, ``Template``, ``Context``,
+  ou ``HttpResponse``. Em vez disso, importamos
+  ``django.shortcuts.render``. O ``import datetime`` permanece.
 
-* Within the ``current_datetime`` function, we still calculate ``now``, but
-  the template loading, context creation, template rendering, and
-  ``HttpResponse`` creation are all taken care of by the
-  ``render()`` call. Because ``render()`` returns
-  an ``HttpResponse`` object, we can simply ``return`` that value in the
-  view.
+* Dentro da função ``current_datetime``, nós ainda calculamos ``now``, mas
+  o carregamento de template, criação do contexto, renderização do template e
+  a criação ``HttpResponse`` são todos realizados pela chamada ``render()``.
+  Pois ``render()`` retorna um objeto ``HttpResponse``, podemos simplesmente
+  ``retornar`` este valor na view.
 
-The first argument to ``render()`` is the request, the second is the name of
-the template to use. The third argument, if given, should be a dictionary to
-use in creating a ``Context`` for that template. If you don't provide a third
-argument, ``render()`` will use an empty dictionary.
+O primeiro argumento de ``render()`` é a requisição, o segundo é o nome do
+template que será usado. O terceiro argumento, se informado, deve ser um
+dicionário para ser usado na criação de um um ``Context`` para este template.
+Se você não prover um terceiro argumento, ``render()``usará-se um dicionário vazio.
 
-Subdirectories in get_template()
---------------------------------
+Subdiretórios em get_template()
+-------------------------------
 
-It can get unwieldy to store all of your templates in a single directory. You
-might like to store templates in subdirectories of your template directory, and
-that's fine. In fact, we recommend doing so; some more advanced Django
-features (such as the generic views system, which we cover in
-Chapter 11) expect this template layout as a default convention.
+Ele pode ficar pesado para armazenar todos os seus templates em um unico diretório.
+Você pode gostar de armazenar os templates em subdiretórios em seu diretório de
+template, e isso é bom. Na verdade, recomendamos faze-lo; alguns recursos mais
+avançados do Django (tais como o sistema de views genéricas, que cobrimos no
+Capítulo 11) expera esse layout de template como uma convenção padrão.
 
-Storing templates in subdirectories of your template directory is easy.
-In your calls to ``get_template()``, just include
-the subdirectory name and a slash before the template name, like so::
+Armazerar templates em subdiretórios de seu diretório de templates é fácil.
+Em suas chamadas para ``get_template()``, apenas inclua
+o nome do subdiretório e uma barra antes do nome do template, assim::
 
     t = get_template('dateapp/current_datetime.html')
 
-Because ``render()`` is a small wrapper around ``get_template()``,
-you can do the same thing with the second argument to ``render()``,
-like this::
+Devido ``render()`` ser um pequeno invólucro em torno de ``get_template()``,
+você pode fazer a mesma coisa com o segundo argumento para ``render()``,
+assim::
 
     return render(request, 'dateapp/current_datetime.html', {'current_date': now})
 
-There's no limit to the depth of your subdirectory tree. Feel free to use
-as many subdirectories as you like.
+Não há limites para a profundidade da sua árvore de diretórios. Sinta-se a
+vontade para usar a quantidade de subdiretórios que desejar.
 
 .. note::
 
-    Windows users, be sure to use forward slashes rather than backslashes.
-    ``get_template()`` assumes a Unix-style file name designation.
+    Usuários Windows, certifiquem-se de utilizar barras ao invés de barras
+    invertidas. ``get_template()`` assume o estilo Unix de designação
+    do nome de arquivo.
 
-The ``include`` Template Tag
-----------------------------
+A template tag ``include``
+--------------------------
 
 Now that we've covered the template-loading mechanism, we can introduce a
 built-in template tag that takes advantage of it: ``{% include %}``. This tag
