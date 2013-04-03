@@ -134,16 +134,12 @@ No seu ambiente de produção, você vai precisar dizer ao Apache/mod_python qua
 
 Para mais informações, leia a documentação online do Django mod_python em http://docs.djangoproject.com/en/dev/howto/deployment/modpython/.
 
-Using Settings Without Setting DJANGO_SETTINGS_MODULE
-=====================================================
+Usando as configurações sem definir o DJANGO_SETTINGS_MODULE
+============================================================
 
-In some cases, you might want to bypass the ``DJANGO_SETTINGS_MODULE``
-environment variable. For example, if you're using the template system by
-itself, you likely don't want to have to set up an environment variable
-pointing to a settings module.
+Em alguns casos, talvez você queira ignorar a variável de ambiente ``DJANGO_SETTINGS_MODULE``. Por exemplo, se você está usando somente o sistema de templates, provavelmente não vai querer ter de configurarar uma variável de ambiente apontando para o módulo de configuração.
 
-In these cases, you can configure Django's settings manually. Do this by
-calling ``django.conf.settings.configure()``. Here's an example::
+Nesses casos, você pode setar as configurações do Django manualmente. Faça isto chamando ``django.conf.settings.configure()``. Eis aqui um exemplo::
 
     from django.conf import settings
 
