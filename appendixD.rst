@@ -152,20 +152,12 @@ Nesses casos, você pode setar as configurações do Django manualmente. Faça i
         ]
     )
 
-Pass ``configure()`` as many keyword arguments as you'd like, with each keyword
-argument representing a setting and its value. Each argument name should be all
-uppercase, with the same name as the settings described earlier. If a particular
-setting is not passed to ``configure()`` and is needed at some later point,
-Django will use the default setting value.
+Informe no ``configure()`` quantos argumentos/palavras-chave você quiser, com cada argumento representando uma configuração e seu valor. Cada nome do argumento (palavra-chave que representa o nome da variável) deve estar em maiúsculas, com o mesmo nome das configurações descritas anteriormente. Se uma configuração em particular não for informada em ``configure()`` e for necessária em algum momento no futuro, o Django irá usar o valor padrão da configuração.
 
-Configuring Django in this fashion is mostly necessary -- and, indeed,
-recommended -- when you're using a piece of the framework inside a larger
-application.
+Configurar o Django desta forma é, na maior parte das vezes, -- e, de fato, recomendado -- quando você está usando uma parte do framework dentro de uma aplicação maior.
 
-Consequently, when configured via ``settings.configure()``, Django will not
-make any modifications to the process environment variables. (See the
-explanation of ``TIME_ZONE`` later in this appendix for why this would normally occur.)
-It's assumed that you're already in full control of your environment in these cases.
+Consequentemente, quando configurando via ``settings.configure()``, o Django não irá fazer nenhuma modificação nas variáveis de ambiente do processo. (Veja a explicação sobre ``TIME_ZONE`` mais tarde neste apêndice para o porquê de isso normalmente ocorrer.)
+Se presume que você já possui total controle sobre seu ambiente, nesses casos.
 
 Custom Default Settings
 -----------------------
