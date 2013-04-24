@@ -159,34 +159,23 @@ Configurar o Django desta forma é, na maior parte das vezes, -- e, de fato, rec
 Consequentemente, quando configurando via ``settings.configure()``, o Django não irá fazer nenhuma modificação nas variáveis de ambiente do processo. (Veja a explicação sobre ``TIME_ZONE`` mais tarde neste apêndice para o porquê de isso normalmente ocorrer.)
 Se presume que você já possui total controle sobre seu ambiente, nesses casos.
 
-Custom Default Settings
------------------------
+Configurações padrão personalizadas
+-----------------------------------
 
-If you'd like default values to come from somewhere other than
-``django.conf.global_settings``, you can pass in a module or class that
-provides the default settings as the ``default_settings`` argument (or as the
-first positional argument) in the call to ``configure()``.
+Se você quer que os valores padrão venham de outro lugar que não seja de ``django.conf.global_settings``, você pode passar em um módulo ou classe que fornece as configurações padrão como o argumento ``default_settings`` (ou na primeira posição como argumento) na chamada para o ``configure()``.
 
-In this example, default settings are taken from ``myapp_defaults``, and the
-``DEBUG`` setting is set to ``True``, regardless of its value in
-``myapp_defaults``::
+Neste exemplo, as configurações padrão são obtidas de ``myapp_defaults``, e a cofiguração ``DEBUG`` está setada como ``True``, independentemente de seu valor em ``myapp_defaults``::
 
     from django.conf import settings
     from myapp import myapp_defaults
 
     settings.configure(default_settings=myapp_defaults, DEBUG=True)
 
-The following example, which uses ``myapp_defaults`` as a positional argument,
-is equivalent::
+O exemplo a seguir, que usa ``myapp_defaults`` como um argumento posicional é equivalente a::
 
     settings.configure(myapp_defaults, DEBUG = True)
 
-Normally, you will not need to override the defaults in this fashion. The
-Django defaults are sufficiently tame that you can safely use them. Be aware
-that if you do pass in a new default module, it entirely *replaces* the Django
-defaults, so you must specify a value for every possible setting that might be
-used in that code you are importing. Check in
-``django.conf.settings.global_settings`` for the full list.
+Normalmente, você não vai precisar sobrescrever os padrões dessa forma. Os padrões do Django são suficientemente inofencivos que você pode usá-los tranquilamente. Esteja ciente de que se você passar um novo módulo padrão, ele *substitui* inteiramente os padrões do Django, então você precisa especificar valores para cada configuração possível que possa ser utilizada no código que você está importando. Dê uma olhada em ``django.conf.settings.global_settings`` para lista compelta.
 
 Either configure() or DJANGO_SETTINGS_MODULE Is Required
 --------------------------------------------------------
