@@ -177,26 +177,18 @@ O exemplo a seguir, que usa ``myapp_defaults`` como um argumento posicional é e
 
 Normalmente, você não vai precisar sobrescrever os padrões dessa forma. Os padrões do Django são suficientemente inofencivos que você pode usá-los tranquilamente. Esteja ciente de que se você passar um novo módulo padrão, ele *substitui* inteiramente os padrões do Django, então você precisa especificar valores para cada configuração possível que possa ser utilizada no código que você está importando. Dê uma olhada em ``django.conf.settings.global_settings`` para lista compelta.
 
-Either configure() or DJANGO_SETTINGS_MODULE Is Required
---------------------------------------------------------
+Ou o configure() ou o DJANGO_SETTINGS_MODULE é necessário
+---------------------------------------------------------
 
-If you're not setting the ``DJANGO_SETTINGS_MODULE`` environment variable, you
-*must* call ``configure()`` at some point before using any code that reads
-settings.
+Se você não configurar a variável de ambiente ``DJANGO_SETTINGS_MODULE``, você *precisa* executar o ``configure()`` em algum lugar antes de usar qualquer código que leia o arquivo de configurações.
 
-If you don't set ``DJANGO_SETTINGS_MODULE`` and don't call ``configure()``,
-Django will raise an ``EnvironmentError`` exception the first time a setting
-is accessed.
+Se você não definir o ``DJANGO_SETTINGS_MODULE`` e não executar o ``configure()``, o Django irá gerar uma exceção do tipo ``EnvironmentError`` na hora que o arquivo de configurações for acessado.
 
-If you set ``DJANGO_SETTINGS_MODULE``, access settings values somehow, and *then*
-call ``configure()``, Django will raise an ``EnvironmentError`` stating that settings
-have already been configured.
+Se você definir o ``DJANGO_SETTINGS_MODULE``, acessar as configurações de alguma forma, e *então* executar o ``configure()``, o Django irá gerar uma exceção do tipo ``EnvironmentError`` afirmando que as configurações já foram definidas.
 
-Also, it's an error to call ``configure()`` more than once, or to call
-``configure()`` after any setting has been accessed.
+Também, é um erro executar o ``configure()`` mais de uma vez, ou executar o ``configure()`` após o arquivo de configurações ter sido acessado.
 
-It boils down to this: use exactly one of either ``configure()`` or
-``DJANGO_SETTINGS_MODULE``, and only once.
+Em resumo faça assim: use somente um, ou o ``configure()`` ou o ``DJANGO_SETTINGS_MODULE``, e somente uma vez.
 
 Available Settings
 ==================
