@@ -190,11 +190,10 @@ Também, é um erro executar o ``configure()`` mais de uma vez, ou executar o ``
 
 Em resumo faça assim: use somente um, ou o ``configure()`` ou o ``DJANGO_SETTINGS_MODULE``, e somente uma vez.
 
-Available Settings
-==================
+Configurações Disponíveis
+=========================
 
-The following sections consist of a list of the main available settings,
-in alphabetical order, and their default values.
+As seções a seguir consistem em uma lista das principais configurações disponíveis, em ordem alfabética, e seus respectivos valores.
 
 ABSOLUTE_URL_OVERRIDES
 ----------------------
