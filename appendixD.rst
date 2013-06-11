@@ -198,19 +198,16 @@ As seções a seguir consistem em uma lista das principais configurações dispo
 ABSOLUTE_URL_OVERRIDES
 ----------------------
 
-*Default*: ``{}`` (empty dictionary)
+*Padrão*: ``{}`` (dicionário vazio)
 
-This is a dictionary mapping ``"app_label.model_name"`` strings to functions that take
-a model object and return its URL. This is a way of overriding
-``get_absolute_url()`` methods on a per-installation basis. Here's an example::
+Esse é um dicionário de mapeamento de strings ``"app_label.model_name"`` para funções que assume um model object e retorna sua URL. Essa é uma forma de sobrescrever o método ``get_absolute_url()`` em cada uma de seus módulos instalados. Eis um exemplo::
 
     ABSOLUTE_URL_OVERRIDES = {
         'blogs.weblog': lambda o: "/blogs/%s/" % o.slug,
         'news.story': lambda o: "/stories/%s/%s/" % (o.pub_year, o.slug),
     }
 
-Note that the model name used in this setting should be all lowercase, regardless
-of the case of the actual model class name.
+Note que o nome do model usado nessa configuração deve ser todo em minúsculo, independentemente do real nome da classe.
 
 ADMIN_MEDIA_PREFIX
 ------------------
