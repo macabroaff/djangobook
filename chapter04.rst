@@ -2,17 +2,23 @@
 Capítulo 4: Templates
 ====================
 
-No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente em nosso código Python, tal como::
+No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos 
+o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente 
+em nosso código Python, tal como::
 
     def current_datetime(request):
         now = datetime.datetime.now()
         html = "<html><body>Agora é %s.</body></html>" % now
         return HttpResponse(html)
 
-Embora essa técnica seja conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
+Embora essa técnica seja conveniente para o propósito de demonstrar como as views 
+trabalham, não é uma boa idéia codificar HTML diretamente em suas views. 
+Aqui está o por que:
 
 * Qualquer modificação no design da página requer modificação no código Python.
-  O design de um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
+  O design de um site tende a mudar com mais freqüência do que o código Python 
+  subjacente, por isso seria coveniente se o design pude-se ser modificado sem 
+  precisar modificar o código Python.
 
 * Escrever código Python e design HTML são duas diciplinas diferentes,
   e a maioria dos ambientes de desenvolvimento Web professional dividem essas
@@ -89,7 +95,8 @@ valores para dentro. Vamos análisa-lo:
   permitindo você fazer um laço sobre cada item em uma seqüência. Uma tag ``if``,
   como você pode esperar, age como uma declaração lógica "if". Neste caso
   particular, a tag verifica se o valor da váriavel ``ordered_warranty`` está
-  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}`` e ``{% else %}``. Se não, o sistema de template exibirá
+  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}`` 
+  e ``{% else %}``. Se não, o sistema de template exibirá
   tudo que está entre ``{% else %}`` e ``{% endif %}``. Perceba que o ``{% else
   %}`` é opcional.
 
@@ -173,7 +180,8 @@ interativo.
 
     Quando você executa ``python manage.py shell``, o comando se preocupa em definir
     a variável ``DJANGO_SETTINGS_MODULE`` para você. Nós estamos encorajando você a usar
-    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes e configurações que você deva fazer.
+    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes 
+    e configurações que você deva fazer.
 
 Vamos passar por alguns princípios básicos do sistema de template::
 
@@ -238,7 +246,8 @@ pelo uso do ``u`` em frente a string. Django usa objetos Unicode ao invés de
 strings normais em seu framework. Se você entende a repercurssão disso, seja
 grato pelas coisas sofisticadas que o Django faz nos bastidores para isto funcionar.
 Se você não entende a repercussão disso, não se preocupe agora; apenas entenda que
-o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
+o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande 
+variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
 
 .. admonition:: Dicionários e contextos
 
@@ -248,7 +257,8 @@ o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma g
    no capítulo 9.
 
 Nomes de váriaveis devem iniciar com letras (A-Z or a-z)  podem contem
-mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve). Nomes de váriaves são case sensitive.
+mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve). 
+Nomes de váriaves são case sensitive.
 
 Aqui está um exemplo de modelo de compilação e renderização, usando um template
 semelhante ao exemplo no início deste capítulo::
@@ -1389,13 +1399,13 @@ mundo real, você usará o sistema de template do Django para criar páginas
 HTML completas. Isso leva a um problema comum de desenvolvimento web: em 
 um web site, como reduzir a duplicação e a redundância de áreas em páginas 
 que são comuns, bem como a navegação no site inteiro?
- 
-A classic way of solving this problem is to use *server-side includes*,
-directives you can embed within your HTML pages to "include" one Web page
-inside another. Indeed, Django supports that approach, with the
-``{% include %}`` template tag just described. But the preferred way of
-solving this problem with Django is to use a more elegant strategy called
-*template inheritance*.
+
+Uma forma clássica de resolução desse problema é usar *server-sides 
+includes*, diretivas que você pode colocar junto a suas páginas HTML 
+para "incluir" uma página web dentro de outra. De fato, Django suporta 
+essa possibilidade, com a tag template ``{% include %}`` que acabamos de 
+descrever. Mas a forma preferida de resolução desse problema com Django 
+é usar uma estratégia mais elegante chamada *template inheritance*.
 
 In essence, template inheritance lets you build a base "skeleton" template that
 contains all the common parts of your site and defines "blocks" that child
