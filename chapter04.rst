@@ -1381,15 +1381,15 @@ o Django fará umda das duas coisas:
   silenciosamente, exibindo nada no lugar da tag.
 
 
-Template Inheritance
-====================
+Herança de Template 
+==================
 
-Our template examples so far have been tiny HTML snippets, but in the real
-world, you'll be using Django's template system to create entire HTML pages.
-This leads to a common Web development problem: across a Web site, how does
-one reduce the duplication and redundancy of common page areas, such as
-sitewide navigation?
-
+Nosso template exemplo até agora tem sido pequenos snippets HTML, mas no 
+mundo real, você usará o sistema de template do Django para criar páginas 
+HTML completas. Isso leva a um problema comum de desenvolvimento web: em 
+um web site, como reduzir a duplicação e a redundância de áreas em páginas 
+que são comuns, bem como a navegação no site inteiro?
+ 
 A classic way of solving this problem is to use *server-side includes*,
 directives you can embed within your HTML pages to "include" one Web page
 inside another. Indeed, Django supports that approach, with the
