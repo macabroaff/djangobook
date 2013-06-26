@@ -1407,12 +1407,12 @@ essa possibilidade, com a tag template ``{% include %}`` que acabamos de
 descrever. Mas a forma preferida de resolução desse problema com Django 
 é usar uma estratégia mais elegante chamada *template inheritance*.
 
-In essence, template inheritance lets you build a base "skeleton" template that
-contains all the common parts of your site and defines "blocks" that child
-templates can override.
+Na essência, herança de template permite você construir um "esqueleto" inicial 
+de template, que contém todas as partes comuns de seu site e define "blocos" que 
+templates filhos podem ser substituir.
 
-Let's see an example of this by creating a more complete template for our
-``current_datetime`` view, by editing the ``current_datetime.html`` file::
+Vejamos um exemplo disso com a criação de um template mais completo para 
+nossa view ``current_datetime``, pela edição do arquivo ``current_datetime.html``::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
@@ -1428,9 +1428,11 @@ Let's see an example of this by creating a more complete template for our
     </body>
     </html>
 
-That looks just fine, but what happens when we want to create a template for
-another view -- say, the ``hours_ahead`` view from Chapter 3? If we want again
-to make a nice, valid, full HTML template, we'd create something like::
+
+Isso parece bom, mas o que acontece quando queremos criar um template para 
+outra view, por exemplo, a view ``hours_ahead`` do capítulo 3? Se queremos 
+mais uma vez fazer uma bom, válido e completo template HTML, criaremos algo 
+como::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
@@ -1446,21 +1448,21 @@ to make a nice, valid, full HTML template, we'd create something like::
     </body>
     </html>
 
-Clearly, we've just duplicated a lot of HTML. Imagine if we had a more
-typical site, including a navigation bar, a few style sheets, perhaps some
-JavaScript -- we'd end up putting all sorts of redundant HTML into each
-template.
+Claramente, simplesmente duplicamos um monte de HTML. Imagine se tivessemos um 
+site típico, incluíndo uma barra de navegação, algumas folhas de estilo, 
+talvés um pouco de Javascript, que nos acabaria colocando todos os tipos de HTML 
+redundantes em cada template.
 
-The server-side include solution to this problem is to factor out the
-common bits in both templates and save them in separate template snippets,
-which are then included in each template. Perhaps you'd store the top
-bit of the template in a file called ``header.html``::
+A solução do lado servidor para esse problema é fatorar os pedaços comuns em 
+ambos os templates e salvar eles em trechos de templates separados, que então 
+são incluídos em cada template. Possivelmente você armazene o pedaço superior do 
+template em um arquivo chamado ``header.html``::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
     <head>
 
-And perhaps you'd store the bottom bit in a file called ``footer.html``::
+E possivelmente armazene o pedaço inferior em um arquivo chamado ``footer.html``::
 
         <hr>
         <p>Thanks for visiting my site.</p>
