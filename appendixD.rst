@@ -297,7 +297,7 @@ file.
 DATABASE_OPTIONS
 ----------------
 
-*Valor padrão*: ``{}`` (empty dictionary)
+*Valor padrão*: ``{}`` (dicionário vazio)
 
 This is extra parameters to use when connecting to the database. Consult the back-end
 module's document for available keywords.
