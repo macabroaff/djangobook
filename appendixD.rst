@@ -752,7 +752,7 @@ various sources. See Chapter 9.
 TEMPLATE_STRING_IF_INVALID
 --------------------------
 
-*Valor padrão*: ``''`` (Empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is output, as a string, that the template system should use for invalid (e.g.,
 misspelled) variables. See Chapter 9.
