@@ -219,16 +219,13 @@ Esta configuração é o prefixo da URL para os arquívos de mídia do admin: CS
 ADMINS
 ------
 
-*Default*: ``()`` (empty tuple)
+*Padrão*: ``()`` (tupla vazia)
 
-This is a tuple that lists people who get code error notifications. When
-``DEBUG=False`` and a view raises an exception, Django will email these people
-with the full exception information. Each member of the tuple should be a tuple
-of (Full name, e-mail address), for example::
+Esta é a tupla que lista as pessoas que receberão notificações de erro. Quando ``DEBUG=False`` e a view lançar uma exceção, o Django irá enviar um email para essas pessoas com as informações sobre a exceção gerada. Cada membro da tupla deve ser uma tupla com (Nome completo, endereço de email), por exemplo::
 
     (('John', 'john@example.com'), ('Mary', 'mary@example.com'))
 
-Note that Django will email *all* of these people whenever an error happens.
+Observe que o Django irá enviar email para todas essas pessoas sempre que os erros aparecerem.
 
 ALLOWED_INCLUDE_ROOTS
 ---------------------
