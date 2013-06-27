@@ -198,7 +198,7 @@ As seções a seguir consistem em uma lista das principais configurações dispo
 ABSOLUTE_URL_OVERRIDES
 ----------------------
 
-*Padrão*: ``{}`` (dicionário vazio)
+*Valor padrão*: ``{}`` (dicionário vazio)
 
 Esse é um dicionário de mapeamento de strings ``"app_label.model_name"`` para funções que assume um model object e retorna sua URL. Essa é uma forma de sobrescrever o método ``get_absolute_url()`` em cada uma de seus módulos instalados. Eis um exemplo::
 
@@ -212,14 +212,14 @@ Note que o nome do model usado nessa configuração deve ser todo em minúsculo,
 ADMIN_MEDIA_PREFIX
 ------------------
 
-*Padrão*: ``'/media/'``
+*Valor padrão*: ``'/media/'``
 
 Esta configuração é o prefixo da URL para os arquívos de mídia do admin: CSS, Javascript e imagens. Certifique-se de usar a barra invertida.
 
 ADMINS
 ------
 
-*Padrão*: ``()`` (tupla vazia)
+*Valor padrão*: ``()`` (tupla vazia)
 
 Esta é a tupla que lista as pessoas que receberão notificações de erro. Quando ``DEBUG=False`` e a view lançar uma exceção, o Django irá enviar um email para essas pessoas com as informações sobre a exceção gerada. Cada membro da tupla deve ser uma tupla com (Nome completo, endereço de email), por exemplo::
 
