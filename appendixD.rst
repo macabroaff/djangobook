@@ -230,7 +230,7 @@ Observe que o Django irá enviar email para todas essas pessoas sempre que os er
 ALLOWED_INCLUDE_ROOTS
 ---------------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (empty tuple)
 
 This is a tuple of strings representing allowed prefixes for the ``{% ssi %}`` template
 tag. This is a security measure, so that template authors can't access files
@@ -243,7 +243,7 @@ wouldn't.
 APPEND_SLASH
 ------------
 
-*Default*: ``True``
+*Valor padrão*: ``True``
 
 This setting indicates whether to append trailing slashes to URLs. This is used only if
 ``CommonMiddleware`` is installed (see Chapter 17). See also ``PREPEND_WWW``.
@@ -251,21 +251,21 @@ This setting indicates whether to append trailing slashes to URLs. This is used 
 CACHE_BACKEND
 -------------
 
-*Default*: ``'locmem://'``
+*Valor padrão*: ``'locmem://'``
 
 This is the cache back-end to use (see Chapter 15).
 
 CACHE_MIDDLEWARE_KEY_PREFIX
 ---------------------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This is the cache key prefix that the cache middleware should use (see Chapter 15).
 
 DATABASE_ENGINE
 ---------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This setting indicates which database back-end to use, e.g.
 ``'postgresql_psycopg2'``, or ``'mysql'``.
@@ -273,7 +273,7 @@ This setting indicates which database back-end to use, e.g.
 DATABASE_HOST
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This setting indicates which host to use when connecting to the database.
 An empty string means ``localhost``. This is not used with SQLite.
@@ -289,7 +289,7 @@ this value is assumed to be the host.
 DATABASE_NAME
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This is the name of the database to use. For SQLite, it's the full path to the database
 file.
@@ -297,7 +297,7 @@ file.
 DATABASE_OPTIONS
 ----------------
 
-*Default*: ``{}`` (empty dictionary)
+*Valor padrão*: ``{}`` (empty dictionary)
 
 This is extra parameters to use when connecting to the database. Consult the back-end
 module's document for available keywords.
@@ -305,14 +305,14 @@ module's document for available keywords.
 DATABASE_PASSWORD
 -----------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This setting is the password to use when connecting to the database. It is not used with SQLite.
 
 DATABASE_PORT
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This is the port to use when connecting to the database. An empty string means the
 default port. It is not used with SQLite.
@@ -320,14 +320,14 @@ default port. It is not used with SQLite.
 DATABASE_USER
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This setting is the username to use when connecting to the database. It is not used with SQLite.
 
 DATE_FORMAT
 -----------
 
-*Default*: ``'N j, Y'`` (e.g., ``Feb. 4, 2003``)
+*Valor padrão*: ``'N j, Y'`` (e.g., ``Feb. 4, 2003``)
 
 This is the default formatting to use for date fields on Django admin change-list pages
 -- and, possibly, by other parts of the system. It accepts the same format as the
@@ -339,7 +339,7 @@ See also ``DATETIME_FORMAT``, ``TIME_FORMAT``, ``YEAR_MONTH_FORMAT``, and
 DATETIME_FORMAT
 ---------------
 
-*Default*: ``'N j, Y, P'`` (e.g., ``Feb. 4, 2003, 4 p.m.``)
+*Valor padrão*: ``'N j, Y, P'`` (e.g., ``Feb. 4, 2003, 4 p.m.``)
 
 This is the default formatting to use for datetime fields on Django admin change-list
 pages -- and, possibly, by other parts of the system. It accepts the same format as the
@@ -351,7 +351,7 @@ See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
 DEBUG
 -----
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This setting is a Boolean that turns debug mode on and off.
 
@@ -368,7 +368,7 @@ site with ``DEBUG`` turned on.
 DEFAULT_CHARSET
 ---------------
 
-*Default*: ``'utf-8'``
+*Valor padrão*: ``'utf-8'``
 
 This is the default charset to use for all ``HttpResponse`` objects, if a MIME type isn't
 manually specified. It is used with ``DEFAULT_CONTENT_TYPE`` to construct the
@@ -377,7 +377,7 @@ manually specified. It is used with ``DEFAULT_CONTENT_TYPE`` to construct the
 DEFAULT_CONTENT_TYPE
 --------------------
 
-*Default*: ``'text/html'``
+*Valor padrão*: ``'text/html'``
 
 This is the default content type to use for all ``HttpResponse`` objects, if a MIME type
 isn't manually specified. It is used with ``DEFAULT_CHARSET`` to construct the
@@ -386,7 +386,7 @@ isn't manually specified. It is used with ``DEFAULT_CHARSET`` to construct the
 DEFAULT_FROM_EMAIL
 ------------------
 
-*Default*: ``'webmaster@localhost'``
+*Valor padrão*: ``'webmaster@localhost'``
 
 This is the default email address to use for various automated correspondence from the
 site manager(s).
@@ -394,7 +394,7 @@ site manager(s).
 DISALLOWED_USER_AGENTS
 ----------------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (empty tuple)
 
 This is a list of compiled regular expression objects representing User-Agent strings
 that are not allowed to visit any page, systemwide. Use this for bad
@@ -404,14 +404,14 @@ Chapter 17).
 EMAIL_HOST
 ----------
 
-*Default*: ``'localhost'``
+*Valor padrão*: ``'localhost'``
 
 This is the host to use for sending email. See also ``EMAIL_PORT``.
 
 EMAIL_HOST_PASSWORD
 -------------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This is the password to use for the SMTP server defined in ``EMAIL_HOST``. This setting is
 used in conjunction with ``EMAIL_HOST_USER`` when authenticating to the SMTP
@@ -423,7 +423,7 @@ See also ``EMAIL_HOST_USER``.
 EMAIL_HOST_USER
 ---------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This is the username to use for the SMTP server defined in ``EMAIL_HOST``. If it's empty,
 Django won't attempt authentication. See also ``EMAIL_HOST_PASSWORD``.
@@ -431,14 +431,14 @@ Django won't attempt authentication. See also ``EMAIL_HOST_PASSWORD``.
 EMAIL_PORT
 ----------
 
-*Default*: ``25``
+*Valor padrão*: ``25``
 
 This is the port to use for the SMTP server defined in ``EMAIL_HOST``.
 
 EMAIL_SUBJECT_PREFIX
 --------------------
 
-*Default*: ``'[Django] '``
+*Valor padrão*: ``'[Django] '``
 
 This is the subject-line prefix for email messages sent with ``django.core.mail.mail_admins``
 or ``django.core.mail.mail_managers``. You'll probably want to include the
@@ -447,7 +447,7 @@ trailing space.
 FIXTURE_DIRS
 -------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (empty tuple)
 
 This is a list of locations of the fixture data files, in search order. Note that these
 paths should use Unix-style forward slashes, even on Windows. It is used by Django's
@@ -457,7 +457,7 @@ http://docs.djangoproject.com/en/dev/topics/testing/.
 IGNORABLE_404_ENDS
 ------------------
 
-*Default*: ``('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi', 'favicon.ico',
+*Valor padrão*: ``('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi', 'favicon.ico',
 '.php')``
 
 This is a tuple of strings that specify beginnings of URLs that should be
@@ -470,14 +470,14 @@ See also ``IGNORABLE_404_STARTS`` and ``SEND_BROKEN_LINK_EMAILS``.
 IGNORABLE_404_STARTS
 --------------------
 
-*Default*: ``('/cgi-bin/', '/_vti_bin', '/_vti_inf')``
+*Valor padrão*: ``('/cgi-bin/', '/_vti_bin', '/_vti_inf')``
 
 See also ``SEND_BROKEN_LINK_EMAILS`` and ``IGNORABLE_404_ENDS``.
 
 INSTALLED_APPS
 --------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (empty tuple)
 
 A tuple of strings designating all applications that are enabled in this Django
 installation. Each string should be a full Python path to a Python package that
@@ -486,7 +486,7 @@ contains a Django application. See Chapter 5 for more about applications.
 LANGUAGE_CODE
 -------------
 
-*Default*: ``'en-us'``
+*Valor padrão*: ``'en-us'``
 
 This is a string representing the language code for this installation. This should be
 in standard language format -- for example, U.S. English is ``"en-us"``. See
@@ -495,7 +495,7 @@ Chapter 19.
 LANGUAGES
 ---------
 
-*Default*: A tuple of all available languages. This list is continually growing
+*Valor padrão*: A tuple of all available languages. This list is continually growing
 and any copy included here would inevitably become rapidly out of date. You can
 see the current list of translated languages by looking in
 ``django/conf/global_settings.py``.
@@ -530,7 +530,7 @@ any code that uses ``LANGUAGES`` at runtime.
 MANAGERS
 --------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (empty tuple)
 
 This tuple is in the same format as ``ADMINS`` that specifies who should get
 broken-link notifications when ``SEND_BROKEN_LINK_EMAILS=True``.
@@ -538,7 +538,7 @@ broken-link notifications when ``SEND_BROKEN_LINK_EMAILS=True``.
 MEDIA_ROOT
 ----------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This is an absolute path to the directory that holds media for this installation (e.g.,
 ``"/home/media/media.lawrence.com/"``). See also ``MEDIA_URL``.
@@ -546,7 +546,7 @@ This is an absolute path to the directory that holds media for this installation
 MEDIA_URL
 ---------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (empty string)
 
 This URL handles the media served from ``MEDIA_ROOT`` (e.g.,
 ``"http://media.lawrence.com"``).
@@ -561,7 +561,7 @@ See Chapter 12 for more on deployment and serving media.
 MIDDLEWARE_CLASSES
 ------------------
 
-*Default*::
+*Valor padrão*::
 
     ("django.contrib.sessions.middleware.SessionMiddleware",
      "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -573,7 +573,7 @@ This is a tuple of middleware classes to use. See Chapter 17.
 MONTH_DAY_FORMAT
 ----------------
 
-*Default*: ``'F j'``
+*Valor padrão*: ``'F j'``
 
 This is the default formatting to use for date fields on Django admin change-list
 pages -- and, possibly, by other parts of the system -- in cases when only the
@@ -591,7 +591,7 @@ See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
 PREPEND_WWW
 -----------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This setting indicates whether to prepend the "www." subdomain to URLs that don't have it.
 This is used only if ``CommonMiddleware`` is installed (see the Chapter 17). See also
@@ -600,7 +600,7 @@ This is used only if ``CommonMiddleware`` is installed (see the Chapter 17). See
 ROOT_URLCONF
 ------------
 
-*Default*: Not defined
+*Valor padrão*: Not defined
 
 This is a string representing the full Python import path to your root URLconf (e.g.,
 ``"mydjangoapps.urls"``). See Chapter 3.
@@ -608,7 +608,7 @@ This is a string representing the full Python import path to your root URLconf (
 SECRET_KEY
 ----------
 
-*Default*: (Generated automatically when you start a project)
+*Valor padrão*: (Generated automatically when you start a project)
 
 This is a secret key for this particular Django installation. It is used to provide a seed in
 secret-key hashing algorithms. Set this to a random string -- the longer, the
@@ -618,7 +618,7 @@ of the time you won't need to change it
 SEND_BROKEN_LINK_EMAILS
 -----------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This setting indicates whether to send an email to the ``MANAGERS`` each time somebody visits a
 Django-powered page that is 404-ed with a nonempty referer (i.e., a broken
@@ -628,7 +628,7 @@ See also ``IGNORABLE_404_STARTS`` and ``IGNORABLE_404_ENDS``.
 SERIALIZATION_MODULES
 ---------------------
 
-*Default*: Not defined.
+*Valor padrão*: Not defined.
 
 Serialization is a feature still under heavy development. Refer to the online
 documentation at http://docs.djangoproject.com/en/dev/topics/serialization/
@@ -637,7 +637,7 @@ for more information.
 SERVER_EMAIL
 ------------
 
-*Default*: ``'root@localhost'``
+*Valor padrão*: ``'root@localhost'``
 
 This is the email address that error messages come from, such as those sent to
 ``ADMINS`` and ``MANAGERS``.
@@ -645,14 +645,14 @@ This is the email address that error messages come from, such as those sent to
 SESSION_COOKIE_AGE
 ------------------
 
-*Default*: ``1209600`` (two weeks, in seconds)
+*Valor padrão*: ``1209600`` (two weeks, in seconds)
 
 This is the age of session cookies, in seconds. See Chapter 14.
 
 SESSION_COOKIE_DOMAIN
 ---------------------
 
-*Default*: ``None``
+*Valor padrão*: ``None``
 
 This is the domain to use for session cookies. Set this to a string such as
 ``".lawrence.com"`` for cross-domain cookies, or use ``None`` for a standard
@@ -661,7 +661,7 @@ domain cookie. See Chapter 14.
 SESSION_COOKIE_NAME
 -------------------
 
-*Default*: ``'sessionid'``
+*Valor padrão*: ``'sessionid'``
 
 This is the name of the cookie to use for sessions; it can be whatever you want.
 See Chapter 14.
@@ -669,7 +669,7 @@ See Chapter 14.
 SESSION_COOKIE_SECURE
 ---------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This setting indicates whether to use a secure cookie for the session cookie.
 If this is set to ``True``, the cookie will be marked as "secure,"
@@ -679,7 +679,7 @@ See Chapter 14.
 SESSION_EXPIRE_AT_BROWSER_CLOSE
 -------------------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This setting indicates whether to expire the session when the user closes
 his browser. See Chapter 14.
@@ -687,14 +687,14 @@ his browser. See Chapter 14.
 SESSION_SAVE_EVERY_REQUEST
 --------------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This setting indicates whether to save the session data on every request. See Chapter 14.
 
 SITE_ID
 -------
 
-*Default*: Not defined
+*Valor padrão*: Not defined
 
 This is the ID, as an integer, of the current site in the ``django_site`` database
 table. It is used so that application data can hook into specific site(s)
@@ -703,7 +703,7 @@ and a single database can manage content for multiple sites. See Chapter 16.
 TEMPLATE_CONTEXT_PROCESSORS
 ---------------------------
 
-*Default*::
+*Valor padrão*::
 
     ("django.core.context_processors.auth",
     "django.core.context_processors.debug",
@@ -717,7 +717,7 @@ of items to be merged into the context. See Chapter 9.
 TEMPLATE_DEBUG
 --------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This Boolean turns template debug mode on and off. If it is ``True``, the fancy
 error page will display a detailed report for any ``TemplateSyntaxError``. This
@@ -732,7 +732,7 @@ See also ``DEBUG``.
 TEMPLATE_DIRS
 -------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (empty tuple)
 
 This is a list of locations of the template source files, in search order. Note that these
 paths should use Unix-style forward slashes, even on Windows. See Chapters 4 and
@@ -741,7 +741,7 @@ paths should use Unix-style forward slashes, even on Windows. See Chapters 4 and
 TEMPLATE_LOADERS
 ----------------
 
-*Default*::
+*Valor padrão*::
 
     ('django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source')
@@ -752,7 +752,7 @@ various sources. See Chapter 9.
 TEMPLATE_STRING_IF_INVALID
 --------------------------
 
-*Default*: ``''`` (Empty string)
+*Valor padrão*: ``''`` (Empty string)
 
 This is output, as a string, that the template system should use for invalid (e.g.,
 misspelled) variables. See Chapter 9.
@@ -760,7 +760,7 @@ misspelled) variables. See Chapter 9.
 TEST_RUNNER
 -----------
 
-*Default*: ``'django.test.simple.run_tests'``
+*Valor padrão*: ``'django.test.simple.run_tests'``
 
 This is the name of the method to use for starting the test suite. It is used by Django's
 testing framework, which is covered online at
@@ -769,7 +769,7 @@ http://docs.djangoproject.com/en/dev/topics/testing/.
 TEST_DATABASE_NAME
 ------------------
 
-*Default*: ``None``
+*Valor padrão*: ``None``
 
 This is the name of database to use when running the test suite. If a value of ``None``
 is specified, the test database will use the name ``'test_' +
@@ -779,7 +779,7 @@ which is covered online at http://docs.djangoproject.com/en/dev/topics/testing/.
 TIME_FORMAT
 -----------
 
-*Default*: ``'P'`` (e.g., ``4 p.m.``)
+*Valor padrão*: ``'P'`` (e.g., ``4 p.m.``)
 
 This is the default formatting to use for time fields on Django admin change-list pages
 -- and, possibly, by other parts of the system. It accepts the same format as the
@@ -791,7 +791,7 @@ See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
 TIME_ZONE
 ---------
 
-*Default*: ``'America/Chicago'``
+*Valor padrão*: ``'America/Chicago'``
 
 This is a string representing the time zone for this installation. Time zones are in the
 Unix-standard ``zic`` format. One relatively complete list of time zone strings
@@ -818,7 +818,7 @@ are running in the correct environment.
 URL_VALIDATOR_USER_AGENT
 ------------------------
 
-*Default*: ``Django/<version> (http://www.djangoproject.com/)``
+*Valor padrão*: ``Django/<version> (http://www.djangoproject.com/)``
 
 This is the string to use as the ``User-Agent`` header when checking to see if URLs
 exist (see the ``verify_exists`` option on ``URLField``; see Appendix A).
@@ -826,7 +826,7 @@ exist (see the ``verify_exists`` option on ``URLField``; see Appendix A).
 USE_ETAGS
 ---------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
 This Boolean specifies whether to output the ETag header. It saves
 bandwidth but slows down performance. This is only used if ``CommonMiddleware``
@@ -835,7 +835,7 @@ is installed (see Chapter 17).
 USE_I18N
 --------
 
-*Default*: ``True``
+*Valor padrão*: ``True``
 
 This Boolean specifies whether Django's internationalization system (see
 Chapter 19) should be enabled. It provides an easy way to turn off internationalization, for
@@ -845,7 +845,7 @@ as not to load the internationalization machinery.
 YEAR_MONTH_FORMAT
 -----------------
 
-*Default*: ``'F Y'``
+*Valor padrão*: ``'F Y'``
 
 This is the default formatting to use for date fields on Django admin change-list pages
 -- and, possibly, by other parts of the system -- in cases when only the year
