@@ -230,7 +230,7 @@ Observe que o Django irá enviar email para todas essas pessoas sempre que os er
 ALLOWED_INCLUDE_ROOTS
 ---------------------
 
-*Valor padrão*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
 This is a tuple of strings representing allowed prefixes for the ``{% ssi %}`` template
 tag. This is a security measure, so that template authors can't access files
@@ -394,7 +394,7 @@ site manager(s).
 DISALLOWED_USER_AGENTS
 ----------------------
 
-*Valor padrão*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
 This is a list of compiled regular expression objects representing User-Agent strings
 that are not allowed to visit any page, systemwide. Use this for bad
@@ -447,7 +447,7 @@ trailing space.
 FIXTURE_DIRS
 -------------
 
-*Valor padrão*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
 This is a list of locations of the fixture data files, in search order. Note that these
 paths should use Unix-style forward slashes, even on Windows. It is used by Django's
@@ -477,7 +477,7 @@ See also ``SEND_BROKEN_LINK_EMAILS`` and ``IGNORABLE_404_ENDS``.
 INSTALLED_APPS
 --------------
 
-*Valor padrão*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
 A tuple of strings designating all applications that are enabled in this Django
 installation. Each string should be a full Python path to a Python package that
@@ -530,7 +530,7 @@ any code that uses ``LANGUAGES`` at runtime.
 MANAGERS
 --------
 
-*Valor padrão*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
 This tuple is in the same format as ``ADMINS`` that specifies who should get
 broken-link notifications when ``SEND_BROKEN_LINK_EMAILS=True``.
@@ -732,7 +732,7 @@ See also ``DEBUG``.
 TEMPLATE_DIRS
 -------------
 
-*Valor padrão*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
 This is a list of locations of the template source files, in search order. Note that these
 paths should use Unix-style forward slashes, even on Windows. See Chapters 4 and
