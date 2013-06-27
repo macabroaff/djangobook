@@ -258,14 +258,14 @@ This is the cache back-end to use (see Chapter 15).
 CACHE_MIDDLEWARE_KEY_PREFIX
 ---------------------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is the cache key prefix that the cache middleware should use (see Chapter 15).
 
 DATABASE_ENGINE
 ---------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This setting indicates which database back-end to use, e.g.
 ``'postgresql_psycopg2'``, or ``'mysql'``.
@@ -273,7 +273,7 @@ This setting indicates which database back-end to use, e.g.
 DATABASE_HOST
 -------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This setting indicates which host to use when connecting to the database.
 An empty string means ``localhost``. This is not used with SQLite.
@@ -289,7 +289,7 @@ this value is assumed to be the host.
 DATABASE_NAME
 -------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is the name of the database to use. For SQLite, it's the full path to the database
 file.
@@ -305,14 +305,14 @@ module's document for available keywords.
 DATABASE_PASSWORD
 -----------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This setting is the password to use when connecting to the database. It is not used with SQLite.
 
 DATABASE_PORT
 -------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is the port to use when connecting to the database. An empty string means the
 default port. It is not used with SQLite.
@@ -320,7 +320,7 @@ default port. It is not used with SQLite.
 DATABASE_USER
 -------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This setting is the username to use when connecting to the database. It is not used with SQLite.
 
@@ -411,7 +411,7 @@ This is the host to use for sending email. See also ``EMAIL_PORT``.
 EMAIL_HOST_PASSWORD
 -------------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is the password to use for the SMTP server defined in ``EMAIL_HOST``. This setting is
 used in conjunction with ``EMAIL_HOST_USER`` when authenticating to the SMTP
@@ -423,7 +423,7 @@ See also ``EMAIL_HOST_USER``.
 EMAIL_HOST_USER
 ---------------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is the username to use for the SMTP server defined in ``EMAIL_HOST``. If it's empty,
 Django won't attempt authentication. See also ``EMAIL_HOST_PASSWORD``.
@@ -538,7 +538,7 @@ broken-link notifications when ``SEND_BROKEN_LINK_EMAILS=True``.
 MEDIA_ROOT
 ----------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This is an absolute path to the directory that holds media for this installation (e.g.,
 ``"/home/media/media.lawrence.com/"``). See also ``MEDIA_URL``.
@@ -546,7 +546,7 @@ This is an absolute path to the directory that holds media for this installation
 MEDIA_URL
 ---------
 
-*Valor padrão*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
 This URL handles the media served from ``MEDIA_ROOT`` (e.g.,
 ``"http://media.lawrence.com"``).
