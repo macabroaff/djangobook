@@ -212,10 +212,9 @@ Note que o nome do model usado nessa configuração deve ser todo em minúsculo,
 ADMIN_MEDIA_PREFIX
 ------------------
 
-*Default*: ``'/media/'``
+*Padrão*: ``'/media/'``
 
-This setting is the URL prefix for admin media: CSS, JavaScript, and images.
-Make sure to use a trailing slash.
+Esta configuração é o prefixo da URL para os arquívos de mídia do admin: CSS, Javascript e imagens. Certifique-se de usar a barra invertida.
 
 ADMINS
 ------
