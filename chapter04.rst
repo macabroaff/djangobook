@@ -1469,20 +1469,21 @@ E possivelmente armazene o pedaço inferior em um arquivo chamado ``footer.html`
     </body>
     </html>
 
-With an include-based strategy, headers and footers are easy. It's the
-middle ground that's messy. In this example, both pages feature a title --
-``<h1>My helpful timestamp site</h1>`` -- but that title can't fit into
-``header.html`` because the ``<title>`` on both pages is different. If we
-included the ``<h1>`` in the header, we'd have to include the ``<title>``,
-which wouldn't allow us to customize it per page. See where this is going?
+Com um estratégoa baseada em inclusão, o cabeçalho e rodapé são fáceis de inserir.
+Há o meio termo que confunde. Nesse exemplo, ambas as páginas tem um título -- 
+``<h1>My helpful timestamp site</h1>`` -- mas esse título não pode caber em 
+``header.html`` porque o ``<title>`` em ambas as páginas é diferente. Se 
+incluírmos o ``<h1>`` no cabeçalho, teríamos de incluir o ``<title>``, que 
+nos permite um personalização por página. Está vendo onde isso vai dar?
 
-Django's template inheritance system solves these problems. You can think of it
-as an "inside-out" version of server-side includes. Instead of defining the
-snippets that are *common*, you define the snippets that are *different*.
+O sistema de herança de template do Django soluciona esse problema. Você pode 
+imaginar isso como sendo uma versão "inside-out" do server-side includes. Ao 
+invés de definir os trechos que são *comuns*, você define os trechos que 
+são *diferentes*.
 
-The first step is to define a *base template* -- a skeleton of your page that
-*child templates* will later fill in. Here's a base template for our ongoing
-example::
+O primeiro passo é definir um *template base* -- um esqueleto de sua página 
+que *templates filhos* irão mais tarde preencher. Aqui está um template base
+para o nosso exemplo em curso::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
