@@ -8,7 +8,7 @@ em nosso código Python, tal como::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>Agora é %s.</body></html>" % now
+        html = "<html><body>It is now %s.</body></html>" % now
         return HttpResponse(html)
 
 Embora essa técnica seja conveniente para o propósito de demonstrar como as views 
@@ -48,17 +48,18 @@ página HTML que agradece a uma pessoa por realizar um pedido de uma empresa. Im
 isso como uma carta formulário::
 
     <html>
-    <head><title>Ordem</title></head>
+    <head><title>Ordering notice</title></head>
 
     <body>
 
-    <h1>Ordem</h1>
+    <h1>Ordering notice</h1>
 
-    <p>Prezado {{ person_name }},</p>
+    <p>Dear {{ person_name }},</p>
 
-    <p>Obrigado por fazer o pedido de {{ company }}. Está agendado para enviar em {{ ship_date|date:"F j, Y" }}.</p>
+    <p>Thanks for placing an order from {{ company }}. It's scheduled to
+    ship on {{ ship_date|date:"F j, Y" }}.</p>
 
-    <p>Aqui estão os itens que você encomendou::</p>
+    <p>Here are the items you've ordered:</p>
 
     <ul>
     {% for item in item_list %}
@@ -67,12 +68,13 @@ isso como uma carta formulário::
     </ul>
 
     {% if ordered_warranty %}
-        <p>A sua informação de garantia será incluída na embalagem.</p>
+        <p>Your warranty information will be included in the packaging.</p>
     {% else %}
-        <p>Você não solicitou garantia, sendo assim é por sua conta quando o produto parar de funcionar.</p>
+        <p>You didn't order a warranty, so you're on your own when
+        the products inevitably stop working.</p>
     {% endif %}
 
-    <p>Sinceramente,<br />{{ company }}</p>
+    <p>Sincerely,<br />{{ company }}</p>
 
     </body>
     </html>
@@ -140,13 +142,13 @@ Django em código Python:
 Em código, é assim que se parece::
 
     >>> from django import template
-    >>> t = template.Template('Meu nome é {{ name }}.')
+    >>> t = template.Template('My name is {{ name }}.')
     >>> c = template.Context({'name': 'Adrian'})
     >>> print t.render(c)
-    Meu nome é Adrian.
+    My name is Adrian.
     >>> c = template.Context({'name': 'Fred'})
     >>> print t.render(c)
-    Meu nome é Fred.
+    My name is Fred.
 
 As sessões seguintes descrevem cada etapa com muito mais detalhe.
 
@@ -186,7 +188,7 @@ interativo.
 Vamos passar por alguns princípios básicos do sistema de template::
 
     >>> from django.template import Template
-    >>> t = Template('Meu nome é {{ name }}.')
+    >>> t = Template('My name is {{ name }}.')
     >>> print t
 
 Se você está seguindo a forma interativa, você vai ver algo como isso::
@@ -235,10 +237,10 @@ no módulo ``django.template``. Seu construtor tem um argumento optional:
 ``render()`` do objeto ``Template`` com o contexto para "preencher" o template::
 
     >>> from django.template import Context, Template
-    >>> t = Template('Meu nome é {{ name }}.')
+    >>> t = Template('My name is {{ name }}.')
     >>> c = Context({'name': 'Stephane'})
     >>> t.render(c)
-    u'Meu nome é Stephane.'
+    u'My name is Stephane.'
 
 Uma coisa que devemos salientar, é que o valor de retorno de ``t.render(c)``
 é um objeto Unicode -- não uma string normal Python. Você pode tratar isto
@@ -264,19 +266,19 @@ Aqui está um exemplo de modelo de compilação e renderização, usando um temp
 semelhante ao exemplo no início deste capítulo::
 
     >>> from django.template import Template, Context
-    >>> raw_template = """<p>Prezado {{ person_name }},</p>
+    >>> raw_template = """<p>Dear {{ person_name }},</p>
     ...
-    ... <p>Obrigado por fazer o pedido na {{ company }}. Está agendado
-    ... para enviar em {{ ship_date|date:"F j, Y" }}.</p>
+    ... <p>Thanks for placing an order from {{ company }}. It's scheduled to
+    ... ship on {{ ship_date|date:"F j, Y" }}.</p>
     ...
     ... {% if ordered_warranty %}
-    ... <p>A sua informação de garantia será incluída na embalagem.</p>
+    ... <p>Your warranty information will be included in the packaging.</p>
     ... {% else %}
-    ... <p>Você não solicitou garantia, sendo assim é por sua
-    ... conta quando o produto parar de funcionar.</p>
+    ... <p>You didn't order a warranty, so you're on your own when
+    ... the products inevitably stop working.</p>
     ... {% endif %}
     ...
-    ... <p>Sinceramente,<br />{{ company }}</p>"""
+    ... <p>Sincerely,<br />{{ company }}</p>"""
     >>> t = Template(raw_template)
     >>> import datetime
     >>> c = Context({'person_name': 'John Smith',
@@ -284,10 +286,10 @@ semelhante ao exemplo no início deste capítulo::
     ...     'ship_date': datetime.date(2009, 4, 2),
     ...     'ordered_warranty': False})
     >>> t.render(c)
-    u"<p>Prezado John Smith,</p>\n\n<p>Obrigado por fazer o pedido naa Outdoor
-    Equipment. Está agendado\n para enviar em April 2, 2009.</p>\n\n\n<p>Você não \n
-    solicitou garantia, sendo assim é por sua\n conta quando o produto
-    parar de funcionar.</p>\n\n\n<p>Sinceramente,<br />Outdoor Equipment
+    u"<p>Dear John Smith,</p>\n\n<p>Thanks for placing an order from Outdoor
+    Equipment. It's scheduled to\nship on April 2, 2009.</p>\n\n\n<p>You
+    didn't order a warranty, so you're on your own when\nthe products
+    inevitably stop working.</p>\n\n\n<p>Sincerely,<br />Outdoor Equipment
     </p>"
 
 Vamos passar as instruções de código uma por vez:
@@ -342,13 +344,13 @@ Uma vez que você tem um objeto ``Template``, você pode processar múltiplos
 contextos por ele. Por exemplo::
 
     >>> from django.template import Template, Context
-    >>> t = Template('Olá, {{ name }}')
+    >>> t = Template('Hello, {{ name }}')
     >>> print t.render(Context({'name': 'John'}))
-    Olá, John
+    Hello, John
     >>> print t.render(Context({'name': 'Julie'}))
-    Olá, Julie
+    Hello, Julie
     >>> print t.render(Context({'name': 'Pat'}))
-    Olá, Pat
+    Hello, Pat
 
 Sempre que você está usando o mesmo código de template para renderizar
 multiplos contextos, como isso, é mais eficiente criar o objeto
