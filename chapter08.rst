@@ -182,8 +182,8 @@ de ``DEBUG`` tem tempo de execução, como a seguir::
 Neste exemplo, a URL ``/debuginfo`` só estará disponível se sua
 configuração ``DEBUG`` estiver como ``True``.
 
-Using Named Groups
-------------------
+Usando grupos nomeados
+----------------------
 
 Em todos os exemplos de URLconf, foram usadas simples, *não nomeados* grupos
 de expressão regular, ou seja, ao por parêntesis em volta de partes da URL que
@@ -303,12 +303,12 @@ em uma expressão regular:
 * Em ambos os casos serão passadas quaisquer opções extras como argumentos
   keyword. Veja a próxima seção para mais informações.
 
-Passing Extra Options to View Functions
----------------------------------------
+Passando Opções Extras Para as Funções View
+-------------------------------------------
 
-Sometimes you'll find yourself writing view functions that are quite similar,
-with only a few small differences. For example, say you have two views whose
-contents are identical except for the template they use::
+As vezes você perceberá que está escrevendo funções que são muito parecidas,
+contendo apenas algumas pequenas diferenças. Por exemplo, digamos que há duas
+views cujo conteúdo são iguais, com exceção do template que usam::
 
     # urls.py
 
@@ -333,10 +333,10 @@ contents are identical except for the template they use::
         m_list = MyModel.objects.filter(is_new=True)
         return render(request, 'template2.html', {'m_list': m_list})
 
-We're repeating ourselves in this code, and that's inelegant. At first, you
-may think to remove the redundancy by using the same view for both URLs,
-putting parentheses around the URL to capture it, and checking the URL within
-the view to determine the template, like so::
+O código anterior contém alumas repetições e isso é deselegante. Primeiro
+é preciso remover a redundância usando a mesma view para ambas as URLs. Isso
+pode ser feito colocando parênteses em volta da URL para capturá-la e checar
+a URL dentro da view para decidir o template, como mostrado a seguir::
 
     # urls.py
 
@@ -361,15 +361,15 @@ the view to determine the template, like so::
             template_name = 'template2.html'
         return render(request, template_name, {'m_list': m_list})
 
-The problem with that solution, though, is that it couples your URLs to your
-code. If you decide to rename ``/foo/`` to ``/fooey/``, you'll have to remember
-to change the view code.
+O problema com essa solução é que une suas URLs ao seu código. Caso a URL
+``/foo/`` mude para ``/fooey/``, será necessário lembrar de mudar o código
+da view.
 
-The elegant solution involves an optional URLconf parameter. Each pattern in a
-URLconf may include a third item: a dictionary of keyword arguments to pass
-to the view function.
+A solução elegante envolve um parametro opcional do URLconf. Cada padrão em
+um URLconf pode receber um terceiro item: um dicionário de argumentos nomeados
+a serem passados para a função view.
 
-With this in mind, we can rewrite our ongoing example like this::
+Com isso em mente, podemos reescrever o exemplo atual desse modo::
 
     # urls.py
 
@@ -390,27 +390,27 @@ With this in mind, we can rewrite our ongoing example like this::
         m_list = MyModel.objects.filter(is_new=True)
         return render(request, template_name, {'m_list': m_list})
 
-As you can see, the URLconf in this example specifies ``template_name`` in the
-URLconf. The view function treats it as just another parameter.
+Como demonstrado acima, o URLconf no exemplo especifica o ``template_name`` no
+URLconf. A função view o trata simplesmente como outro parametro.
 
-This extra URLconf options technique is a nice way of sending additional
-information to your view functions with minimal fuss. As such, it's used by a
-couple of Django's bundled applications, most notably its generic views system,
-which we cover in Chapter 11.
+Essa técnica extra das opções do URLconf é uma boa maneira de enviar
+informações adicionais para suas funções views com pouca agitação. Como tal,
+é utilizada por algumas das aplicações do Django, mais notavelmente seu
+sistema de views genéricas, cobertas no `Chapter 11`_.
 
-The following sections contain a couple of ideas on how you can use the extra
-URLconf options technique in your own projects.
+As próximas seções mostram algumas ideias de como usar a técnica de opções 
+extra do URLconf em seus projetos.
 
-Faking Captured URLconf Values
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Falsificando valores URLconf capturados
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Say you have a set of views that match a pattern, along with another URL that
-doesn't fit the pattern but whose view logic is the same. In this case, you can
-"fake" the capturing of URL values by using extra URLconf options to handle
-that extra URL with the same view.
+Consideramos que há um conjunto de views que casam com um padrão, juntamente
+com outra URL que não se encaixa no padrão, mas a lógica da view é a mesma.
+Nesse caso, é possível "falsificar" os valores capturados pela URL usando
+as opções extra do URLconf para lidar com a URL extra da mesma view.
 
-For example, you might have an application that displays some data for a
-particular day, with URLs such as these::
+Por exemplo, pode-se ter uma aplicação que exibe dados para um dia em
+particular, com URLs como essas::
 
     /mydata/jan/01/
     /mydata/jan/02/
@@ -419,35 +419,34 @@ particular day, with URLs such as these::
     /mydata/dec/30/
     /mydata/dec/31/
 
-This is simple enough to deal with -- you can capture those in a URLconf like
-this (using named group syntax)::
+Este exemplo é simples o bastante -- é possível capturá-los em um URLconf
+dessa maneira (usando a sintaxe de grupos nomeados)::
 
     urlpatterns = patterns('',
         (r'^mydata/(?P<month>\w{3})/(?P<day>\d\d)/$', views.my_view),
     )
 
-And the view function signature would look like this::
+E o cabeçalho da função view ficaria assim::
 
     def my_view(request, month, day):
         # ....
 
-This approach is straightforward -- it's nothing you haven't seen before. The trick comes
-in when you want to add another URL that uses ``my_view`` but whose URL doesn't
-include a ``month`` and/or ``day``.
+Essa abordagem é direta -- não é nada de novo. O artifício aparece quando
+é preciso adicionar outra URL que usa ``my_view`` mas que a URL não inclui
+um ``month`` e/ou ``day``.
 
-For example, you might want to add another URL, ``/mydata/birthday/``, which
-would be equivalent to ``/mydata/jan/06/``. You can take advantage of extra
-URLconf options like so::
+Por exemplo, pode ser necessário adicionar outra URL, ``/mydata/birthday/``,
+que seria equivalente a ``/mydata/jan/06/``. Para esse caso é possível utilizar
+das opções extras do URLconf::
 
     urlpatterns = patterns('',
         (r'^mydata/birthday/$', views.my_view, {'month': 'jan', 'day': '06'}),
         (r'^mydata/(?P<month>\w{3})/(?P<day>\d\d)/$', views.my_view),
     )
 
-The cool thing here is that you don't have to change your view function at all.
-The view function only cares that it *gets* ``month`` and ``day`` parameters --
-it doesn't matter whether they come from the URL capturing itself or extra
-parameters.
+A parte legal daqui é que não foi preciso mudar a função view. A função só é
+encarregada de *receber* os parametros ``month`` e ``day``, não importa se
+eles são capturados da URL ou vem dos parametros extra.
 
 Making a View Generic
 ~~~~~~~~~~~~~~~~~~~~~
