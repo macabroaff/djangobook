@@ -448,11 +448,11 @@ A parte legal daqui é que não foi preciso mudar a função view. A função s�
 encarregada de *receber* os parametros ``month`` e ``day``, não importa se
 eles são capturados da URL ou vem dos parametros extra.
 
-Making a View Generic
-~~~~~~~~~~~~~~~~~~~~~
+Criando uma Generic View
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-It's good programming practice to "factor out" commonalities in code. For
-example, with these two Python functions::
+É uma boa prática de programação fatorar repetições no código. Por
+exemplo, temos essas duas funções Python::
 
     def say_hello(person_name):
         print 'Hello, %s' % person_name
@@ -460,21 +460,21 @@ example, with these two Python functions::
     def say_goodbye(person_name):
         print 'Goodbye, %s' % person_name
 
-we can factor out the greeting to make it a parameter::
+podemos fatorar o código tornando o cumprimento um parâmetro::
 
     def greet(person_name, greeting):
         print '%s, %s' % (greeting, person_name)
 
-You can apply this same philosophy to your Django views by using extra URLconf
-parameters.
+Essa mesma filosofia poed ser aplicada às views Django ao se utilizar os
+parametros extra do URLconf.
 
-With this in mind, you can start making higher-level abstractions of your
-views. Instead of thinking to yourself, "This view displays a list of ``Event``
-objects," and "That view displays a list of ``BlogEntry`` objects," realize
-they're both specific cases of "A view that displays a list of objects, where
-the type of object is variable."
+Tendo isso em mente, é possível começar a fazer abstrações de alto nível
+das views. Ao invés de pensar "Esta view exibe uma lista de objetos ``Event``"
+e "aquela view exibe uma lista de objetos ``BlogEntry``", perceba que ambos
+são casos específicos de "Uma view que exibe uma listra de objetos, onde
+o tipo do objeto pode variar".
 
-Take this code, for example::
+Observe esse código, por exemplo::
 
     # urls.py
 
@@ -499,8 +499,8 @@ Take this code, for example::
         obj_list = BlogEntry.objects.all()
         return render(request, 'mysite/blogentry_list.html', {'entry_list': obj_list})
 
-The two views do essentially the same thing: they display a list of objects. So
-let's factor out the type of object they're displaying::
+As duas views fazem essencialmente a mesma coisa: elas mostram uma lista de
+objetos. Pode-se fatorar o tipo do objeto que elas estão exibindo::
 
     # urls.py
 
@@ -521,59 +521,61 @@ let's factor out the type of object they're displaying::
         template_name = 'mysite/%s_list.html' % model.__name__.lower()
         return render(request, template_name, {'object_list': obj_list})
 
-With those small changes, we suddenly have a reusable, model-agnostic view!
-From now on, anytime we need a view that lists a set of objects, we can simply
-reuse this ``object_list`` view rather than writing view code. Here are a
-couple of notes about what we did:
+Com todas essas pequenas mudanças foi obtida uma view reusável que não
+depende do modelo. A partir de agora, toda vez que for necessária uma view
+que lista um conjunto de objetos, podemos reutilizar a ``object_list`` em
+detrimento de escrever o código da view. A seguir são mostradas algumas
+notas sobre o que foi feito aqui.
 
-* We're passing the model classes directly, as the ``model`` parameter. The
-  dictionary of extra URLconf options can pass any type of Python object --
-  not just strings.
+* Estamos passando as classes dos modelos diretamento como o parametro
+  ``model``. O dict de opções extras do URLconf pode passar qualquer
+  tipo de objeto Python -- não somente strings.
 
-* The ``model.objects.all()`` line is an example of *duck typing*: "If it
-  walks like a duck and talks like a duck, we can treat it like a duck."
-  Note the code doesn't know what type of object ``model`` is; the only
-  requirement is that ``model`` have an ``objects`` attribute, which in
-  turn has an ``all()`` method.
+* A linha ``model.objects.all()`` é um exemplo de *duck typing*: "Se anda
+  como um pato e fala como um pato, pode-se tratá-lo como um pato". Note
+  que o código não diz qual tipo de objeto ``model`` é. A única exigência
+  é que ``model`` tenha um atributo ``objects`` que, por usa vez, tenha
+  um método ``all()``.
 
-* We're using ``model.__name__.lower()`` in determining the template name.
-  Every Python class has a ``__name__`` attribute that returns the class
-  name. This feature is useful at times like this, when we don't know the
-  type of class until runtime. For example, the ``BlogEntry`` class's
-  ``__name__`` is the string ``'BlogEntry'``.
+* É utilizado ``model.__name__.lower()`` para determinar o nome do template.
+  Cada class Python possui um atributo ``__name__`` que retorna o nome da
+  classe. Essa funcionalidade é útil em horas como essa, quando não sabemos
+  o nome da classe até a execução do código. Por exemplo, o ``__name___``
+  da classe ``BlogEntry`` é a string ``'BlogEntry'``.
 
-* In a slight difference between this example and the previous example,
-  we're passing the generic variable name ``object_list`` to the template.
-  We could easily change this variable name to be ``blogentry_list`` or
-  ``event_list``, but we've left that as an exercise for the reader.
+* Em uma pequena diferença entre este exemplo e o anterior, estamos passando
+  para o nome variável genérico ``object_list`` para o template. Poderiamos
+  facilmente mudar esse nome variável para ``blogentry_list`` ou
+  ``event_list``, porém deixamos isso como exercício para o leitor.
 
-Because database-driven Web sites have several common patterns, Django comes
-with a set of "generic views" that use this exact technique to save you time.
-We cover Django's built-in generic views in Chapter 11.
+Como websites orientados a banco de dados possui diversos padrões comuns,
+Django vem com uma série de "views genéricas" que usam essa mesma técnica
+para economizar tempo. Views gnéricas são cobertas no Capítulo 11.
 
-Giving a View Configuration Options
+Dando a view opções de configuração
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you're distributing a Django application, chances are that your users will
-want some degree of configuration. In this case, it's a good idea to add hooks
-to your views for any configuration options you think people may want to
-change. You can use extra URLconf parameters for this purpose.
+Se a aplicação Django é distribuída, há grande chances dos usuários quererem
+algum grau de configuração. Nesse caso é uma boa ideia adicionar ganchos
+à suas views para quaisquer opções de configuração que as pessoas possam
+querer mudar. É possível utilizar os parametros extra do URLconf para isso.
 
-A common bit of an application to make configurable is the template name::
+Uma parte comum de uma aplicação para se fazer configurável é o nome do
+template::
 
     def my_view(request, template_name):
         var = do_something()
         return render(request, template_name, {'var': var})
 
-Understanding Precedence of Captured Values vs. Extra Options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Entendendo a Precedência de Valor Capturados vs. Opções Extras
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When there's a conflict, extra URLconf parameters get precedence over captured
-parameters. In other words, if your URLconf captures a named-group variable and
-an extra URLconf parameter includes a variable with the same name, the extra
-URLconf parameter value will be used.
+Quando há conflito os parametros extras do URLconfs são precedidos sobre
+os parâmetros capturados. Em outras palavras, se o URLconf captura uma
+variável de grupo nomeado e um parametro extra de URLconf inclui uma variável
+com o mesmo nome, o parâmetro extra do URLconf será utilizado.
 
-For example, consider this URLconf::
+Por exemplo, considere o seguinte URLConf::
 
     from django.conf.urls.defaults import *
     from mysite import views
@@ -582,15 +584,15 @@ For example, consider this URLconf::
         (r'^mydata/(?P<id>\d+)/$', views.my_view, {'id': 3}),
     )
 
-Here, both the regular expression and the extra dictionary include an ``id``.
-The hard-coded ``id`` gets precedence. That means any request (e.g.,
-``/mydata/2/`` or ``/mydata/432432/``) will be treated as if ``id`` is set
-to ``3``, regardless of the value captured in the URL.
+Aqui, ambas expressões regluares e o dict extra incluem um ``id``. O ``id``
+hard-coded dá precedência. Isso quer dizer que qualquer requisição (por
+exemplo ``/mydata/2/`` ou ``/mydata/432432``) será tratado como se o ``id``
+fosse ``3``, independente do valor capturado na URL.
 
-Astute readers will note that in this case, it's a waste of time and typing to
-capture the ``id`` in the regular expression, because its value will always be
-overridden by the dictionary's value. That's correct; we bring this up only to
-help you avoid making the mistake.
+Leitores astutos perceberão que nesse caso é uma perda de tempo e digitação
+capturar o ``id`` na expressão regular, pois o valor será sempre sobrescrito
+pelo valor do dict. Essa afirmação está correta; esse exemplo é trazido apenas
+para auxiliar o leitor evitar a cometer esse tipo de erro.
 
 Using Default View Arguments
 ----------------------------
