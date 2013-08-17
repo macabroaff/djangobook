@@ -27,7 +27,7 @@ Chapter 3: Views and URLconfs - [@lamenezes] (https://github.com/lamenezes)
 
 Chapter 4: Templates - [@marceloboth] (https://github.com/marceloboth)
 
-Chapter 5: Models - [@igocoelho] (https://github.com/igocoelho)
+Chapter 5: Models - [@marceloboth] (https://github.com/marceloboth)
 
 Chapter 6: The Django Admin Site - [@nil1] (http://github.com/nil1)
 
