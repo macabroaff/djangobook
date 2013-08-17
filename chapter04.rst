@@ -1502,11 +1502,14 @@ para o nosso exemplo em curso::
     </body>
     </html>
 
-This template, which we'll call ``base.html``, defines a simple HTML skeleton
-document that we'll use for all the pages on the site. It's the job of child
-templates to override, or add to, or leave alone the contents of the blocks.
-(If you're following along, save this file to your template directory as
-``base.html``.)
+Esse template, que vamos chamar de ``base.html``, define um simples esqueleto
+HTML, que usaremos para todas as páginas do site. É o trabalho de templates 
+filhos para substituir, adicionar ou isolar o conteúdo dos blocos 
+(Se estiver acompanhando, salve esse arquivo em seu diretório de templates
+como ``base.html``). // Revisar
+
+Estamos usando uma template tag aqui que você não viu anteriormente: a
+tag ``{% block %}``. Todos as tags ``{% block %}``
 
 We're using a template tag here that you haven't seen before: the
 ``{% block %}`` tag. All the ``{% block %}`` tags do is tell the template
