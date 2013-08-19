@@ -382,11 +382,11 @@ the same transaction control as the view functions.
 
 See Appendix B for more about information about database transactions.
 
-What's Next?
+O que vem em seguida?
 ============
 
-Web developers and database-schema designers don't always have the luxury of
-starting from scratch. In the `next chapter`_, we'll cover how to integrate with
-legacy systems, such as database schemas you've inherited from the 1980s.
+Desenvolvedores web e projetistas de banco de dados, nem sempre têm o luxo de começar do zero.
+No `próximo`_ capítulo, abordaremos como fazer integração como sistemas
+com sistemas legados, assim como esquemas de banco de dados herdados da decáda de 80.
 
-.. _next chapter: ../chapter18/
+.. _próximo: /chapter18.rst
