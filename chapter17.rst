@@ -3,25 +3,25 @@ Capítulo 17: Middleware
 ======================
 
 Em algumas ocasiões, você precisa executar algum de código para cada request que o Django trata.
-Esse código pode ser uma alteração na request antes que a view a trate, pode ser 
+Esse código pode ser uma alteração na request antes que a view a trate, pode ser
 para registrar informações sobre a request para propósitos de debugging, e assim por diante.
 
 Você pode fazer isso com framework de *middleware* do Django, que é um conjunto de "ganchos" (utilitários)
-dentro do processamento de request/response. É um sistema de "plug-in" leve e de baixo nível capaz 
+dentro do processamento de request/response. É um sistema de "plug-in" leve e de baixo nível capaz
 de alterar globalmente as entradas e saídas do Django.
 
 Cada componente do middleware é responsável por fazer alguma função específica.
 Se você está lendo este livro sequencialmente, você já deve ter middleware uma série de vezes:
 
 * Todas as ferramentas de sessão e usuários que nós vimos no Capítulo 14 são
-  possívels graças a alguns pedaços de middleware (mais 
-  especificamente, o middleware faz ``request.session`` e 
+  possívels graças a alguns pedaços de middleware (mais
+  especificamente, o middleware faz ``request.session`` e
   ``request.user`` estarem disponíveis nas views).
 
 * O cache do site, discutido no Capítulo 15 é na verdade somente um pedaço
-  de middleware que ignora a chamada para sua view, se sua resposta já 
+  de middleware que ignora a chamada para sua view, se sua resposta já
   estiver registrada no cache.
-  
+
 * As aplicações ``flatpages``, ``redirects`` e ``csrf`` do Capítulo 16,
   todas fazem sua magia através dos componentes de middleware.
 
@@ -34,15 +34,15 @@ O que é um Middleware?
 
 Vamos começar com um exemplo bem simples.
 
-Sites com alto tráfego, muitas vezes precisam implantar o Django atrás de um proxy 
-de balanceamento de carga (veja o Capítulo 12). Isto pode causar algumas pequenas 
-complicações, uma delas é que cada IP remoto (``request.META["REMOTE_IP"]``) 
-será o do proxy de balanceamento, e não o IP atual que está realizando a request. 
-Balanceadores de carga lidam com isto, definindo um cabeçalho especial, ``X-Forwardded-For``, 
+Sites com alto tráfego, muitas vezes precisam implantar o Django atrás de um proxy
+de balanceamento de carga (veja o Capítulo 12). Isto pode causar algumas pequenas
+complicações, uma delas é que cada IP remoto (``request.META["REMOTE_IP"]``)
+será o do proxy de balanceamento, e não o IP atual que está realizando a request.
+Balanceadores de carga lidam com isto, definindo um cabeçalho especial, ``X-Forwardded-For``,
 para o endereço IP que está fazendo a solicitação.
 
 
-Então aqui está um pequeno pedaço de middleware que permite sites executarem atrás 
+Então aqui está um pequeno pedaço de middleware que permite sites executarem atrás
 de um proxy e ainda visualizarem o endereço de IP correto em ``request.META["REMOTE_ADDR"]``::
 
     class SetRemoteAddrFromForwardedFor(object):
@@ -65,14 +65,14 @@ para maiúsculo, substituindo os hífens por underscores e adicionando o prefixo
 em seu nome.)
 
 Se este middleware está instalado (veja a próxima seção), em toda request
-o valor de ``X-Forwarded-For`` será inserido automaticamente dentro de 
+o valor de ``X-Forwarded-For`` será inserido automaticamente dentro de
 ``request.META['REMOTE_ADDR']``. Isto significa que suas aplicações Django
 não precisam se preocupar se estão atrás de um proxy de balanceamento de carga ou não;
 elas podem simplesmente acessar ``request.META['REMOTE_ADDR']``, e isso irá funcionar
 se estiverem ou não utilizando um proxy.
 
-Na verdade, é uma necessidade bastante comum que essa parte de middleware 
-seja embutida no Django. Ela vive em ``django.middleware.http``, 
+Na verdade, é uma necessidade bastante comum que essa parte de middleware
+seja embutida no Django. Ela vive em ``django.middleware.http``,
 e você pode ler um pouco mais sobre isso depois neste capítulo.
 
 
@@ -81,7 +81,7 @@ Instalação do Middleware
 
 Se você está lendo este livro sequencialmente, você já deve ter visto uma série
 de exemplos de instalação de middleware; muitos dos exemplos nos capítulos
-anteriores precisavam de um certo middleware. Para completar, aqui está 
+anteriores precisavam de um certo middleware. Para completar, aqui está
 como instalar um middleware.
 
 Para ativar um componente middleware, adicione-o na tupla ``MIDDLEWARE_CLASSES``
@@ -101,7 +101,7 @@ pode ser vazio, se você quiser -- mas recomendamos que você ative ``CommonMidd
 qual iremos explicar em breve.
 
 A ordem é importante. Na fase de request e view (visualização), Django executa
-o middleware na ordem definida em ``MIDDLEWARE_CLASSES``, e na fase de 
+o middleware na ordem definida em ``MIDDLEWARE_CLASSES``, e na fase de
 response (resposta) e exception (exceção ou erros) eles são executadas na ordem inversa.
 Isto é, Django trata ``MIDDLEWARE_CLASSES`` como uma espécie de "wrapper" em volta da view:
 na request ele caminha de cima para baixo até a view, e no response ele faz o caminho de volta.
@@ -112,132 +112,130 @@ Metódos do Middleware
 Agora que você sabe o que é um middleware e como instalá-lo, vamos dar uma olhada
 em todos os metódos disponíveis que a classe do middleware pode definir.
 
-
-Initializer: __init__(self)
+Inicializador: __init__(self)
 ---------------------------
 
-Use ``__init__()`` to perform systemwide setup for a given middleware class.
+Use ``__init__()`` para executar a configuração de todo o sistema para uma determinada
+classe middleware.
 
-For performance reasons, each activated middleware class is instantiated only
-*once* per server process. This means that ``__init__()`` is called only once
--- at server startup -- not for individual requests.
+Por razões de perfomance, cada classe de middleware ativado é instanciada
+somente *uma* vez por processo no servidor. Isto significa que ``__init__()``
+é chamado somente uma vez -- ao iniciar o servidor -- e não para requests individuais.
 
-A common reason to implement an ``__init__()`` method is to check whether the
-middleware is indeed needed. If ``__init__()`` raises
-``django.core.exceptions.MiddlewareNotUsed``, then Django will remove the
-middleware from the middleware stack. You might use this feature to check for
-some piece of software that the middleware class requires, or check whether
-the server is running debug mode, or any other such environment situation.
+Uma razão comum para implementar um metódo ``__init__()`` é para checar se o
+middleware é realmente necessário. Se o ``__init__()`` gerar ``django.core.exceptions.MiddlewareNotUsed``,
+então o Django irá remover o middleware da fila de execução. Você pode usar esse recurso
+para checar se algum pedaço do software que a classe do middleware requer, ou checar
+se o servidor está rodando em modo de debug, ou qualquer outra situação de ambiente.
 
-If a middleware class defines an ``__init__()`` method, the method should take no
-arguments beyond the standard ``self``.
+Se a classe middleware define um metódo ``__init__()``, o metódo deve deve receber
+nenhum argumento além do por padrão ``self``.
 
-Request Preprocessor: process_request(self, request)
+Pré-processador de Request: process_request(self, request)
 ----------------------------------------------------
 
-This method gets called as soon as the request has been received -- before
-Django has parsed the URL to determine which view to execute. It gets passed
-the ``HttpRequest`` object, which you may modify at will.
+Este metódo é chamado assim que a request é recebida -- antes do Django ter
+analisado a URL para determinar qual view será executada. Ele recebe o
+objeto ``HttpRequest``, que você pode modificar à vontade.
 
-``process_request()`` should return either ``None`` or an ``HttpResponse``
-object.
+``process_request()`` deve retornar ``None`` ou um objeto ``HttpResponse``.
 
-* If it returns ``None``, Django will continue processing this request,
-  executing any other middleware and then the appropriate view.
+* Se retornar ``None``, o Django irá continuar processando a request,
+  executando qualquer outro middleware e então a view apropriada.
 
-* If it returns an ``HttpResponse`` object, Django won't bother calling
-  *any* other middleware (of any type) or the appropriate view. Django
-  will immediately return that ``HttpResponse``.
+* Se retornar um objeto ``HttpResponse``, o Django não irá chamar *nenhum*
+  outro middleware (de nenhum tipo), nem a view apropriada. Django irá
+  retornar imediatamente o ``HttpResponse``.
 
-View Preprocessor: process_view(self, request, view, args, kwargs)
+
+Pré-processador de View: process_view(self, request, view, args, kwargs)
 ------------------------------------------------------------------
 
-This method gets called after the request preprocessor is called and Django
-has determined which view to execute, but before that view has actually been
-executed.
+Este metódo é chamado depois que pré-processador de request é chamado e
+o Django determinou qual view será executada, mas antes que a view seja
+executada.
 
-The arguments passed to this view are shown in Table 17-1.
+Os argumentos passados para esse metódo são mostrados na Tabela 17-1.
 
-.. table:: Table 17-1. Arguments Passed to process_view()
+.. table:: Tabela 17-1. Argumentos passados para o process_view()
 
     ==============  ==========================================================
-    Argument        Explanation
+    Argumento       Descrição
     ==============  ==========================================================
-    ``request``     The ``HttpRequest`` object.
+    ``request``     O objeto ``HttpRequest``.
 
-    ``view``        The Python function that Django will call to handle this
-                    request. This is the actual function object itself,
-                    not the name of the function as a string.
+    ``view``        Função Python que o Django irá chamar para tratar essa
+                    request. Isto é, uma referência ao objeto da função
+                    e não o nome ou a função em string.
 
-    ``args``        The list of positional arguments that will be passed to
-                    the view, not including the ``request`` argument (which
-                    is always the first argument to a view).
+    ``args``        Uma lista de argumentos posicionados, que serão passados
+                    para a view, não incluindo o argumento ``request`` (que
+                    é sempre o primeiro argumento para a view).
 
-    ``kwargs``      The dictionary of keyword arguments that will be passed
-                    to the view.
+    ``kwargs``      O dicionário de palavras-chave que será passado para a view.
     ==============  ==========================================================
 
-Just like ``process_request()``, ``process_view()`` should return either
-``None`` or an ``HttpResponse`` object.
+Assim como ``process_request()``, ``process_view()`` deve retornar ``None`` ou
+um objeto ``HttpResponse``.
 
-* If it returns ``None``, Django will continue processing this request,
-  executing any other middleware and then the appropriate view.
+* Se retornar ``None``, o Django irá continuar processando a request,
+  executando qualquer outro middleware e então a view apropriada.
 
-* If it returns an ``HttpResponse`` object, Django won't bother calling
-  *any* other middleware (of any type) or the appropriate view. Django
-  will immediately return that ``HttpResponse``.
+* Se retornar um objeto ``HttpResponse``, o Django não irá chamar *nenhum*
+  outro middleware (de nenhum tipo), nem a view apropriada. Django irá
+  retornar imediatamente o ``HttpResponse``.
 
-Response Postprocessor: process_response(self, request, response)
+Pós-processador de Response: process_response(self, request, response)
 -----------------------------------------------------------------
 
-This method gets called after the view function is called and the response is
-generated. Here, the processor can modify the content of a response. One
-obvious use case is content compression, such as gzipping of the request's
-HTML.
+Este metódo é chamado depois que a view é executada e resposta é gerada.
+Aqui, o processador pode modificar o conteúdo da resposta. Um caso óbvio de uso
+é compressão do conteúdo, como gzipping do pedido HTML.
 
-The parameters should be pretty self-explanatory: ``request`` is the request
-object, and ``response`` is the response object returned from the view.
+Os parâmetros devem ser bastante auto-explicativos: ``request`` é o objeto
+request, e ``response`` é o objeto response retornado pela view.
 
-Unlike the request and view preprocessors, which may return ``None``,
-``process_response()`` *must* return an ``HttpResponse`` object. That response
-could be the original one passed into the function (possibly modified) or a
-brand-new one.
+Diferente do request e view pré-processadores, que podem retornar ``None``,
+``process_response()`` *deve* retornar um objeto ``HttpResponse``.
+A resposta pode ser o response original passado para a função (possivelmente
+modificado) ou um novo.
 
-Exception Postprocessor: process_exception(self, request, exception)
+Pós-processador de Exception: process_exception(self, request, exception)
 --------------------------------------------------------------------
 
-This method gets called only if something goes wrong and a view raises an
-uncaught exception. You can use this hook to send error notifications, dump
-postmortem information to a log, or even try to recover from the error
-automatically.
+Este metódo é chamado somente se algo ocorreu errado e a view gerou uma
+exceção não capturada. Você pode usar esse "gancho" para enviar notificações
+de erro, despejar informações em um log, ou até mesmo tentar recuperar do
+erro automaticamente.
 
-The parameters to this function are the same ``request`` object we've been
-dealing with all along, and ``exception``, which is the actual ``Exception``
-object raised by the view function.
+Os parâmetros para essa função é o mesmo objeto ``request`` que estamos
+lidando durante o tempo todo e ``exception``, que é o objeto ``Exception``
+gerado pela view.
 
-``process_exception()`` should return a either ``None`` or an ``HttpResponse``
-object.
 
-* If it returns ``None``, Django will continue processing this request
-  with the framework's built-in exception handling.
+``process_exception()`` deve retornar ou ``None`` ou um objeto ``HttpResponse``.
 
-* If it returns an ``HttpResponse`` object, Django will use that response
-  instead of the framework's built-in exception handling.
+* Se ele retornar ``None``, Django irá continuar processando a request
+  com seu tratamento de exceção padrão.
+
+* Se ele retornar um objeto ``HttpResponse``, Django irá usar essa resposta
+  ao invés do tratamento de exceção padrão.
 
 .. note::
+    Django vem com um número de classes de middlwares (discutido na seção seguinte)
+    que são bons exemplos. Lendo o código deles devem lhe dar uma boa noção do
+    poder de um middleware.
 
-    Django ships with a number of middleware classes (discussed in the following
-    section) that make good examples. Reading the code for them should give you
-    a good feel for the power of middleware.
+    Você pode também encontrar um grande número de exemplos que a comunidade escreveu
+    na wiki do Django: http://code.djangoproject.com/wiki/ContributedMiddleware
 
-    You can also find a number of community-contributed examples on Django's
-    wiki: http://code.djangoproject.com/wiki/ContributedMiddleware
 
-Built-in Middleware
+Middlewares embutidos
 ===================
 
-Django comes with some built-in middleware to deal with common problems, which we discuss
-in the sections that follow.
+Django vem com alguns middlewares embutidos para lidar com problemas comuns, que
+descutiremos nas seções seguintes.
+
 
 Authentication Support Middleware
 ---------------------------------
@@ -375,7 +373,7 @@ Middleware de Transação
 Middleware class: ``django.middleware.transaction.TransactionMiddleware``.
 
 Este middleware monitora o ``COMMIT`` ou ``ROLLBACK`` no banco de dados na fase de request/response.
-Se a view executar com sucesso, um ``COMMIT`` é emitido. 
+Se a view executar com sucesso, um ``COMMIT`` é emitido.
 Se a view executar com erro e gerar uma exceção, um ``ROLLBACK`` é emitido.
 
 A ordem que este middleware é inserido é importante. Módulos de middleware executando antes
