@@ -51,7 +51,7 @@ Chapter 15: Caching
 
 Chapter 16: django.contrib
 
-Chapter 17: Middleware
+Chapter 17: Middleware - [@lucasmagnum] (https://github.com/lucasmagnum)
 
 Chapter 18: Integrating with Legacy Databases and Applications - [@fabrimatt] (https://github.com/fabrimatt)
 
