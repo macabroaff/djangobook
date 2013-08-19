@@ -1,34 +1,33 @@
 ======================
-Chapter 17: Middleware
+Capítulo 17: Middleware
 ======================
 
-On occasion, you'll need to run a piece of code on each and every request that
-Django handles. This code might need to modify the request before the view
-handles it, it might need to log information about the request for debugging
-purposes, and so forth.
+Em algumas ocasiões, você precisa executar algum de código para cada request que o Django trata.
+Esse código pode ser uma alteração na request antes que a view a trate, pode ser 
+para registrar informações sobre a request para propósitos de debugging, e assim por diante.
 
-You can do this with Django's *middleware* framework, which is a set of hooks
-into Django's request/response processing. It's a light, low-level "plug-in"
-system capable of globally altering both Django's input and output.
+Você pode fazer isso com framework de *middleware* do Django, que é um conjunto de "ganchos" (utilitários)
+dentro do processamento de request/response. É um sistema de "plug-in" leve e de baixo nível capaz 
+de alterar globalmente as entradas e saídas do Django.
 
-Each middleware component is responsible for doing some specific function. If
-you're reading this book straight through, you've seen middleware a number of
-times already:
+Cada componente do middleware é responsável por fazer alguma função específica.
+Se você está lendo este livro sequencialmente, você já deve ter middleware uma série de vezes:
 
-* All of the session and user tools that we looked at in Chapter 14
-  are made possible by a few small pieces of middleware (more
-  specifically, the middleware makes ``request.session`` and
-  ``request.user`` available to you in views).
+* Todas as ferramentas de sessão e usuários que nós vimos no Capítulo 14 são
+  possívels graças a alguns pedaços de middleware (mais 
+  especificamente, o middleware faz ``request.session`` e 
+  ``request.user`` estarem disponíveis nas views).
 
-* The sitewide cache discussed in Chapter 15 is actually just a piece
-  of middleware that bypasses the call to your view function if the
-  response for that view has already been cached.
+* O cache do site, discutido no Capítulo 15 é na verdade somente um pedaço
+  de middleware que ignora a chamada para sua view, se sua resposta já 
+  estiver registrada no cache.
+  
+* As aplicações ``flatpages``, ``redirects`` e ``csrf`` do Capítulo 16,
+  todas fazem sua magia através dos componentes de middleware.
 
-* The ``flatpages``, ``redirects``, and ``csrf`` applications from
-  Chapter 16 all do their magic through middleware components.
+Este capítulo mergulha exatamente em o que é o middleware e como ele funciona,
+e explica como você pode escrever o seu próprio middleware.
 
-This chapter dives deeper into exactly what middleware is and how it works,
-and explains how you can write your own middleware.
 
 What's Middleware?
 ==================
@@ -350,37 +349,40 @@ if you're sitting behind a reverse proxy that causes each request's
     Only use this middleware when you can absolutely trust the value of
     ``HTTP_X_FORWARDED_FOR``.
 
-Session Support Middleware
+Middleware de Sessão
 --------------------------
 
 Middleware class: ``django.contrib.sessions.middleware.SessionMiddleware``.
 
-This middleware enables session support. See Chapter 14 for details.
+Este middleware ativa suporte a sessão. Veja o capítulo 14 para mais detalhes.
 
-Sitewide Cache Middleware
+
+Middleware de Cache do site
 -------------------------
 
-Middleware classes: ``django.middleware.cache.UpdateCacheMiddleware`` and
+Middleware classes: ``django.middleware.cache.UpdateCacheMiddleware`` e
 ``django.middleware.cache.FetchFromCacheMiddleware``.
 
-These middlewares work together to cache each Django-powered page. This was
-discussed in detail in Chapter 15.
+Estes middlewares trabalham juntos para fazer o cache de todas as páginas construídas com Django.
+Isso foi discutido em detalhes no capítulo 15.
 
-Transaction Middleware
+
+Middleware de Transação
 ----------------------
 
 Middleware class: ``django.middleware.transaction.TransactionMiddleware``.
 
-This middleware binds a database ``COMMIT`` or ``ROLLBACK`` to the request/response
-phase. If a view function runs successfully, a ``COMMIT`` is issued. If the view
-raises an exception, a ``ROLLBACK`` is issued.
+Este middleware monitora o ``COMMIT`` ou ``ROLLBACK`` no banco de dados na fase de request/response.
+Se a view executar com sucesso, um ``COMMIT`` é emitido. 
+Se a view executar com erro e gerar uma exceção, um ``ROLLBACK`` é emitido.
 
-The order of this middleware in the stack is important. Middleware modules
-running outside of it run with commit-on-save -- the default Django behavior.
-Middleware modules running inside it (coming later in the stack) will be under
-the same transaction control as the view functions.
+A ordem que este middleware é inserido é importante. Módulos de middleware executando antes
+desse (inseridos antes na listagem de middlewares), executam com commit-on-save -- compartamento padrão do Django.
+Módulos de middleware executando depois desse (inseridos após na listagem de middlewares) estarão sob
+o mesmo controle de transação assim como as funções de visualizações (views).
 
-See Appendix B for more about information about database transactions.
+Veja o Apêndice B para mais informações sobre as transações em banco de dados.
+
 
 O que vem em seguida?
 ============
