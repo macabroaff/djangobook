@@ -1,9 +1,9 @@
 ====================================
-Appendix F: The django-admin Utility
+Apêndice F: O utilitário django-admin
 ====================================
 
-``django-admin.py`` is Django's command-line utility for administrative tasks.
-This appendix explains its many powers.
+``django-admin.py`` é um utilitário de linha de comando do Django para tarefas administrativas.
+Este apêndice explica seus muitos poderes.
 
 You'll usually access ``django-admin.py`` through a project's ``manage.py``
 wrapper. ``manage.py`` is automatically created in each Django project and is a
