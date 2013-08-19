@@ -29,20 +29,21 @@ Este capítulo mergulha exatamente em o que é o middleware e como ele funciona,
 e explica como você pode escrever o seu próprio middleware.
 
 
-What's Middleware?
+O que é um Middleware?
 ==================
 
-Let's start with a very simple example.
+Vamos começar com um exemplo bem simples.
 
-High-traffic sites often need to deploy Django behind a load-balancing proxy
-(see Chapter 12). This can cause a few small complications, one of which is
-that every request's remote IP (``request.META["REMOTE_IP"]``) will be that of
-the load balancer, not the actual IP making the request. Load balancers deal
-with this by setting a special header, ``X-Forwarded-For``, to the actual
-requesting IP address.
+Sites com alto tráfego, muitas vezes precisam implantar o Django atrás de um proxy 
+de balanceamento de carga (veja o Capítulo 12). Isto pode causar algumas pequenas 
+complicações, uma delas é que cada IP remoto (``request.META["REMOTE_IP"]``) 
+será o do proxy de balanceamento, e não o IP atual que está realizando a request. 
+Balanceadores de carga lidam com isto, definindo um cabeçalho especial, ``X-Forwardded-For``, 
+para o endereço IP que está fazendo a solicitação.
 
-So here's a small bit of middleware that lets sites running behind a proxy
-still see the correct IP address in ``request.META["REMOTE_ADDR"]``::
+
+Então aqui está um pequeno pedaço de middleware que permite sites executarem atrás 
+de um proxy e ainda visualizarem o endereço de IP correto em ``request.META["REMOTE_ADDR"]``::
 
     class SetRemoteAddrFromForwardedFor(object):
         def process_request(self, request):
@@ -51,42 +52,43 @@ still see the correct IP address in ``request.META["REMOTE_ADDR"]``::
             except KeyError:
                 pass
             else:
-                # HTTP_X_FORWARDED_FOR can be a comma-separated list of IPs.
-                # Take just the first one.
+                # HTTP_X_FORWARDED_FOR pode ser uma lista de IPs separados por vírgula.
+                # Pegue o somente o primeiro.
                 real_ip = real_ip.split(",")[0]
                 request.META['REMOTE_ADDR'] = real_ip
 
-(Note: Although the HTTP header is called ``X-Forwarded-For``, Django makes
-it available as ``request.META['HTTP_X_FORWARDED_FOR']``. With the exception
-of ``content-length`` and ``content-type``, any HTTP headers in the request are
-converted to ``request.META`` keys by converting all characters to uppercase,
-replacing any hyphens with underscores and adding an ``HTTP_`` prefix to the
-name.)
+(Nota: Embora o cabeçalho HTTP é chamado ``X-Forwarded-For``, Django o deixa
+disponível como ``request.META['HTTP_X_FORWARDED_FOR']``. Com a exceção de
+``content-length`` e ``content-type``, qualquer cabeçalho HTTP na request
+são convertidos para chaves no ``request.META``, convertendo todos seus caracteres
+para maiúsculo, substituindo os hífens por underscores e adicionando o prefixo ``HTTP_``
+em seu nome.)
 
-If this middleware is installed (see the next section), every request's
-``X-Forwarded-For`` value will be automatically inserted into
-``request.META['REMOTE_ADDR']``. This means your Django applications don't need
-to be concerned with whether they're behind a load-balancing proxy or not; they
-can simply access ``request.META['REMOTE_ADDR']``, and that will work whether
-or not a proxy is being used.
+Se este middleware está instalado (veja a próxima seção), em toda request
+o valor de ``X-Forwarded-For`` será inserido automaticamente dentro de 
+``request.META['REMOTE_ADDR']``. Isto significa que suas aplicações Django
+não precisam se preocupar se estão atrás de um proxy de balanceamento de carga ou não;
+elas podem simplesmente acessar ``request.META['REMOTE_ADDR']``, e isso irá funcionar
+se estiverem ou não utilizando um proxy.
 
-In fact, this is a common enough need that this piece of middleware is a
-built-in part of Django. It lives in ``django.middleware.http``, and you can
-read a bit more about it later in this chapter.
+Na verdade, é uma necessidade bastante comum que essa parte de middleware 
+seja embutida no Django. Ela vive em ``django.middleware.http``, 
+e você pode ler um pouco mais sobre isso depois neste capítulo.
 
-Middleware Installation
+
+Instalação do Middleware
 =======================
 
-If you've read this book straight through, you've already seen a number of
-examples of middleware installation; many of the examples in previous chapters
-have required certain middleware. For completeness, here's how to install
-middleware.
+Se você está lendo este livro sequencialmente, você já deve ter visto uma série
+de exemplos de instalação de middleware; muitos dos exemplos nos capítulos
+anteriores precisavam de um certo middleware. Para completar, aqui está 
+como instalar um middleware.
 
-To activate a middleware component, add it to the ``MIDDLEWARE_CLASSES`` tuple
-in your settings module. In ``MIDDLEWARE_CLASSES``, each middleware component
-is represented by a string: the full Python path to the middleware's class
-name. For example, here's the default ``MIDDLEWARE_CLASSES`` created by
-``django-admin.py startproject``::
+Para ativar um componente middleware, adicione-o na tupla ``MIDDLEWARE_CLASSES``
+no settings de seu módulo. Em ``MIDDLEWARE_CLASSES``, cada componente middleware
+é representado por uma string: sendo caminho Python completo para o nome da
+classe do middleware. Como exemplo, aqui está o ``MIDDLEWARE_CLASSES`` padrão
+criado por ``django-admin.py startproject``::
 
     MIDDLEWARE_CLASSES = (
         'django.middleware.common.CommonMiddleware',
@@ -94,22 +96,22 @@ name. For example, here's the default ``MIDDLEWARE_CLASSES`` created by
         'django.contrib.auth.middleware.AuthenticationMiddleware',
     )
 
-A Django installation doesn't require any middleware -- ``MIDDLEWARE_CLASSES``
-can be empty, if you'd like -- but we recommend that you activate
-``CommonMiddleware``, which we explain shortly.
+Uma instalação Django não requer nenhum middleware -- ``MIDDLEWARE_CLASSES``
+pode ser vazio, se você quiser -- mas recomendamos que você ative ``CommonMiddleware``,
+qual iremos explicar em breve.
 
-The order is significant. On the request and view phases, Django applies
-middleware in the order given in ``MIDDLEWARE_CLASSES``, and on the response
-and exception phases, Django applies middleware in reverse order. That is,
-Django treats ``MIDDLEWARE_CLASSES`` as a sort of "wrapper" around the view
-function: on the request it walks down the list to the view, and on the
-response it walks back up.
+A ordem é importante. Na fase de request e view (visualização), Django executa
+o middleware na ordem definida em ``MIDDLEWARE_CLASSES``, e na fase de 
+response (resposta) e exception (exceção ou erros) eles são executadas na ordem inversa.
+Isto é, Django trata ``MIDDLEWARE_CLASSES`` como uma espécie de "wrapper" em volta da view:
+na request ele caminha de cima para baixo até a view, e no response ele faz o caminho de volta.
 
-Middleware Methods
+Metódos do Middleware
 ==================
 
-Now that you know what middleware is and how to install it, let's take a look at
-all the available methods that middleware classes can define.
+Agora que você sabe o que é um middleware e como instalá-lo, vamos dar uma olhada
+em todos os metódos disponíveis que a classe do middleware pode definir.
+
 
 Initializer: __init__(self)
 ---------------------------
