@@ -31,7 +31,7 @@ Chapter 5: Models - [@marceloboth] (https://github.com/marceloboth)
 
 Chapter 6: The Django Admin Site - [@nil1] (http://github.com/nil1)
 
-Chapter 7: Forms
+Chapter 7: Forms - [@edgarberlinck] (http://github/edgarberlinck)
 
 Chapter 8: Advanced Views and URLconfs - [@lamenezes] (https://github.com/lamenezes)
 
