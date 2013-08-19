@@ -386,7 +386,7 @@ O que vem em seguida?
 ============
 
 Desenvolvedores web e projetistas de banco de dados, nem sempre têm o luxo de começar do zero.
-No `próximo`_ capítulo, abordaremos como fazer integração como sistemas
-com sistemas legados, assim como esquemas de banco de dados herdados da decáda de 80.
+No `próximo`_ capítulo, abordaremos como fazer integração com sistemas legados,
+assim como esquemas de banco de dados herdados da decáda de 80.
 
 .. _próximo: /chapter18.rst
