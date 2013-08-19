@@ -5,33 +5,33 @@ Apêndice F: O utilitário django-admin
 ``django-admin.py`` é um utilitário de linha de comando do Django para tarefas administrativas.
 Este apêndice explica seus muitos poderes.
 
-You'll usually access ``django-admin.py`` through a project's ``manage.py``
-wrapper. ``manage.py`` is automatically created in each Django project and is a
-thin wrapper around ``django-admin.py``. It takes care of two things for you
-before delegating to ``django-admin.py``:
+Você frequentemente acessará ``django-admin.py`` através do pacote ``manage.py``
+do projeto. ``manage.py`` é automaticamente criado em cada projeto Django e é um pequeno pacote em volta de
+``django-admin.py``. Ele cuida de duas coisas para você
+antes de delegar para ``django-admin.py``:
 
-* It puts your project's package on ``sys.path``.
+* Ele coloca o pacote do seu projeto no ``sys.path``.
 
-* It sets the ``DJANGO_SETTINGS_MODULE`` environment variable so that it
-  points to your project's ``settings.py`` file.
+* Ele define a variável de ambiente ``DJANGO_SETTINGS_MODULE`` de modo a
+  apontar para o arquivo ``settings.py`` do seu projeto.
 
-The ``django-admin.py`` script should be on your system path if you installed
-Django via its ``setup.py`` utility. If it's not on your path, you can find it in
-``site-packages/django/bin`` within your Python installation. Consider
-symlinking it from some place on your path, such as ``/usr/local/bin``.
+O script ``django-admin.py`` deve estar no seu system path se você instalou
+Django via seu utilitário ``setup.py``. Se ele não estiver em seu path, você pode encontrá-lo em
+``site-packages/django/bin`` dentro da instalação do seu Python. Considere
+usar links simbólicos de algum lugar no seu path, como ``/usr/local/bin``.
 
-Windows users, who do not have symlinking functionality available,
-can copy ``django-admin.py`` to a location on their existing path or edit the
-``PATH`` settings (under Settings ~TRA Control Panel ~TRA System ~TRA Advanced ~TRA
-Environment) to point to its installed location.
+Usuários de Windows , que não possui a funcionalidade de links simbólicos,
+podem copiar ``django-admin.py`` para um local no seu path existente ou editar as definições de
+``PATH`` (em Menu Iniciar ~TRA Painel de Controle ~TRA Sistema ~TRA Configurações avançadas do sistema ~TRA
+Variáveis de Ambiente) para apontar para o local da instalação.
 
-Generally, when working on a single Django project, it's easier to use
-``manage.py``. Use ``django-admin.py`` with ``DJANGO_SETTINGS_MODULE`` or the
-``--settings`` command-line option, if you need to switch between multiple
-Django settings files.
+Geralmente, quando trabalhando com um único projeto Django, é mais fácil usar
+``manage.py``. Use ``django-admin.py`` com ``DJANGO_SETTINGS_MODULE`` ou
+``--settings`` na linha de comando, se você precisar trocar entre múltiplos
+arquivos de definição do Django.
 
-The command-line examples throughout this appendix use ``django-admin.py`` to
-be consistent, but any example can use ``manage.py`` just as well.
+Os exemplos de linha de comando neste apêndice usam ``django-admin.py`` para
+ser consistente, mas qualquer exemplopode usar ``manage.py`` da mesma forma.
 
 Usage
 =====
