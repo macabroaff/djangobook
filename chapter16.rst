@@ -12,14 +12,14 @@ coleção de Add-ons.
 A biblioteca padrão do Django
 ===========================
 
-A biblioteca padrão do Django se econtra no pacote ``django.contrib``. Dentro de cada
+A biblioteca padrão do Django se econtra no pacote ``django.contrib``. Dentro de
 cada subpacote temos uma peça separada da funcionalidade do complemento. Estas peças não estão
 necessariamente relacionadas, mas o ``django.contrib`` pode exigir outros subpacotes.
 
 
-There's no hard requirement for the types of functionality in
-``django.contrib``. Some of the packages include models (and hence require you
-to install their database tables into your database), but others consist solely
+Não há nenhuma exigência difícil para a funcionalidade do
+``django.contrib``. Alguns pacotes incluem modelos (e portanto exige que você
+instale suas tabelas dentro do banco de dados), but others consist solely
 of middleware or template tags.
 
 The single characteristic the ``django.contrib`` packages have in common is
