@@ -41,7 +41,7 @@ Chapter 10: Advanced Models - [@londerson] (https://github.com/londerson)
 
 Chapter 11: Generic Views - [@embs] (https://github.com/embs)
 
-Chapter 12: Deploying Django
+Chapter 12: Deploying Django - [trumae] (https://github.com/trumae)
 
 Chapter 13: Generating Non-HTML Content - [@brunomachado] (https://github.com/brunomachado)
 
