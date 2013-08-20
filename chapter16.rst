@@ -1,21 +1,21 @@
 ==========================
-Chapter 16: django.contrib
+Capítulo 16: django.contrib
 ==========================
 
-One of the many strengths of Python is its "batteries included" philosophy: when
-you install Python, it comes with a large standard library of packages that you
-can start using immediately, without having to download anything else. Django
-aims to follow this philosophy, and it includes its own standard library of
-add-ons useful for common Web development tasks. This chapter covers that
-collection of add-ons.
+Um dos muitos pontos fortes do Python é a filosofia de "pilhas incluídas": Quando
+você instala o Python, ele vem com com uma grande biblioteca padrão que você
+pode começar a usar imediatamente, sem precisar baixar nada. Django
+segue essa mesma filosofia, e isso inclui sua própria biblioteca padrão de
+add-ons úteis para tarefas comuns de desenvolvimento web. Este capítulo abrange essa
+coleção de Add-ons.
 
-The Django Standard Library
+A biblioteca padrão do Django
 ===========================
 
-Django's standard library lives in the package ``django.contrib``. Within each
-subpackage is a separate piece of add-on functionality. These pieces are not
-necessarily related, but some ``django.contrib`` subpackages may require other
-ones.
+A biblioteca padrão do Django se econtra no pacote ``django.contrib``. Dentro de cada
+cada subpacote temos uma peça separada da funcionalidade do complemento. Estas peças não estão
+necessariamente relacionadas, mas o ``django.contrib`` pode exigir outros subpacotes.
+
 
 There's no hard requirement for the types of functionality in
 ``django.contrib``. Some of the packages include models (and hence require you
