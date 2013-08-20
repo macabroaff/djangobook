@@ -47,7 +47,7 @@ Chapter 13: Generating Non-HTML Content - [@brunomachado] (https://github.com/br
 
 Chapter 14: Sessions, Users, and Registration - [@rafa-so] (https://github.com/rafa-so)
 
-Chapter 15: Caching
+Chapter 15: Caching - [@andersonunsonst] (https://github.com/andersonunsonst)
 
 Chapter 16: django.contrib
 
