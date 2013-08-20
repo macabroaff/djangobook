@@ -2,8 +2,8 @@
 Capítulo 4: Templates
 ====================
 
-No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos 
-o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente 
+No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos
+o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente
 em nosso código Python, tal como::
 
     def current_datetime(request):
@@ -11,13 +11,13 @@ em nosso código Python, tal como::
         html = "<html><body>It is now %s.</body></html>" % now
         return HttpResponse(html)
 
-Embora essa técnica seja conveniente para o propósito de demonstrar como as views 
-trabalham, não é uma boa idéia codificar HTML diretamente em suas views. 
+Embora essa técnica seja conveniente para o propósito de demonstrar como as views
+trabalham, não é uma boa idéia codificar HTML diretamente em suas views.
 Aqui está o por que:
 
 * Qualquer modificação no design da página requer modificação no código Python.
-  O design de um site tende a mudar com mais freqüência do que o código Python 
-  subjacente, por isso seria coveniente se o design pude-se ser modificado sem 
+  O design de um site tende a mudar com mais freqüência do que o código Python
+  subjacente, por isso seria coveniente se o design pude-se ser modificado sem
   precisar modificar o código Python.
 
 * Escrever código Python e design HTML são duas diciplinas diferentes,
@@ -97,7 +97,7 @@ valores para dentro. Vamos análisa-lo:
   permitindo você fazer um laço sobre cada item em uma seqüência. Uma tag ``if``,
   como você pode esperar, age como uma declaração lógica "if". Neste caso
   particular, a tag verifica se o valor da váriavel ``ordered_warranty`` está
-  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}`` 
+  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}``
   e ``{% else %}``. Se não, o sistema de template exibirá
   tudo que está entre ``{% else %}`` e ``{% endif %}``. Perceba que o ``{% else
   %}`` é opcional.
@@ -182,7 +182,7 @@ interativo.
 
     Quando você executa ``python manage.py shell``, o comando se preocupa em definir
     a variável ``DJANGO_SETTINGS_MODULE`` para você. Nós estamos encorajando você a usar
-    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes 
+    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes
     e configurações que você deva fazer.
 
 Vamos passar por alguns princípios básicos do sistema de template::
@@ -248,7 +248,7 @@ pelo uso do ``u`` em frente a string. Django usa objetos Unicode ao invés de
 strings normais em seu framework. Se você entende a repercurssão disso, seja
 grato pelas coisas sofisticadas que o Django faz nos bastidores para isto funcionar.
 Se você não entende a repercussão disso, não se preocupe agora; apenas entenda que
-o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande 
+o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande
 variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
 
 .. admonition:: Dicionários e contextos
@@ -259,7 +259,7 @@ variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
    no capítulo 9.
 
 Nomes de váriaveis devem iniciar com letras (A-Z or a-z)  podem contem
-mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve). 
+mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve).
 Nomes de váriaves são case sensitive.
 
 Aqui está um exemplo de modelo de compilação e renderização, usando um template
@@ -1033,8 +1033,8 @@ Usando templates na visão
 =========================
 
 Você já aprendeu o básico do uso do sistema de template, agora vamos usar esse
-conhecimento para criar uma view. Lembre-se da view ``current_datetime`` em 
-``mysite.views``, que nós começamos no capítulo anterior. Aqui está o que se 
+conhecimento para criar uma view. Lembre-se da view ``current_datetime`` em
+``mysite.views``, que nós começamos no capítulo anterior. Aqui está o que se
 parece::
 
     from django.http import HttpResponse
@@ -1059,14 +1059,14 @@ você poderia pensar em fazer algo assim::
         return HttpResponse(html)
 
 Certo, isso usa o sistema de template, mas não resolver os problemas que nós
-apontamos no introdução deste capítulo. Ou seja, o template está ainda incorporado 
-ao código Python, então a separação real de dados e apresentação não é alcaçada. 
-Vamos corrigir isso, colocando o template em um *arquivo separado*, que essa 
+apontamos no introdução deste capítulo. Ou seja, o template está ainda incorporado
+ao código Python, então a separação real de dados e apresentação não é alcaçada.
+Vamos corrigir isso, colocando o template em um *arquivo separado*, que essa
 view irá carregar.
 
-Você pode considerar primeiro salvar o seu template em algum lugar do 
-seu sistema de arquivos e usar o Python built-in com a funcionalidade de abertura 
-de arquivos para ler o conteúdo do template. Aqui está como deve parecer, assumindo 
+Você pode considerar primeiro salvar o seu template em algum lugar do
+seu sistema de arquivos e usar o Python built-in com a funcionalidade de abertura
+de arquivos para ler o conteúdo do template. Aqui está como deve parecer, assumindo
 que o template está salvo no arquivo ``/home/djangouser/templates/mytemplate.html``::
 
     from django.template import Template, Context
@@ -1085,37 +1085,37 @@ que o template está salvo no arquivo ``/home/djangouser/templates/mytemplate.ht
 
 Esta abordagem, no entanto, é deselegante pelas seguintes razões::
 
-* Ela não lida com o caso de um arquivo que está faltando. Se o arquivo 
-  ``mytemplate.html`` não existe ou não pode ser lido, a chamada ``open()`` 
+* Ela não lida com o caso de um arquivo que está faltando. Se o arquivo
+  ``mytemplate.html`` não existe ou não pode ser lido, a chamada ``open()``
   irá levantar uma excessão ``IOError``.
 
-* Ela usa códigos fixos na localização do seu template. Se você estivesse usando 
-  essa técnica para cada view function, você estaria duplicando a localização 
+* Ela usa códigos fixos na localização do seu template. Se você estivesse usando
+  essa técnica para cada view function, você estaria duplicando a localização
   do template. Sem mencionar que envolve bastante digitação!
 
-* Ela incluí um série de código clichê chato. Você tem coisa melhor para 
-  fazer do que escrever chamadas para ``open()``, ``fp.read()`` e ``fp.close()`` 
+* Ela incluí um série de código clichê chato. Você tem coisa melhor para
+  fazer do que escrever chamadas para ``open()``, ``fp.read()`` e ``fp.close()``
   cada vez que você carrega um template.
 
-Para resolver estas questões, nós vamos usar *carregamento de template* e 
+Para resolver estas questões, nós vamos usar *carregamento de template* e
 *diretório de template*.
 
 Carregando Template
 ===================
 
 Django fornece uma API conveniente e poderosa para carregamento de templates
-apartir do sistema de arquivos, com o objetivo de remover a redundância, tanto na 
-chamada do carregamento de template e bem como em seus templates propriamente 
+apartir do sistema de arquivos, com o objetivo de remover a redundância, tanto na
+chamada do carregamento de template e bem como em seus templates propriamente
 ditos.
 
-Para poder utilizar esse API de carregamento de template, primeiro você 
-precisa dizer ao framework onde você armazena seus templates. O local para 
-fazer isso é em seu arquivo de configurações -- o arquivo ``settings.py`` 
-que mencionamos no último capítulo, quando nós introduzimos a configuração 
+Para poder utilizar esse API de carregamento de template, primeiro você
+precisa dizer ao framework onde você armazena seus templates. O local para
+fazer isso é em seu arquivo de configurações -- o arquivo ``settings.py``
+que mencionamos no último capítulo, quando nós introduzimos a configuração
 ``ROOT_URLCONF``.
 
-Se voce está acompanhando, abra seu ``settings.py`` e encontre a  
-configuração ``TEMPLATE_DIRS``. Por padrão, é uma tupla vazia, provavelmente 
+Se voce está acompanhando, abra seu ``settings.py`` e encontre a
+configuração ``TEMPLATE_DIRS``. Por padrão, é uma tupla vazia, provavelmente
 contendo alguns comentários gerados automaticamente::
 
     TEMPLATE_DIRS = (
@@ -1124,8 +1124,8 @@ contendo alguns comentários gerados automaticamente::
         # Don't forget to use absolute paths, not relative paths.
     )
 
-Essa configuração informa o mecanismo de carregamento de template do Django onde 
-procurar por templates. Escolha o diretório onde você gostaria de armazenar seus templates 
+Essa configuração informa o mecanismo de carregamento de template do Django onde
+procurar por templates. Escolha o diretório onde você gostaria de armazenar seus templates
 e adicione ele ao ``TEMPLATE_DIRS``, dessa forma::
 
     TEMPLATE_DIRS = (
@@ -1134,14 +1134,14 @@ e adicione ele ao ``TEMPLATE_DIRS``, dessa forma::
 
 Existem algumas coisas para serem observadas:
 
-* Você pode especificar qualquer diretório que você deseja, contanto que 
+* Você pode especificar qualquer diretório que você deseja, contanto que
   o diretório e os templates dentro desse diretório possam ser lidos pela
-  conta de usuário sob o qual o servidor web é executado. Se você não pensa 
-  em um local apropriado para colocar seus templates, nós recomendamos a  
-  criação de um diretório ``templates`` dentro de seu projeto, ou seja, 
+  conta de usuário sob o qual o servidor web é executado. Se você não pensa
+  em um local apropriado para colocar seus templates, nós recomendamos a
+  criação de um diretório ``templates`` dentro de seu projeto, ou seja,
   dentro do diretório ``mysite`` criador por você no capítulo 2.
 
-* Se o seu ``TEMPLATE_DIRS`` contém somente um diretório, não esqueça da 
+* Se o seu ``TEMPLATE_DIRS`` contém somente um diretório, não esqueça da
   vírgula ao final da string do diretório!
 
   Ruim::
@@ -1158,11 +1158,11 @@ Existem algumas coisas para serem observadas:
           '/home/django/mysite/templates',
       )
 
-  O motivo para isso é que o Python exige vírgula dentro de tuplas com 
-  elemento unico para remover ambigüidade da tupla de uma expressão entre 
+  O motivo para isso é que o Python exige vírgula dentro de tuplas com
+  elemento unico para remover ambigüidade da tupla de uma expressão entre
   parênteses. Isso é uma pegadinha para novatos muito comum.
 
-* Se você está no Windows, inclua a letra da unidade e use o estilo 
+* Se você está no Windows, inclua a letra da unidade e use o estilo
   Unix de barras ao invés de barras invertidas, como segue::
 
       TEMPLATE_DIRS = (
@@ -1170,9 +1170,9 @@ Existem algumas coisas para serem observadas:
       )
 
 * É mais simples usar caminhos absolutos, ou seja, caminhos de diretório
-  que começam na raiz do sistema de arquivos. Se você quiser ser mais 
-  flexível, dissociado, você pode tirar vantagem do fato de que os arquivos 
-  de configuração do Django são apenas código Python empregados para contrução 
+  que começam na raiz do sistema de arquivos. Se você quiser ser mais
+  flexível, dissociado, você pode tirar vantagem do fato de que os arquivos
+  de configuração do Django são apenas código Python empregados para contrução
   dos conteúdos de ``TEMPLATE_DIRS`` dinâmicamente. Por exemplo::
 
       import os.path
@@ -1181,21 +1181,21 @@ Existem algumas coisas para serem observadas:
           os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
       )
 
-  Esse exemplo usa a variável mágica Python ``__file__``, que é automaticamente 
-  definida para o nome do arquivo do módulo Python em que o código vive. Ela 
-  recebe o nome do diretório que contém``settings.py`` (``os.path.dirname``), 
-  depois junta com ``templates`` em um caminho cross-platform (``os.path.join``), 
-  então assegura que tudo usa barras ao invés de barras invertidas (no 
+  Esse exemplo usa a variável mágica Python ``__file__``, que é automaticamente
+  definida para o nome do arquivo do módulo Python em que o código vive. Ela
+  recebe o nome do diretório que contém``settings.py`` (``os.path.dirname``),
+  depois junta com ``templates`` em um caminho cross-platform (``os.path.join``),
+  então assegura que tudo usa barras ao invés de barras invertidas (no
   caso do Windows).
 
-  Enquanto estamos no tópico de código Python dinâmico em arquivos de 
-  configuraçôes, devemos salientar que é muito importante evitar erros 
-  Python em seu arquivo de configuração. Se você introduzir erro de sintaxe, 
-  ou erro de execução, seu site em Django provavelmente vai falhar.   
+  Enquanto estamos no tópico de código Python dinâmico em arquivos de
+  configuraçôes, devemos salientar que é muito importante evitar erros
+  Python em seu arquivo de configuração. Se você introduzir erro de sintaxe,
+  ou erro de execução, seu site em Django provavelmente vai falhar.
 
-Com a definição de ``TEMPLATE_DIRS``, o próximo passo é modificar o código 
-da view para usar a funcionalidade de carregamento de template do Django, 
-em vez de embutir códigos fixos nos caminhos de template. Voltando à nossa 
+Com a definição de ``TEMPLATE_DIRS``, o próximo passo é modificar o código
+da view para usar a funcionalidade de carregamento de template do Django,
+em vez de embutir códigos fixos nos caminhos de template. Voltando à nossa
 view ``current_datetime``, vamos modificar para algo assim::
 
     from django.template.loader import get_template
@@ -1210,30 +1210,30 @@ view ``current_datetime``, vamos modificar para algo assim::
         return HttpResponse(html)
 
 Neste exemplo, estamos usando a função
-``django.template.loader.get_template()`` em vez de carregar o template do 
-sistema de arquivo manualmente. A função ``get_template()`` recebe o nome do 
-template como argumento, descobre onde o template vive no sistema de arquivo, 
+``django.template.loader.get_template()`` em vez de carregar o template do
+sistema de arquivo manualmente. A função ``get_template()`` recebe o nome do
+template como argumento, descobre onde o template vive no sistema de arquivo,
 abre o arquivo e devolve um objeto ``Template`` compilado.
 
-Nosso template nesse exemplo é  ``current_datetime.html``, mas não há nada 
-especial sobre a extensão ``.html``. Você pode passar em seus templates qualquer 
-extensão que faça sentido para sua aplicação, ou você pode deixar de fora as 
+Nosso template nesse exemplo é  ``current_datetime.html``, mas não há nada
+especial sobre a extensão ``.html``. Você pode passar em seus templates qualquer
+extensão que faça sentido para sua aplicação, ou você pode deixar de fora as
 extensões completamente.
 
-Para determinar a localização do template em seu sistema de arquivo, 
-``get_template()`` combina seus diretórios de template apartir de ``TEMPLATE_DIRS`` 
-com o nome do template que você passou para ``get_template()``. Por exemplo, se 
-seu ``TEMPLATE_DIRS`` está definido para ``'/home/django/mysite/templates'``, a 
-chamada acima ``get_template()`` ficaria para o template de 
+Para determinar a localização do template em seu sistema de arquivo,
+``get_template()`` combina seus diretórios de template apartir de ``TEMPLATE_DIRS``
+com o nome do template que você passou para ``get_template()``. Por exemplo, se
+seu ``TEMPLATE_DIRS`` está definido para ``'/home/django/mysite/templates'``, a
+chamada acima ``get_template()`` ficaria para o template de
 ``/home/django/mysite/templates/current_datetime.html``.
 
-Se ``get_template()`` não encontrar o template com o nome informado, ele levantará 
-uma exceção ``TemplateDoesNotExist``. Para ver como se parece, dispare o servidor 
-de desenvolvimento do Django novamente rodando ``python manage.py runserver`` 
-dentro do diretório do seu projeto Django. Depois, aponte seu browser para a página 
+Se ``get_template()`` não encontrar o template com o nome informado, ele levantará
+uma exceção ``TemplateDoesNotExist``. Para ver como se parece, dispare o servidor
+de desenvolvimento do Django novamente rodando ``python manage.py runserver``
+dentro do diretório do seu projeto Django. Depois, aponte seu browser para a página
 que ativa a view ``current_datetime`` (por exemplo, ``http://127.0.0.1:8000/time/``).
-Assumindo que a sua configuração ``DEBUG`` está definida como ``True`` e você 
-ainda não tenha criado um template ``current_datetime.html``, você deverá ver uma 
+Assumindo que a sua configuração ``DEBUG`` está definida como ``True`` e você
+ainda não tenha criado um template ``current_datetime.html``, você deverá ver uma
 página de erro Django destacando o erro ``TemplateDoesNotExist``.
 
 .. figure:: graphics/chapter04/missing_template.png
@@ -1241,36 +1241,36 @@ página de erro Django destacando o erro ``TemplateDoesNotExist``.
 
    Figura 4-1: A página de erro é mostrada quando um template não pode ser encontrado.
 
-Esta página de erro é semelhante ao que explanamos no Capítulo 3, com um pedaço 
+Esta página de erro é semelhante ao que explanamos no Capítulo 3, com um pedaço
 adicional de informação de debugging: uma seção "Template-loader postmortem".
-Esta seção informa você quais templates Django tentou-se carregar, juntamente 
+Esta seção informa você quais templates Django tentou-se carregar, juntamente
 com o motivo de cada tentativa fracassada (por exemplo, "File does not exist").
 Esta informação é inestimável quando você está tentando depurar erros no carregamento
 de template.
 
-Continuando, crie o arquivo ``current_datetime.html`` dentro seu diretório 
+Continuando, crie o arquivo ``current_datetime.html`` dentro seu diretório
 de templates usando o seguinte código de template::
 
     <html><body>It is now {{ current_date }}.</body></html>
 
-Atualize a página em seu web browser e você deverá ver a renderização completa 
+Atualize a página em seu web browser e você deverá ver a renderização completa
 da página.
 
 render()
 --------
 
-Nós mostramos para você como carregar um template, preencher um ``Context`` 
-e retornar um objeto ``HttpResponse`` com os resultados da renderização do 
-template. Nós otimizamos para usar ``get_template()`` ao invés de códigos 
-fixos em templates e caminhos de templates. Mas ainda requer uma boa quantidade 
-de codificação para fazer essas coisas. Devido ser um idioma comum, Django 
-fornece um atalho que permite você carregar um template, renderizar e retornar 
+Nós mostramos para você como carregar um template, preencher um ``Context``
+e retornar um objeto ``HttpResponse`` com os resultados da renderização do
+template. Nós otimizamos para usar ``get_template()`` ao invés de códigos
+fixos em templates e caminhos de templates. Mas ainda requer uma boa quantidade
+de codificação para fazer essas coisas. Devido ser um idioma comum, Django
+fornece um atalho que permite você carregar um template, renderizar e retornar
 um ``HttpResponse`` -- tudo em uma linha de código.
 
-Esse atalho é uma função chamada ``render()``, que vive no módulo 
-``django.shortcuts``. Na maioria das vezes, você estará usando 
+Esse atalho é uma função chamada ``render()``, que vive no módulo
+``django.shortcuts``. Na maioria das vezes, você estará usando
 ``render()`` em vez de carregar templates e criar objetos ``Context``
-e ``HttpResponse`` manualmente -- a não ser que seu chefe julgue o seu trabalho 
+e ``HttpResponse`` manualmente -- a não ser que seu chefe julgue o seu trabalho
 pelo total de linhas de código escritas, então tudo bem.
 
 Aqui está a continuação do exemplo ``current_datetime``, reescrito para usar
@@ -1283,21 +1283,21 @@ Aqui está a continuação do exemplo ``current_datetime``, reescrito para usar
         now = datetime.datetime.now()
         return render(request, 'current_datetime.html', {'current_date': now})
 
-Que diferença! Vamos percorrer as alterações de código: 
+Que diferença! Vamos percorrer as alterações de código:
 
 * Não temos mais que importar ``get_template``, ``Template``, ``Context``,
   ou ``HttpResponse``. Em vez disso, importamos
   ``django.shortcuts.render``. O ``import datetime`` permanece.
 
 * Dentro da função ``current_datetime``, nós ainda calculamos ``now``, mas
-  o carregamento de template, criação do contexto, renderização do template e 
+  o carregamento de template, criação do contexto, renderização do template e
   a criação ``HttpResponse`` são todos realizados pela chamada ``render()``.
-  Pois ``render()`` retorna um objeto ``HttpResponse``, podemos simplesmente 
+  Pois ``render()`` retorna um objeto ``HttpResponse``, podemos simplesmente
   ``retornar`` este valor na view.
 
-O primeiro argumento de ``render()`` é a requisição, o segundo é o nome do 
-template que será usado. O terceiro argumento, se informado, deve ser um 
-dicionário para ser usado na criação de um um ``Context`` para este template. 
+O primeiro argumento de ``render()`` é a requisição, o segundo é o nome do
+template que será usado. O terceiro argumento, se informado, deve ser um
+dicionário para ser usado na criação de um um ``Context`` para este template.
 Se você não prover um terceiro argumento, ``render()``usará-se um dicionário vazio.
 
 Subdiretórios em get_template()
@@ -1305,8 +1305,8 @@ Subdiretórios em get_template()
 
 Ele pode ficar pesado para armazenar todos os seus templates em um unico diretório.
 Você pode gostar de armazenar os templates em subdiretórios em seu diretório de
-template, e isso é bom. Na verdade, recomendamos faze-lo; alguns recursos mais 
-avançados do Django (tais como o sistema de views genéricas, que cobrimos no 
+template, e isso é bom. Na verdade, recomendamos faze-lo; alguns recursos mais
+avançados do Django (tais como o sistema de views genéricas, que cobrimos no
 Capítulo 11) expera esse layout de template como uma convenção padrão.
 
 Armazerar templates em subdiretórios de seu diretório de templates é fácil.
@@ -1321,28 +1321,28 @@ assim::
 
     return render(request, 'dateapp/current_datetime.html', {'current_date': now})
 
-Não há limites para a profundidade da sua árvore de diretórios. Sinta-se a 
+Não há limites para a profundidade da sua árvore de diretórios. Sinta-se a
 vontade para usar a quantidade de subdiretórios que desejar.
 
 .. note::
 
-    Usuários Windows, certifiquem-se de utilizar barras ao invés de barras 
+    Usuários Windows, certifiquem-se de utilizar barras ao invés de barras
     invertidas. ``get_template()`` assume o estilo Unix de designação
     do nome de arquivo.
 
 A template tag ``include``
 --------------------------
 
-Agora que nós cobrimos o mecanismo de carregamento de templates, podemos 
+Agora que nós cobrimos o mecanismo de carregamento de templates, podemos
 introduzir uma tag integrada ao template para tirar vantagem disso: ``{% include %}``.
-Essa tag permite você incluir conteúdo de outro template. O argumento para a 
-tag deve ser o nome do template a ser incluído e o nome do template pode ser tanto 
+Essa tag permite você incluir conteúdo de outro template. O argumento para a
+tag deve ser o nome do template a ser incluído e o nome do template pode ser tanto
 uma váriavel ou uma string fixa (entre aspas), podendo ser aspas simples ou duplas.
-Quando você tem o mesmo código em vários templates, considere 
+Quando você tem o mesmo código em vários templates, considere
 o uso de um ``{% include %}`` para remover a duplicação.
 
-Estes dois exemplos incluem o conteúdo do template ``nav.html``. Os 
-exemplos são equivalentes e ilustram que tanto aspas simples ou duplas são 
+Estes dois exemplos incluem o conteúdo do template ``nav.html``. Os
+exemplos são equivalentes e ilustram que tanto aspas simples ou duplas são
 permitidas:
 
     {% include 'nav.html' %}
@@ -1352,16 +1352,16 @@ Esse exemplo incluí o conteúdo do template ``includes/nav.html``:
 
     {% include 'includes/nav.html' %}
 
-Esse exemplo incluí o conteúdo do template cujo o nome está contido na 
+Esse exemplo incluí o conteúdo do template cujo o nome está contido na
 váriavel ``template_name``::
 
     {% include template_name %}
 
-Como em ``get_template()``, o nome do arquivo do template é determinado pela 
-adição do diretório de template do ``TEMPLATE_DIRS`` para o nome de template 
+Como em ``get_template()``, o nome do arquivo do template é determinado pela
+adição do diretório de template do ``TEMPLATE_DIRS`` para o nome de template
 solicitado.
 
-Templates incluídos são avaliados com o contexto dos templates que os incluí. 
+Templates incluídos são avaliados com o contexto dos templates que os incluí.
 Por exemplo, considere estes dois templates::
 
     # mypage.html
@@ -1380,7 +1380,7 @@ Por exemplo, considere estes dois templates::
     </div>
 
 Se você exibir ``mypage.html`` com um contexto contendo ``current_section``,
-então a variável estará disponível no template "incluído", como seria de 
+então a variável estará disponível no template "incluído", como seria de
 esperar.
 
 Se, em uma tag ``{% include %}``, o template com o nome passado não é encontrado,
@@ -1393,27 +1393,27 @@ o Django fará umda das duas coisas:
   silenciosamente, exibindo nada no lugar da tag.
 
 
-Herança de Template 
+Herança de Template
 ==================
 
-Nosso template exemplo até agora tem sido pequenos snippets HTML, mas no 
-mundo real, você usará o sistema de template do Django para criar páginas 
-HTML completas. Isso leva a um problema comum de desenvolvimento web: em 
-um web site, como reduzir a duplicação e a redundância de áreas em páginas 
+Nosso template exemplo até agora tem sido pequenos snippets HTML, mas no
+mundo real, você usará o sistema de template do Django para criar páginas
+HTML completas. Isso leva a um problema comum de desenvolvimento web: em
+um web site, como reduzir a duplicação e a redundância de áreas em páginas
 que são comuns, bem como a navegação no site inteiro?
 
-Uma forma clássica de resolução desse problema é usar *server-sides 
-includes*, diretivas que você pode colocar junto a suas páginas HTML 
-para "incluir" uma página web dentro de outra. De fato, Django suporta 
-essa possibilidade, com a tag template ``{% include %}`` que acabamos de 
-descrever. Mas a forma preferida de resolução desse problema com Django 
+Uma forma clássica de resolução desse problema é usar *server-sides
+includes*, diretivas que você pode colocar junto a suas páginas HTML
+para "incluir" uma página web dentro de outra. De fato, Django suporta
+essa possibilidade, com a tag template ``{% include %}`` que acabamos de
+descrever. Mas a forma preferida de resolução desse problema com Django
 é usar uma estratégia mais elegante chamada *template inheritance*.
 
-Na essência, herança de template permite você construir um "esqueleto" inicial 
-de template, que contém todas as partes comuns de seu site e define "blocos" que 
+Na essência, herança de template permite você construir um "esqueleto" inicial
+de template, que contém todas as partes comuns de seu site e define "blocos" que
 templates filhos podem ser substituir.
 
-Vejamos um exemplo disso com a criação de um template mais completo para 
+Vejamos um exemplo disso com a criação de um template mais completo para
 nossa view ``current_datetime``, pela edição do arquivo ``current_datetime.html``::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
@@ -1431,9 +1431,9 @@ nossa view ``current_datetime``, pela edição do arquivo ``current_datetime.htm
     </html>
 
 
-Isso parece bom, mas o que acontece quando queremos criar um template para 
-outra view, por exemplo, a view ``hours_ahead`` do capítulo 3? Se queremos 
-mais uma vez fazer uma bom, válido e completo template HTML, criaremos algo 
+Isso parece bom, mas o que acontece quando queremos criar um template para
+outra view, por exemplo, a view ``hours_ahead`` do capítulo 3? Se queremos
+mais uma vez fazer uma bom, válido e completo template HTML, criaremos algo
 como::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
@@ -1450,14 +1450,14 @@ como::
     </body>
     </html>
 
-Claramente, simplesmente duplicamos um monte de HTML. Imagine se tivessemos um 
-site típico, incluíndo uma barra de navegação, algumas folhas de estilo, 
-talvés um pouco de Javascript, que nos acabaria colocando todos os tipos de HTML 
+Claramente, simplesmente duplicamos um monte de HTML. Imagine se tivessemos um
+site típico, incluíndo uma barra de navegação, algumas folhas de estilo,
+talvés um pouco de Javascript, que nos acabaria colocando todos os tipos de HTML
 redundantes em cada template.
 
-A solução do lado servidor para esse problema é fatorar os pedaços comuns em 
-ambos os templates e salvar eles em trechos de templates separados, que então 
-são incluídos em cada template. Possivelmente você armazene o pedaço superior do 
+A solução do lado servidor para esse problema é fatorar os pedaços comuns em
+ambos os templates e salvar eles em trechos de templates separados, que então
+são incluídos em cada template. Possivelmente você armazene o pedaço superior do
 template em um arquivo chamado ``header.html``::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
@@ -1472,18 +1472,18 @@ E possivelmente armazene o pedaço inferior em um arquivo chamado ``footer.html`
     </html>
 
 Com um estratégoa baseada em inclusão, o cabeçalho e rodapé são fáceis de inserir.
-Há o meio termo que confunde. Nesse exemplo, ambas as páginas tem um título -- 
-``<h1>My helpful timestamp site</h1>`` -- mas esse título não pode caber em 
-``header.html`` porque o ``<title>`` em ambas as páginas é diferente. Se 
-incluírmos o ``<h1>`` no cabeçalho, teríamos de incluir o ``<title>``, que 
+Há o meio termo que confunde. Nesse exemplo, ambas as páginas tem um título --
+``<h1>My helpful timestamp site</h1>`` -- mas esse título não pode caber em
+``header.html`` porque o ``<title>`` em ambas as páginas é diferente. Se
+incluírmos o ``<h1>`` no cabeçalho, teríamos de incluir o ``<title>``, que
 nos permite um personalização por página. Está vendo onde isso vai dar?
 
-O sistema de herança de template do Django soluciona esse problema. Você pode 
-imaginar isso como sendo uma versão "inside-out" do server-side includes. Ao 
-invés de definir os trechos que são *comuns*, você define os trechos que 
+O sistema de herança de template do Django soluciona esse problema. Você pode
+imaginar isso como sendo uma versão "inside-out" do server-side includes. Ao
+invés de definir os trechos que são *comuns*, você define os trechos que
 são *diferentes*.
 
-O primeiro passo é definir um *template base* -- um esqueleto de sua página 
+O primeiro passo é definir um *template base* -- um esqueleto de sua página
 que *templates filhos* irão mais tarde preencher. Aqui está um template base
 para o nosso exemplo em curso::
 
@@ -1503,17 +1503,17 @@ para o nosso exemplo em curso::
     </html>
 
 Esse template, que vamos chamar de ``base.html``, define um simples esqueleto
-HTML, que usaremos para todas as páginas do site. É o trabalho de templates 
-filhos para substituir, adicionar ou isolar o conteúdo dos blocos 
+HTML, que usaremos para todas as páginas do site. É o trabalho de templates
+filhos para substituir, adicionar ou isolar o conteúdo dos blocos
 (Se estiver acompanhando, salve esse arquivo em seu diretório de templates
 como ``base.html``). // Revisar
 
 Estamos usando uma template tag aqui que você não viu anteriormente: a
-tag ``{% block %}``. O que todas as tags ``{% block %}`` fazem é falar ao 
-template engine que um template filho deve pode ser substituido naquelas 
+tag ``{% block %}``. O que todas as tags ``{% block %}`` fazem é falar ao
+template engine que um template filho deve pode ser substituido naquelas
 partes do template.
 
-Agora que temos este template base, podemos modificar o nosso template 
+Agora que temos este template base, podemos modificar o nosso template
 existente ``current_datetime.html`` para usá-lo::
 
     {% extends "base.html" %}

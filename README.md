@@ -45,7 +45,7 @@ Chapter 12: Deploying Django
 
 Chapter 13: Generating Non-HTML Content - [@brunomachado] (https://github.com/brunomachado)
 
-Chapter 14: Sessions, Users, and Registration
+Chapter 14: Sessions, Users, and Registration - [@rafa-so] (https://github.com/rafa-so)
 
 Chapter 15: Caching
 
