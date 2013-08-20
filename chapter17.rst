@@ -306,7 +306,9 @@ classe Middleware: ``django.middleware.gzip.GZipMiddleware``.
 
 Este middleware comprime automaticamente o conteúdo para navegadores que entendem
 a compressão gzip (todos os navegadores modernos). Isso pode ser uma grande redução
-na largura de banda que um servidor Web consome.
+na largura de banda que um servidor Web consome. A desvantagem é que é preciso um pouco
+de tempo de processamento para comprimir a página.
+
 
 Nós costumamos preferir velocidade a largura de banda, mas se você prefere o contrário,
 é só ativar esse middleware.
