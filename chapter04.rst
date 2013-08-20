@@ -1549,8 +1549,8 @@ carrega imediatamente o template pai, neste caso, ``base.html``.
 
 Nesse ponto, o mecanismo de template reconhece as três tags ``{% block %}`` 
 no ``base.html`` e substitui esses blocos com o conteúdo do template 
-filho. Assim, o título que haviamos definido em ``{% block title %}`` 
-será usado, assim com o ``{% block content %}``.
+filho. Assim, o título que havíamos definido em ``{% block title %}`` 
+será usado, assim como ``{% block content %}``.
 
 Perceba, desde que o template filho não defina o bloco ``footer``, o 
 sistema de template usa em seu lugar o valor vindo do template pai. 
