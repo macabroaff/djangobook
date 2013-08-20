@@ -1542,27 +1542,27 @@ template. Sem necessidade de redundância. Se você precisa fazer um site ter o
 design modificado, apenas faça a alteração em ``base.html``, e todos os outros 
 templates imediatamente terão a modificação refletida.
 
-Here's how it works. When you load the template ``current_datetime.html``,
-the template engine sees the ``{% extends %}`` tag, noting that
-this template is a child template. The engine immediately loads the
-parent template -- in this case, ``base.html``.
+Aqui está como isso funciona. Quando você carrega o template 
+``current_datetime.html``, o mecanismo de template reconhece a tag 
+``{% extends %}``, lembrando que esse template é um template filho. O mecanismo 
+carrega imediatamente o template pai, neste caso, ``base.html``.
 
-At that point, the template engine notices the three ``{% block %}`` tags
-in ``base.html`` and replaces those blocks with the contents of the child
-template. So, the title we've defined in ``{% block title %}`` will be
-used, as will the ``{% block content %}``.
+Nesse ponto, o mecanismo de template reconhece as três tags ``{% block %}`` 
+no ``base.html`` e substitui esses blocos com o conteúdo do template 
+filho. Assim, o título que havíamos definido em ``{% block title %}`` 
+será usado, assim como ``{% block content %}``.
 
-Note that since the child template doesn't define the ``footer`` block,
-the template system uses the value from the parent template instead.
-Content within a ``{% block %}`` tag in a parent template is always
-used as a fallback.
+Perceba, desde que o template filho não defina o bloco ``footer``, o 
+sistema de template usa em seu lugar o valor vindo do template pai. 
+Conteúdo dentro de uma tag ``{% block %}`` em um template pai é sempre 
+usado como um retorno.
 
-Inheritance doesn't affect the template context. In other words, any template
-in the inheritance tree will have access to every one of your template
-variables from the context.
+Herança não afeta o contexto do template. Em outras palavras, qualquer template 
+na árvore de herança devera ter acesso a cada uma de suas variáveis de 
+templates a partir do contexto.
 
-You can use as many levels of inheritance as needed. One common way of using
-inheritance is the following three-level approach:
+Você pode usar muitos níveis de herança, como julgar necessário. Uma maneira comum 
+de usar herança é a abordagem em três níveis descrito a baixo:
 
 1. Create a ``base.html`` template that holds the main look and feel of
    your site. This is the stuff that rarely, if ever, changes.
