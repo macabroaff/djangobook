@@ -2,24 +2,23 @@
 Capítulo 17: Middleware
 ======================
 
-Em algumas ocasiões, você precisa executar algum de código para cada request que o Django trata.
-Esse código pode ser uma alteração na request antes que a view a trate, pode ser
+Em algumas ocasiões, você precisa executar algum pedaço de código para cada request que o Django trata.
+Esse código pode ser uma alteração na request antes que a view a trate, ou pode ser
 para registrar informações sobre a request para propósitos de debugging, e assim por diante.
 
-Você pode fazer isso com framework de *middleware* do Django, que é um conjunto de "ganchos" (utilitários)
+Você pode fazer isso com o framework de *middleware* do Django, que é um conjunto de "ganchos" (utilitários)
 dentro do processamento de request/response. É um sistema de "plug-in" leve e de baixo nível capaz
 de alterar globalmente as entradas e saídas do Django.
 
-Cada componente do middleware é responsável por fazer alguma função específica.
-Se você está lendo este livro sequencialmente, você já deve ter middleware uma série de vezes:
+Cada componente do middleware é responsável por fazer uma função específica.
+Se você está lendo este livro sequencialmente, você já deve ter visto middleware uma série de vezes:
 
 * Todas as ferramentas de sessão e usuários que nós vimos no Capítulo 14 são
-  possívels graças a alguns pedaços de middleware (mais
-  especificamente, o middleware faz ``request.session`` e
-  ``request.user`` estarem disponíveis nas views).
+  possíveis graças ao middleware (mais especificamente, o middleware faz
+  ``request.session`` e ``request.user`` estarem disponíveis nas views).
 
-* O cache do site, discutido no Capítulo 15 é na verdade somente um pedaço
-  de middleware que ignora a chamada para sua view, se sua resposta já
+* O cache do site, discutido no Capítulo 15 é na verdade somente um
+  middleware que ignora a chamada para sua view, se sua resposta já
   estiver registrada no cache.
 
 * As aplicações ``flatpages``, ``redirects`` e ``csrf`` do Capítulo 16,
@@ -73,7 +72,7 @@ se estiverem ou não utilizando um proxy.
 
 Na verdade, é uma necessidade bastante comum que essa parte de middleware
 seja embutida no Django. Ela vive em ``django.middleware.http``,
-e você pode ler um pouco mais sobre isso depois neste capítulo.
+e você pode ler um pouco mais sobre neste capítulo.
 
 
 Instalação do Middleware
@@ -86,7 +85,7 @@ como instalar um middleware.
 
 Para ativar um componente middleware, adicione-o na tupla ``MIDDLEWARE_CLASSES``
 no settings de seu módulo. Em ``MIDDLEWARE_CLASSES``, cada componente middleware
-é representado por uma string: sendo caminho Python completo para o nome da
+é representado por uma string: sendo o caminho Python completo para o nome da
 classe do middleware. Como exemplo, aqui está o ``MIDDLEWARE_CLASSES`` padrão
 criado por ``django-admin.py startproject``::
 
@@ -128,32 +127,32 @@ então o Django irá remover o middleware da fila de execução. Você pode usar
 para checar se algum pedaço do software que a classe do middleware requer, ou checar
 se o servidor está rodando em modo de debug, ou qualquer outra situação de ambiente.
 
-Se a classe middleware define um metódo ``__init__()``, o metódo deve deve receber
-nenhum argumento além do por padrão ``self``.
+Se a classe middleware define um metódo ``__init__()``, o metódo não deve receber
+nenhum argumento além ``self``.
 
-Pré-processador de Request: process_request(self, request)
+Pré-processador de Solicitação: process_request(self, request)
 ----------------------------------------------------
 
-Este metódo é chamado assim que a request é recebida -- antes do Django ter
-analisado a URL para determinar qual view será executada. Ele recebe o
-objeto ``HttpRequest``, que você pode modificar à vontade.
+Este metódo é chamado assim que a solicitação (request) é recebida -- antes
+do Django ter analisado a URL para determinar qual função de visualização (view)
+será executada. Ele recebe o objeto ``HttpRequest``, que você pode modificar à vontade.
 
 ``process_request()`` deve retornar ``None`` ou um objeto ``HttpResponse``.
 
-* Se retornar ``None``, o Django irá continuar processando a request,
-  executando qualquer outro middleware e então a view apropriada.
+* Se retornar ``None``, o Django irá continuar processando a solicitação,
+  executando qualquer outro middleware e então a função de visualização apropriada.
 
 * Se retornar um objeto ``HttpResponse``, o Django não irá chamar *nenhum*
-  outro middleware (de nenhum tipo), nem a view apropriada. Django irá
-  retornar imediatamente o ``HttpResponse``.
+  outro middleware (de nenhum tipo), nem a função de visualização apropriada.
+  Ele irá retornar imediatamente o ``HttpResponse``.
 
 
-Pré-processador de View: process_view(self, request, view, args, kwargs)
+Pré-processador de Visualização: process_view(self, request, view, args, kwargs)
 ------------------------------------------------------------------
 
-Este metódo é chamado depois que pré-processador de request é chamado e
-o Django determinou qual view será executada, mas antes que a view seja
-executada.
+Este metódo é chamado depois que pré-processador de solicitação é chamado e
+o Django determinou qual função de visualização será executada, mas antes
+que a ela seja executada.
 
 Os argumentos passados para esse metódo são mostrados na Tabela 17-1.
 
@@ -165,14 +164,15 @@ Os argumentos passados para esse metódo são mostrados na Tabela 17-1.
     ``request``     O objeto ``HttpRequest``.
 
     ``view``        Função Python que o Django irá chamar para tratar essa
-                    request. Isto é, uma referência ao objeto da função
+                    solitação. Isto é, uma referência ao objeto da função
                     e não o nome ou a função em string.
 
     ``args``        Uma lista de argumentos posicionados, que serão passados
-                    para a view, não incluindo o argumento ``request`` (que
-                    é sempre o primeiro argumento para a view).
+                    para a função de visualização, não incluindo o argumento
+                    ``request`` (que é sempre o primeiro argumento para a função
+                    de visualização).
 
-    ``kwargs``      O dicionário de palavras-chave que será passado para a view.
+    ``kwargs``      O dicionário de palavras-chave que será passado para a função de visualização.
     ==============  ==========================================================
 
 Assim como ``process_request()``, ``process_view()`` deve retornar ``None`` ou
@@ -185,37 +185,36 @@ um objeto ``HttpResponse``.
   outro middleware (de nenhum tipo), nem a view apropriada. Django irá
   retornar imediatamente o ``HttpResponse``.
 
-Pós-processador de Response: process_response(self, request, response)
+Pós-processador de resposta: process_response(self, request, response)
 -----------------------------------------------------------------
 
-Este metódo é chamado depois que a view é executada e resposta é gerada.
-Aqui, o processador pode modificar o conteúdo da resposta. Um caso óbvio de uso
-é compressão do conteúdo, como gzipping do pedido HTML.
+Este metódo é chamado depois que a função de visualização é executada
+e a resposta é gerada. Aqui, o processador pode modificar o conteúdo da resposta.
+Um caso óbvio de uso é compressão do conteúdo, como gzipping do pedido HTML.
 
 Os parâmetros devem ser bastante auto-explicativos: ``request`` é o objeto
-request, e ``response`` é o objeto response retornado pela view.
+request, e ``response`` é o objeto response retornado pela função de visualização.
 
-Diferente do request e view pré-processadores, que podem retornar ``None``,
+Diferente dos pré-processadores de solicitação e visualização, que podem retornar ``None``,
 ``process_response()`` *deve* retornar um objeto ``HttpResponse``.
 A resposta pode ser o response original passado para a função (possivelmente
 modificado) ou um novo.
 
-Pós-processador de Exception: process_exception(self, request, exception)
+Pós-processador de exceção: process_exception(self, request, exception)
 --------------------------------------------------------------------
 
-Este metódo é chamado somente se algo ocorreu errado e a view gerou uma
-exceção não capturada. Você pode usar esse "gancho" para enviar notificações
+Este metódo é chamado somente se algo ocorreu errado e a função de visualização
+gerou uma exceção não capturada. Você pode usar esse "gancho" para enviar notificações
 de erro, despejar informações em um log, ou até mesmo tentar recuperar do
 erro automaticamente.
 
 Os parâmetros para essa função é o mesmo objeto ``request`` que estamos
 lidando durante o tempo todo e ``exception``, que é o objeto ``Exception``
-gerado pela view.
-
+gerado pela função de visualização.
 
 ``process_exception()`` deve retornar ou ``None`` ou um objeto ``HttpResponse``.
 
-* Se ele retornar ``None``, Django irá continuar processando a request
+* Se ele retornar ``None``, Django irá continuar processando a solicitação
   com seu tratamento de exceção padrão.
 
 * Se ele retornar um objeto ``HttpResponse``, Django irá usar essa resposta
@@ -237,28 +236,29 @@ Django vem com alguns middlewares embutidos para lidar com problemas comuns, que
 descutiremos nas seções seguintes.
 
 
-Authentication Support Middleware
+Middleware de Suporte a Autenticação
 ---------------------------------
 
-Middleware class: ``django.contrib.auth.middleware.AuthenticationMiddleware``.
+classe Middleware: ``django.contrib.auth.middleware.AuthenticationMiddleware``.
 
-This middleware enables authentication support. It adds the ``request.user``
-attribute, representing the currently logged-in user, to every incoming
-``HttpRequest`` object.
+Este middleware ativa o suporte à autenticação. Ele adiciona o atributo
+``request.user`` que representa o usuário atualmente logado para cada
+objeto request recebido.
 
-See Chapter 14 for complete details.
+Veja o Capítulo 14 para detalhes completos.
+
 
 "Common" Middleware
 -------------------
 
-Middleware class: ``django.middleware.common.CommonMiddleware``.
+classe Middleware: ``django.middleware.common.CommonMiddleware``.
 
-This middleware adds a few conveniences for perfectionists:
+Este middleware adiciona algumas conveniências para perfeccionistas:
 
-* *Forbids access to user agents in the ``DISALLOWED_USER_AGENTS`` setting*:
-  If provided, this setting should be a list of compiled regular expression
-  objects that are matched against the user-agent header for each incoming
-  request. Here's an example snippet from a settings file::
+* *Proíbe o acesso para user agents especificados na configuração ``DISALLOWED_USER_AGENTS``*:
+  Se definida, essa configuração deve ser uma lista de expressões regulares compiladas,
+  quais são verificados contra o cabeçalho user-agent para cada request recebida.
+  Aqui está um exemplo de fragmento extraído de um arquivo de configuração::
 
       import re
 
@@ -267,87 +267,94 @@ This middleware adds a few conveniences for perfectionists:
           re.compile(r'^Googlebot')
       )
 
-  Note the ``import re``, because ``DISALLOWED_USER_AGENTS`` requires its
-  values to be compiled regexes (i.e., the output of ``re.compile()``).
-  The settings file is regular Python, so it's perfectly OK to include
-  Python ``import`` statements in it.
+  Perceba o ``import re``, porque o ``DISALLOWED_USER_AGENTS`` requer
+  que seus valores sejam expressões regulares compiladas (i.e., o retorno de ``re.compile()``).
+  O arquivo de configuração é um arquivo Python, então é perfeitamente normal incluir
+  a declaração ``import`` Python nele.
 
-* *Performs URL rewriting based on the ``APPEND_SLASH`` and ``PREPEND_WWW``
-  settings*: If ``APPEND_SLASH`` is ``True``, URLs that lack a trailing
-  slash will be redirected to the same URL with a trailing slash, unless
-  the last component in the path contains a period. So ``foo.com/bar`` is
-  redirected to ``foo.com/bar/``, but ``foo.com/bar/file.txt`` is passed
-  through unchanged.
+* *Reescreve a URL baseando-se nas configurações ``APPEND_SLASH`` e ``PREPEND_WWW``*:
+  Se `APPEND_SLASH`` estiver definido como ``True``, nas URLs que estiverem faltando
+  a barra invertida serão redirecionadas para a mesma URL com a barra invertida,
+  a não ser que o último componente do caminho possua uma extensão. Então ``foo.com/bar``
+  é redirecionada para ``foo.com/bar/``, mas `foo.com/bar/file.txt`` é transmitida
+  sem nenhuma mudança.
 
-  If ``PREPEND_WWW`` is ``True``, URLs that lack a leading "www." will be
-  redirected to the same URL with a leading "www.".
+  Se ``PREPEND_WWW`` estiver definido como ``True``, URLs que estivem faltando
+  o "www." no início serão redirecionadas para a mesma URL, iniciando com "www.".
 
-  Both of these options are meant to normalize URLs. The philosophy is
-  that each URL should exist in one -- and only one -- place. Technically the
-  URL ``example.com/bar`` is distinct from ``example.com/bar/``, which in
-  turn is distinct from ``www.example.com/bar/``. A search-engine indexer
-  would treat these as separate URLs, which is detrimental to your site's
-  search-engine rankings, so it's a best practice to normalize URLs.
+  Ambas as opções pretendem normalizar as URLs. Esta filosofia é que cada
+  URL deve existir em um -- e somente um -- lugar. Tecnicamente a URL
+  ``example.com/bar`` é diferente de ``example.com/bar/``, o que a torna
+  diferente também de ``www.example.com/bar/``. Um indexador de um mecanismo de
+  busca irá tratar como URLs separadas, o que é prejudicial para seus site no
+  rankings dos mecanismos de busca, então essa é a melhor prática para normalizar URLs.
 
-* *Handles ETags based on the ``USE_ETAGS`` setting*: *ETags* are an HTTP-level
-  optimization for caching pages conditionally. If ``USE_ETAGS`` is
-  set to ``True``, Django will calculate an ETag for each request by
-  MD5-hashing the page content, and it will take care of sending ``Not
-  Modified`` responses, if appropriate.
+* *Trata as ETags baseando-se na configuração ``USE_ETAGS``*: *ETags* são otimização
+  no nível HTTP para cachear páginas condicionalmente. Se ``USE_ETAGS`` está definido
+  como ``True``, Django irá calcular uma ETag para cada request fazendo um hash MD5 do
+  conteúdo da página, e irá tomar cuidado em mandar respostas ``Not Modified`` (Não modificado),
+  se necessário.
 
-  Note there is also a conditional ``GET`` middleware, covered shortly, which
-  handles ETags and does a bit more.
+  Perceba que existe um middleware para ``GET`` condicional, que será discutido em breve,
+  que lida com as ETags e faz um pouco mais.
 
-Compression Middleware
+
+Middleware de compressão
 ----------------------
 
-Middleware class: ``django.middleware.gzip.GZipMiddleware``.
+classe Middleware: ``django.middleware.gzip.GZipMiddleware``.
 
-This middleware automatically compresses content for browsers that understand gzip
-compression (all modern browsers). This can greatly reduce the amount of bandwidth
-a Web server consumes. The tradeoff is that it takes a bit of processing time to
-compress pages.
+Este middleware comprime automaticamente o conteúdo para navegadores que entendem
+a compressão gzip (todos os navegadores modernos). Isso pode ser uma grande redução
+na largura de banda que um servidor Web consome.
 
-We usually prefer speed over bandwidth, but if you prefer the reverse, just
-enable this middleware.
+Nós costumamos preferir velocidade a largura de banda, mas se você prefere o contrário,
+é só ativar esse middleware.
 
-Conditional GET Middleware
+
+Middleware de GET condicional
 --------------------------
 
-Middleware class: ``django.middleware.http.ConditionalGetMiddleware``.
+classe Middleware: ``django.middleware.http.ConditionalGetMiddleware``.
 
-This middleware provides support for conditional ``GET`` operations. If the response
-has an ``Last-Modified`` or ``ETag`` or header, and the request has ``If-None-Match``
-or ``If-Modified-Since``, the response is replaced by an 304 ("Not modified")
-response. ``ETag`` support depends on on the ``USE_ETAGS`` setting and expects
-the ``ETag`` response header to already be set. As discussed above, the ``ETag``
-header is set by the Common middleware.
+Este middleware fornece suporte para operações de ``GET```condicional.
+Se a resposta tiver um ``Last-Modified`` ou ``ETag`` ou cabeçalho,
+e a solicitação tem um ``If-None-Match`` ou ``If-Modified-Since``, a resposta é
+substuída por uma resposta 304 ("Not modified" -- não modificado --).
+O suporte para ``ETag`` depende da configuração ``USE_ETAGS`` e espera que
+o cabeçalho de resposta ``ETag`` esteja definido. Como discutido anteriormente,
+o cabeçalho ``ETag`` é definido pelo "Common" middleware.
 
-It also removes the content from any response to a ``HEAD`` request and sets the
-``Date`` and ``Content-Length`` response headers for all requests.
+Além disso remove o conteúdo de qualquer resposta para um solicitação ``HEAD``
+e define os cabeçalhos de resposta ``Date`` e ``Content-Length`` para todas as
+solicitações.
 
-Reverse Proxy Support (X-Forwarded-For Middleware)
+
+Suporte a proxy reverso (X-Forwarded-For Middleware)
 --------------------------------------------------
 
-Middleware class: ``django.middleware.http.SetRemoteAddrFromForwardedFor``.
+classe Middleware: ``django.middleware.http.SetRemoteAddrFromForwardedFor``.
 
-This is the example we examined in the "What's Middleware?" section earlier. It
-sets ``request.META['REMOTE_ADDR']`` based on
-``request.META['HTTP_X_FORWARDED_FOR']``, if the latter is set. This is useful
-if you're sitting behind a reverse proxy that causes each request's
-``REMOTE_ADDR`` to be set to ``127.0.0.1``.
+Este é o exemplo que examinamos anteriormente na seção "O que é um Middleware?".
+Ele define o ``request.META['REMOTE_ADDR']`` baseado em
+``request.META['HTTP_X_FORWARDED_FOR']``, se o último for definido. Isto é útil
+se você está atrás de um proxy reverso, o que faz com que o ``REMOTE_ADDR`` seja
+definido como ``127.0.0.1`` em cada solicitação.
 
-.. admonition:: Danger!
 
-    This middleware does *not* validate ``HTTP_X_FORWARDED_FOR``.
+.. admonition:: Cuidado!
 
-    If you're not behind a reverse proxy that sets ``HTTP_X_FORWARDED_FOR``
-    automatically, do not use this middleware. Anybody can spoof the value of
-    ``HTTP_X_FORWARDED_FOR``, and because this sets ``REMOTE_ADDR`` based on
-    ``HTTP_X_FORWARDED_FOR``, that means anybody can fake his IP address.
+    Este middleware *não* valida o ``HTTP_X_FORWARDED_FOR``.
 
-    Only use this middleware when you can absolutely trust the value of
-    ``HTTP_X_FORWARDED_FOR``.
+    Se você não está atrás de um proxy reverso que define automaticamente
+    o ``HTTP_X_FORWARDED_FOR``, não use este middleware. Qualquer um pode
+    falsificar o valor de ``HTTP_X_FORWARDED_FOR``, e porque o ``REMOTE_ADDR``
+    define seu valor baseado no ``HTTP_X_FORWARDED_FOR``, isto significa
+    que qualquer um pode falsificar seu endereço IP.
+
+    Somente use este middleware quando você pode confiar absolutamente no
+    valor de ``HTTP_X_FORWARDED_FOR``.
+
 
 Middleware de Sessão
 --------------------------
