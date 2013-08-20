@@ -1524,10 +1524,10 @@ existente ``current_datetime.html`` para usá-lo::
     <p>It is now {{ current_date }}.</p>
     {% endblock %}
 
-While we're at it, let's create a template for the ``hours_ahead`` view from
-Chapter 3. (If you're following along with code, we'll leave it up to you to
-change ``hours_ahead`` to use the template system instead of hard-coded HTML.)
-Here's what that could look like::
+Já que estamos no assunto, vamos criar um template para a view ``hours_ahead`` 
+do Capítulo 3 (Se você está acompanhando com código, vamos deixar para que 
+você altere ``hours_ahead`` para usar o sistema de template, ao invés de código 
+fixo em HTML). Aqui está como deve se parecer::
 
     {% extends "base.html" %}
 
@@ -1537,10 +1537,10 @@ Here's what that could look like::
     <p>In {{ hour_offset }} hour(s), it will be {{ next_time }}.</p>
     {% endblock %}
 
-Isn't this beautiful? Each template contains only the code that's *unique* to
-that template. No redundancy needed. If you need to make a site-wide design
-change, just make the change to ``base.html``, and all of the other templates
-will immediately reflect the change.
+Não é lindo? Cada template contém apenas o código que é *unico* para o 
+template. Sem necessidade de redundância. Se você precisa fazer um site ter o 
+design modificado, apenas faça a alteração em ``base.html``, e todos os outros 
+templates imediatamente terão a modificação refletida.
 
 Here's how it works. When you load the template ``current_datetime.html``,
 the template engine sees the ``{% extends %}`` tag, noting that
