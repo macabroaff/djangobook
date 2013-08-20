@@ -57,7 +57,7 @@ Chapter 18: Integrating with Legacy Databases and Applications - [@fabrimatt] (h
 
 Chapter 19: Internationalization
 
-Chapter 20: Security
+Chapter 20: Security - [@BkCherry] (https://github.com/BkCherry)
 
 Appendix A: Model Definition Reference
 
@@ -67,7 +67,7 @@ Appendix C: Generic View Reference - [@fernandovalente] (https://github.com/fern
 
 Appendix D: Settings
 
-Appendix E: Built-in Template Tags and Filters
+Appendix E: Built-in Template Tags and Filters - [@BkCherry] (https://github.com/BkCherry)
 
 Appendix F: The django-admin Utility
 
