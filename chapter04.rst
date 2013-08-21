@@ -1564,16 +1564,16 @@ templates a partir do contexto.
 Você pode usar muitos níveis de herança, como julgar necessário. Uma maneira comum 
 de usar herança é a abordagem em três níveis descrito a baixo:
 
-1. Create a ``base.html`` template that holds the main look and feel of
-   your site. This is the stuff that rarely, if ever, changes.
+1. Crie um template ``base.html`` que mantenha a aparência principal do 
+seu site. Esse é o material que raramente ou nunca muda.
 
-2. Create a ``base_SECTION.html`` template for each "section" of your site
-   (e.g., ``base_photos.html`` and ``base_forum.html``). These templates
-   extend ``base.html`` and include section-specific styles/design.
+2. Crie um template ``base_SECTION.html`` para cada "section" do seu site 
+(ex.: ``base_photos.html`` e ``base_forum.html``). Esses templates extendem 
+`base.html`` e incluem sessões especificas de estilo e design.
 
-3. Create individual templates for each type of page, such as a forum page
-   or a photo gallery. These templates extend the appropriate section
-   template.
+3. Crie templates individuais para cada tipo de página, como uma página de 
+forun ou uma galeria de fotos. Esses templates extendem na sessão apropriada
+do template.
 
 This approach maximizes code reuse and makes it easy to add items to shared
 areas, such as section-wide navigation.
