@@ -143,145 +143,141 @@ Objetos Request também possuem alguns métodos úteis, como mostra a Tabela G-2
 .. table:: Tabela G-2. Métodos HttpRequest
 
     ======================  ===================================================
-    Method                  Description
+    Método                  Descrição
     ======================  ===================================================
-    ``__getitem__(key)``    Returns the GET/POST value for the given key,
-                            checking POST first, and then GET. Raises
-                            ``KeyError`` if the key doesn't exist.
+    ``__getitem__(key)``    Retorna o valor GET/POST para a chave dada, checando
+                            primeiro o POST e depois o GET. Retorna o 
+                            ``KeyError`` se a chave não existir.
 
-                            This lets you use dictionary-accessing syntax on
-                            an ``HttpRequest`` instance.
+                            Isso permite que você use a sintaxe de acesso ao 
+                            dicionário, uma instância ``HttpRequest``.
 
-                            For example, ``request["foo"]`` is the same as
-                            checking ``request.POST["foo"]`` and then
+                            Por exemplo, ``request["foo"]`` é o mesmo que
+                            checar o ``request.POST["foo"]`` e então o 
                             ``request.GET["foo"]``.
 
-    ``has_key()``           Returns ``True`` or ``False``, designating whether
-                            ``request.GET`` or ``request.POST`` has the given
-                            key.
+    ``has_key()``           Retorna ``True`` ou ``False``, designando se o 
+                            ``request.GET`` ou ``request.POST`` possuem a chave
+                            dada.
 
-    ``get_host()``          Returns the originating host of the request using
-                            information from the ``HTTP_X_FORWARDED_HOST`` and
-                            ``HTTP_HOST`` headers (in that order). If they
-                            don't provide a value, the method uses a
-                            combination of ``SERVER_NAME`` and
-                            ``SERVER_PORT``.
+    ``get_host()``          Retorna o host originado do request usando a informação
+                            dos cabeçalhos ``HTTP_X_FORWARDED_HOST`` e ``HTTP_HOST``
+                            (nessa ordem). Se eles não fornecerem um valor, o método 
+                            usa a combinação do ``SERVER_NAME`` e ``SERVER_PORT``.
 
-    ``get_full_path()``     Returns the ``path``, plus an appended query
-                            string, if applicable. For example,
-                            ``"/music/bands/the_beatles/?print=true"``
+    ``get_full_path()``     Retorna o ``path``, mais o anexo da query string, se
+                            aplicável. Por exemplo, ``"/musica/bandas/the_beatles/?print=true"``
 
-    ``is_secure()``         Returns ``True`` if the request is secure; that
-                            is, if it was made with HTTPS.
+    ``is_secure()``         Retorna ``True`` se o request for seguro; ou seja, se
+                            ele foi feito pelo HTTPS.
     ======================  ===================================================
 
-QueryDict Objects
+Objetos QueryDict
 -----------------
 
-In an ``HttpRequest`` object, the ``GET`` and ``POST`` attributes are
-instances of ``django.http.QueryDict``. ``QueryDict`` is a dictionary-like
-class customized to deal with multiple values for the same key. This is
-necessary because some HTML form elements, notably ``<select
-multiple="multiple">``, pass multiple values for the same key.
+Em um objeto ``HttpRequest``, os atributos ``GET`` e ``POST`` são
+instâncias do objeto ``django.http.QueryDict``. ``QueryDict`` é uma classe
+do tipo dicionário personalidazada para lidar com vários valores para a mesma
+chave. Isso é necessário porque muitos elementos do formulário HTML, designado
+``<select multiple="multiple">``, passa múltiplos valores para a mesma chave.
 
-``QueryDict`` instances are immutable, unless you create a ``copy()`` of them.
-That means you can't change attributes of ``request.POST`` and ``request.GET``
-directly.
+Instâncias ``QueryDict`` são imutáveis, a menos que você crie uma ``copy()`` deles.
+Isso significa que você não pode mudar os atributos do ``request.POST`` e 
+``request.GET`` diretamente.
 
-``QueryDict`` implements the all standard dictionary methods, because it's a
-subclass of dictionary. Exceptions are outlined in Table G-3.
+O ``QueryDict`` implementa todos os métodos padrões de dicionários, porque ele é
+uma subclasse do dicionário. Exceções são delineados na Tabela G-3.
 
-.. table:: Table G-3. How QueryDicts Differ from Standard Dictionaries.
+.. table:: Tabela G-3. Como os QueryDicts Diferem dos Dicionários Padrões.
 
+    ==================  =======================================================                        
+    Método              Diferenças de Implementação do dicionário Padrão
     ==================  =======================================================
-    Method              Differences from Standard dict Implementation
-    ==================  =======================================================
-    ``__getitem__``     Works just like a dictionary. However, if the key
-                        has more than one value, ``__getitem__()`` returns the
-                        last value.
+    ``__getitem__``     Trabalha apenas como um dicionário. Porém, se a chave
+                        tiver mais de um valor, o ``__getitem()__`` retorna o 
+                        último valor.
 
-    ``__setitem__``     Sets the given key to ``[value]`` (a Python list whose
-                        single element is ``value``). Note that this, as other
-                        dictionary functions that have side effects, can
-                        be called only on a mutable ``QueryDict`` (one that was
-                        created via ``copy()``).
+    ``__setitem__``     Define a chave dada para ``[valor]`` (uma lista Python 
+                        cujo único elemento é o ``valor``). Note que isso, como
+                        as outras funções de dicionários possuem o mesmo efeito,
+                        pode ser chamado apenas um ``QueryDict`` imutável (um 
+                        que foi criado via ``copy()``).
 
-    ``get()``           If the key has more than one value, ``get()`` returns
-                        the last value just like ``__getitem__``.
+    ``get()``           Se a chave tiver mais de um valor, o ``get()`` retorna
+                        o último valor assim como o ``__getitem__``.
 
-    ``update()``        Takes either a ``QueryDict`` or standard dictionary.
-                        Unlike the standard dictionary's ``update`` method,
-                        this method *appends* to the current dictionary items
-                        rather than replacing them::
+    ``update()``        Toma ou um ``QueryDict`` ou um dicionário padrão. Ao
+                        contrário do médoto de dicinário padrão ``update``,
+                        esse método *anexa* itens no dicionário atual ao invés
+                        de substituí-los::
 
                             >>> q = QueryDict('a=1')
-                            >>> q = q.copy() # to make it mutable
+                            >>> q = q.copy() # para torná-lo mutável
                             >>> q.update({'a': '2'})
                             >>> q.getlist('a')
                             ['1', '2']
-                            >>> q['a'] # returns the last
+                            >>> q['a'] # retorna a última
                             ['2']
 
-    ``items()``         Just like the standard dictionary ``items()`` method,
-                        except this uses the same last-value logic as
+    ``items()``         Tal como o método do dicionário padrão ``items()``,
+                        exceto por usar o mesmo último valor lógico como o 
                         ``__getitem()__``::
 
                              >>> q = QueryDict('a=1&a=2&a=3')
                              >>> q.items()
                              [('a', '3')]
 
-    ``values()``        Just like the standard dictionary ``values()`` method,
-                        except this uses the same last-value logic as
+    ``values()``        Tal como o método do dicionário padrão ``values()``,
+                        exceto por usar o mesmo último valor lógico como o
                         ``__getitem()__``.
     ==================  =======================================================
 
-In addition, ``QueryDict`` has the methods shown in Table G-4.
+Fora isso, o ``QueryDict`` possui os métodos mostrados na Tabela G-4.
 
-.. table:: G-4. Extra (Nondictionary) QueryDict Methods
+.. table:: G-4. Extra Métodos (Nondictionary) QueryDict
 
     ==========================  ===============================================
-    Method                      Description
+    Método                      Descrição
     ==========================  ===============================================
-    ``copy()``                  Returns a copy of the object, using
-                                ``copy.deepcopy()`` from the Python standard
-                                library. The copy will be mutable -- that is,
-                                you can change its values.
+    ``copy()``                  Retorna uma cópia do objeto, usando 
+                                ``copy.deepcopy()`` da biblioteca padrão Python.
+                                O copy vai ser mutável -- ou seja, você pode
+                                mudar os seus valores.
 
-    ``getlist(key)``            Returns the data with the requested key, as a
-                                Python list. Returns an empty list if the key
-                                doesn't exist. It's guaranteed to return a
-                                list of some sort.
+    ``getlist(key)``            Retorna os dados com a chave requisitada, como
+                                uma lista Python. Retorna uma lista vazia se a
+                                chave não existir. É garantido de retornar uma
+                                lista de algum tipo.
 
-    ``setlist(key, list_)``     Sets the given key to ``list_`` (unlike
-                                ``__setitem__()``).
+    ``setlist(key, list_)``     Define a chave dada para ``list_`` (ao contrário
+                                do ``__setitem__()``).
 
-    ``appendlist(key, item)``   Appends an item to the internal list associated
-                                with ``key``.
+    ``appendlist(key, item)``   Acrescenta um item para a lista interna associada 
+                                com a ``key``.
 
-    ``setlistdefault(key, a)``  Just like ``setdefault``, except it takes a
-                                list of values instead of a single value.
+    ``setlistdefault(key, a)``  Tal como o ``setdefault``, exceto por tomar uma
+                                lista de valores ao invés de um único valor.
 
-    ``lists()``                 Like ``items()``, except it includes all
-                                values, as a list, for each member of the
-                                dictionary. For example::
+    ``lists()``                 Tal como ``items()``, exceto por incluir todos os
+                                valores, como uma lista, para cada membro do 
+                                dicionário. Por exemplo::
 
                                     >>> q = QueryDict('a=1&a=2&a=3')
                                     >>> q.lists()
                                     [('a', ['1', '2', '3'])]
 
-
-    ``urlencode()``             Returns a string of the data in query-string
-                                format (e.g., ``"a=2&b=3&b=5"``).
+    ``urlencode()``             Retorna uma string dos dados no formato da
+                                query-string (ex., ``"a=2&b=3&b=5"``).
     ==========================  ===============================================
 
-A Complete Example
-------------------
+Um Exemplo Completo
+-------------------
 
-For example, given this HTML form::
+Por exemplo, dado este formulário HTML::
 
     <form action="/foo/bar/" method="post">
-    <input type="text" name="your_name" />
-    <select multiple="multiple" name="bands">
+    <input type="text" name="seu_nome" />
+    <select multiple="multiple" name="bandas">
         <option value="beatles">The Beatles</option>
         <option value="who">The Who</option>
         <option value="zombies">The Zombies</option>
@@ -289,199 +285,201 @@ For example, given this HTML form::
     <input type="submit" />
     </form>
 
-if the user enters ``"John Smith"`` in the ``your_name`` field and selects
-both "The Beatles" and "The Zombies" in the multiple select box, here's what
-Django's request object would have::
+se o usuário entrar com ``John Smith`` no campo ``seu_nome`` e selecionar
+ambos "The Beatles" e "The Zombies" na caixa de seleção múltipla, aqui está 
+o que o objeto request do Django deveria ter::
 
     >>> request.GET
     {}
     >>> request.POST
-    {'your_name': ['John Smith'], 'bands': ['beatles', 'zombies']}
-    >>> request.POST['your_name']
+    {'seu_nome': ['John Smith'], 'bandas': ['beatles', 'zombies']}
+    >>> request.POST['seu_nome']
     'John Smith'
-    >>> request.POST['bands']
+    >>> request.POST['bandas']
     'zombies'
-    >>> request.POST.getlist('bands')
+    >>> request.POST.getlist('bandas')
     ['beatles', 'zombies']
-    >>> request.POST.get('your_name', 'Adrian')
+    >>> request.POST.get('seu_name', 'Adrian')
     'John Smith'
     >>> request.POST.get('nonexistent_field', 'Nowhere Man')
     'Nowhere Man'
 
-.. admonition:: Implementation Note:
+.. admonition:: Nota de Implementação:
 
-    The ``GET``, ``POST``, ``COOKIES``, ``FILES``, ``META``, ``REQUEST``,
-    ``raw_post_data``, and ``user`` attributes are all lazily loaded. That means
-    Django doesn't spend resources calculating the values of those attributes until
-    your code requests them.
+    Os atributos ``GET``, ``POST``, ``COOKIES``, ``FILES``, ``META``, ``REQUEST``,
+    ``raw_post_data``, e ``user`` são todos carregados lentamente. Isso significa
+    que o Django não gasta recursos calculando os valores desses atributos até
+    seu código solicitá-los.
 
 HttpResponse
 ============
 
-In contrast to ``HttpRequest`` objects, which are created automatically by
-Django, ``HttpResponse`` objects are your responsibility. Each view you write
-is responsible for instantiating, populating, and returning an
-``HttpResponse``.
+Em contraste com os objetos ``HttpRequest``, que são criados automaticamente 
+pelo Django, os objetos ``HttpResponse`` são de sua responsabilidade. Cada
+view que você escreve, é responsável por instanciar, preencher e devolver 
+um ``HttpResponse``.
 
-The ``HttpResponse`` class lives at ``django.http.HttpResponse``.
+A classe ``HttpResponse`` fica no ``django.http.HttpResponse``.
 
-Construction HttpResponses
---------------------------
+Construção dos HttpResponses
+----------------------------
 
-Typically, you'll construct an ``HttpResponse`` to pass the contents of the
-page, as a string, to the ``HttpResponse`` constructor::
+Tipicamente, você irá construir um ``HttpResponse`` para passar os conteúdos
+da página, como uma string, para o construtor ``HttpResponse``::
 
-    >>> response = HttpResponse("Here's the text of the Web page.")
-    >>> response = HttpResponse("Text only, please.", mimetype="text/plain")
+    >>> response = HttpResponse("Aqui está o texto da página Web.")
+    >>> response = HttpResponse("Só textos, por favor.", mimetype="text/plain")
 
-But if you want to add content incrementally, you can use ``response`` as a
-filelike object::
-
-    >>> response = HttpResponse()
-    >>> response.write("<p>Here's the text of the Web page.</p>")
-    >>> response.write("<p>Here's another paragraph.</p>")
-
-You can pass ``HttpResponse`` an iterator rather than passing it
-hard-coded strings. If you use this technique, follow these guidelines:
-
-* The iterator should return strings.
-
-* If an ``HttpResponse`` has been initialized with an iterator as its
-  content, you can't use the ``HttpResponse`` instance as a filelike
-  object. Doing so will raise ``Exception``.
-
-Finally, note that ``HttpResponse`` implements a ``write()`` method, which
-makes is suitable for use anywhere that Python expects a filelike object. See
-Chapter 8 for some examples of using this technique.
-
-Setting Headers
----------------
-
-You can add and delete headers using dictionary syntax::
+Mas se você quizer adicionar conteúdo de forma incremental, você pode usar o 
+``response`` como um objeto filelike::
 
     >>> response = HttpResponse()
-    >>> response['X-DJANGO'] = "It's the best."
+    >>> response.write("<p>"Aqui está o texto da página Web.</p>")
+    >>> response.write("<p>Aqui está outro parágrafo.</p>")
+
+Você pode passar o ``HttpResponse`` como um iterador, ao invés de
+passar como strings codificadas. Se você usar essa técnica, siga
+as orientações::
+
+* O iterador deve retornar strings.
+
+* Se um ``HttpResponse`` for inicializado com um iterador como seu
+conteúdo, você não pode usar a instância ``HttpResponse`` como um
+objeto filelike. Fazendo isso irá levantar uma ``Exception``.
+
+Finalmente, note que o ``HttpResponse`` implementa um método ``write()``,
+que o torna adequado para usar em qualquer lugar onde o Python espera um
+objeto filelike. Veja o Capítulo 8 para alguns exemplos do uso dessa técnica.
+
+Definindo Cabeçalhos
+--------------------
+
+Você pode adicionar ou deletar cabeçalhos usando a sintaxe de dicionário::
+
+    >>> response = HttpResponse()
+    >>> response['X-DJANGO'] = "É o melhor."
     >>> del response['X-PHP']
     >>> response['X-DJANGO']
-    "It's the best."
+    "É o melhor."
 
-You can also use ``has_header(header)`` to check for the existence of a header.
+Você pode também usar o ``has_header(header)`` para checar a existência de um
+cabeçalho.
 
-Avoid setting ``Cookie`` headers by hand; instead, see Chapter 14 for
-instructions on how cookies work in Django.
+Evite definir cabeçalhos ``Cookie`` manualmente; ao invés disso, olhe o 
+Capítulo 14 para instruções de como os cookies funcionam no Django.
 
 HttpResponse Subclasses
 -----------------------
 
-Django includes a number of ``HttpResponse`` subclasses that handle different
-types of HTTP responses (see Table G-5). Like ``HttpResponse``, these subclasses live in
-``django.http``.
+O Django inclue um número de subclasses ``HttpResponse`` que lidam com diferentes
+tipos de respostas HTTP (olhe a Tabela G-5). Tal como ``HttpResponse``, essas
+subclasses ficam no ``django.http``.
 
-.. table:: Table G-5. HttpResponse Subclasses
+.. table:: Tabela G-5. HttpResponse Subclasses
 
     ==================================  =======================================
-    Class                               Description
+    Classe                              Descrição
     ==================================  =======================================
-    ``HttpResponseRedirect``            The constructor takes a single argument:
-                                        the path to redirect to. This can
-                                        be a fully qualified URL (e.g.,
-                                        ``'http://search.yahoo.com/'``) or
-                                        an absolute URL with no domain (e.g.,
-                                        ``'/search/'``). Note that this
-                                        returns an HTTP status code 302.
+    ``HttpResponseRedirect``            O construtor toma um único argumento:
+                                        o caminho para ser redirecionado. Isso
+                                        pode ser uma URL totalmente qualificada
+                                        (ex., ``'http://search.yahoo.com/'``) ou 
+                                        uma URL absoluta com o domínio (ex.,
+                                        ``'/search/'``). Note que isso retorna
+                                        um código de status HTTP 302.
 
-    ``HttpResponsePermanentRedirect``   Like ``HttpResponseRedirect``, but it
-                                        returns a permanent redirect (HTTP
-                                        status code 301) instead of a "found"
-                                        redirect (status code 302).
+    ``HttpResponsePermanentRedirect``   Tal como ``HttpResponseRedirect``, mas 
+                                        ele retorna um redirecionamento permantente
+                                        (código de status HTTP 301) no lugar de
+                                        redireção "found" (código de status 302).
 
-    ``HttpResponseNotModified``         The constructor doesn't take any
-                                        arguments. Use this to designate that
-                                        a page hasn't been modified since the
-                                        user's last request.
+    ``HttpResponseNotModified``         O construtor não toma nenhum argumento.
+                                        Use isso para designar que a página não
+                                        tem sido modificada desde a última 
+                                        requisição do usuário.
 
-    ``HttpResponseBadRequest``          Acts just like ``HttpResponse`` but
-                                        uses a 400 status code.
+    ``HttpResponseBadRequest``          Age como o ``HttpResponse`` mas usa o
+                                        código de status 400.
 
-    ``HttpResponseNotFound``            Acts just like ``HttpResponse`` but
-                                        uses a 404 status code.
+    ``HttpResponseNotFound``            Age como o ``HttpResponse`` as usa o 
+                                        código de status 404.
 
-    ``HttpResponseForbidden``           Acts just like ``HttpResponse`` but
-                                        uses a 403 status code.
+    ``HttpResponseForbidden``           Age como o ``HttpResponse`` mas usa o 
+                                        código de status 403.
 
-    ``HttpResponseNotAllowed``          Like ``HttpResponse``, but uses a 405
-                                        status code. It takes a single, required
-                                        argument: a list of permitted methods
-                                        (e.g., ``['GET', 'POST']``).
+    ``HttpResponseNotAllowed``          Tal como o ``HttpResponse``, mas usa o 
+                                        código de status 405. Ele pega um único
+                                        argumento requerido: uma lista de métodos
+                                        permitidos (ex., ``['GET', 'POST']``).
 
-    ``HttpResponseGone``                Acts just like ``HttpResponse`` but
-                                        uses a 410 status code.
+    ``HttpResponseGone``                Age como o ``HttpResponse`` mas usa o 
+                                        código de status 410.    
 
-    ``HttpResponseServerError``         Acts just like ``HttpResponse`` but
-                                        uses a 500 status code.
+    ``HttpResponseServerError``         Age como o ``HttpResponse`` mas usa o 
+                                        código de status 500.
     ==================================  =======================================
 
-You can, of course, define your own ``HttpResponse`` subclass to support
-different types of responses not supported out of the box.
+Você pode, é claro, definir sua própria subclasse ``HttpResponse`` para
+suportar diferentes tipos de respostas não suportadas fora da caixa.
 
-Returning Errors
+Retornando Erros
 ----------------
 
-Returning HTTP error codes in Django is easy. We've already mentioned the
+Retornar códigos de erros HTTP no Django é fácil. Nós já mencionamos o 
 ``HttpResponseNotFound``, ``HttpResponseForbidden``,
-``HttpResponseServerError``, and other subclasses. Just return an instance of one
-of those subclasses instead of a normal ``HttpResponse`` in order to signify
-an error, for example::
+``HttpResponseServerError``, e outras subclasses. Apenas retorna uma
+instância de uma das subclasses ao invés de um ``HttpResponse`` normal
+para representar um erro, por exemplo::
 
-    def my_view(request):
+    def meu_view(request):
         # ...
         if foo:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            return HttpResponseNotFound('<h1>Página não encontrada.</h1>')
         else:
-            return HttpResponse('<h1>Page was found</h1>')
+            return HttpResponse('<h1>Página encontrada.</h1>')
 
-Because a 404 error is by far the most common HTTP error, there's an easier
-way to handle it.
+Porque o erro 404 é de longe o erro HTTP mais comum, há uma maneira mais fácil
+de lidar com isso.
 
-When you return an error such as ``HttpResponseNotFound``, you're responsible
-for defining the HTML of the resulting error page::
+Quando você retornar um erro como o ``HttpResponseNotFound``, você será responsável
+por definir o HTML da página de erro resultante::
 
-    return HttpResponseNotFound('<h1>Page not found</h1>')
+    return HttpResponseNotFound('<h1>Página não encontrada</h1>')
 
-For convenience, and because it's a good idea to have a consistent 404 error page
-across your site, Django provides an ``Http404`` exception. If you raise
-``Http404`` at any point in a view function, Django will catch it and return the
-standard error page for your application, along with an HTTP error code 404.
+Por conveniência, e porque é uma boa idéia ter uma página de erro 404 em seu site,
+o Django fornece uma excessão ``Http404``. Se você levantar o ``Http404`` em qualquer
+ponto da sua função view, o Django irá pegá-lo e retornar uma página de erro para sua
+aplicação, juntamente com o código de erro 404.
 
-Here's an example::
+Aqui está um exemplo::
 
     from django.http import Http404
 
-    def detail(request, poll_id):
+    def detalhe(request, pesquisa_id):
         try:
-            p = Poll.objects.get(pk=poll_id)
-        except Poll.DoesNotExist:
+            p = Pesquisa.objects.get(pk=pesquisa_id)
+        except Pesquisa.DoesNotExist:
             raise Http404
-        return render(request, 'polls/detail.html', {'poll': p})
+        return render(request, 'pesquisas/detalhes.html', {'pesquisa': p})
 
-In order to use the ``Http404`` exception to its fullest, you should create a
-template that is displayed when a 404 error is raised. This template should be
-called ``404.html``, and it should be located in the top level of your template tree.
+Para usar a exceção ``Http404`` em sua totalidade, você deve criar um template
+que é exibido quando um erro 404 for levantado. Esse template deve ser chamado
+``404.html``, e não pode ficar no nível mais alto do template tree.
 
-Customizing the 404 (Not Found) View
+Customizando o 404 (Not Found) View
 ------------------------------------
 
-When you raise an ``Http404`` exception, Django loads a special view devoted
-to handling 404 errors. By default, it's the view
-``django.views.defaults.page_not_found``, which loads and renders the template
+Quando você levanta uma exceção ``Http404``, o Django carrega uma view especial
+dedicado para lidar erros 404. Por padrão, é o view
+``django.views.defaults.page_not_found``, que carrega e renderiza o template
 ``404.html``.
 
-This means you need to define a ``404.html`` template in your root template
-directory. This template will be used for all 404 errors.
+Isso significa que você precisa definir o template ``404.html`` no diretório 
+de template raíz. O template será usado para todos os erros 404.
 
-This ``page_not_found`` view should suffice for 99% of Web applications, but
-if you want to override the 404 view, you can specify ``handler404`` in your
-URLconf, like so::
+Essa view ``page_not_found`` deve ser suficiente para 99% das aplicações Web, mas
+se você quizer substituir a view 404, você pode especificar o ``handler404`` no
+seu URLconf, assim::
 
     from django.conf.urls.defaults import *
 
@@ -489,44 +487,44 @@ URLconf, like so::
         ...
     )
 
-    handler404 = 'mysite.views.my_custom_404_view'
+    handler404 = 'meusite.views.minha_view_404_personalizada'
 
-Behind the scenes, Django determines the 404 view by looking for
-``handler404``. By default, URLconfs contain the following line::
+Nos bastidores, o Django determina a view 404 procurando pelo
+``handler404``. Por padrão, o URLconfs contêm a seguinte linha::
 
     from django.conf.urls.defaults import *
 
-That takes care of setting ``handler404`` in the current module. As you can
-see in ``django/conf/urls/defaults.py``, ``handler404`` is set to
-``'django.views.defaults.page_not_found'`` by default.
+Que cuida da criação do ``handler404`` no módulo atual. Como você pode ver
+no ``django/conf/urls/defaults.py``, ``handler404`` está definido para
+``'django.views.defaults.page_not_found'`` por padrão.
 
-There are three things to note about 404 views:
+Há três coisas a notar sobre as views 404:
 
-* The 404 view is also called if Django doesn't find a match after checking
-  every regular expression in the URLconf.
+* A view 404 é também chamada se o Django não achar uma correspondência depois
+de checar todas as expressões regulares no URLconf.
 
-* If you don't define your own 404 view -- and simply use the default,
-  which is recommended -- you still have one obligation: to create a
-  ``404.html`` template in the root of your template directory. The default
-  404 view will use that template for all 404 errors.
+* Se você não definir sua própria view 404 -- e simplesmente usar o padrão,
+que é recomendado -- você ainda tem uma obrigação: criar um template 
+``404.html`` no seu diretório de template raíz. Por padrão a view 404 usará 
+esse template para todos os erros 404.
 
-* If ``DEBUG`` is set to ``True`` (in your settings module), then your 404
-  view will never be used, and the traceback will be displayed instead.
+* Se o ``DEBUG`` está definido como ``True`` (no seu módulo settings), então
+a sua view 404 nunca será usada, em vez disso, o traceback será exibido.
 
-Customizing the 500 (Server Error) View
+Customizando o 500 (Server Error) View
 ---------------------------------------
 
-Similarly, Django executes special-case behavior in the case of runtime errors
-in view code. If a view results in an exception, Django will, by default, call
-the view ``django.views.defaults.server_error``, which loads and renders the
-template ``500.html``.
+Da mesma forma, o Django executa um caso especial de comportamente no caso de 
+um erro runtime no código view. Se a view resultar em uma exceção, o Django irá,
+por padrão, chamar a view ``django.views.defaults.server_error``, que carrega e
+renderiza o template ``500.html``.
 
-This means you need to define a ``500.html`` template in your root template
-directory. This template will be used for all server errors.
+Isso significa que você precisa definir o template ``500.html`` no seu diretório
+de template raíz. Esse template será usado para todos os erros do servidor.
 
-This ``server_error`` view should suffice for 99% of Web applications, but if
-you want to override the view, you can specify ``handler500`` in your
-URLconf, like so::
+Essa view ``server_error`` deve ser suficiente para 99% das aplicações Web, mas
+se você quizer substituir a view, você pode especificar o ``handler500`` no seu
+URLconf, assim::
 
     from django.conf.urls.defaults import *
 
@@ -534,4 +532,4 @@ URLconf, like so::
         ...
     )
 
-    handler500 = 'mysite.views.my_custom_error_view'
+    handler500 = 'meusite.views.minha_view_personalizada_de_erro'
