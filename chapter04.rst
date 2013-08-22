@@ -1509,11 +1509,19 @@ filhos para substituir, adicionar ou isolar o conteúdo dos blocos
 como ``base.html``). // Revisar
 
 Estamos usando uma template tag aqui que você não viu anteriormente: a
+<<<<<<< HEAD
 tag ``{% block %}``. O que todas as tags ``{% block %}`` fazem é falar ao
 template engine que um template filho deve pode ser substituido naquelas
 partes do template.
 
 Agora que temos este template base, podemos modificar o nosso template
+=======
+tag ``{% block %}``. O que todas as tags ``{% block %}`` fazem é falar ao 
+template engine que um template filho deve pode ser substituido naquelas 
+partes do template.
+
+Agora que temos este template base, podemos modificar o nosso template 
+>>>>>>> 2a97a21339ce4f1622d636cbbf25323bc602da93
 existente ``current_datetime.html`` para usá-lo::
 
     {% extends "base.html" %}
