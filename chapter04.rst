@@ -1572,65 +1572,66 @@ templates a partir do contexto.
 Você pode usar muitos níveis de herança, como julgar necessário. Uma maneira comum 
 de usar herança é a abordagem em três níveis descrito a baixo:
 
-1. Create a ``base.html`` template that holds the main look and feel of
-   your site. This is the stuff that rarely, if ever, changes.
+1. Crie um template ``base.html`` que mantenha a aparência principal do 
+seu site. Esse é o material que raramente ou nunca muda.
 
-2. Create a ``base_SECTION.html`` template for each "section" of your site
-   (e.g., ``base_photos.html`` and ``base_forum.html``). These templates
-   extend ``base.html`` and include section-specific styles/design.
+2. Crie um template ``base_SECTION.html`` para cada "section" do seu site 
+(ex.: ``base_photos.html`` e ``base_forum.html``). Esses templates extendem 
+`base.html`` e incluem sessões especificas de estilo e design.
 
-3. Create individual templates for each type of page, such as a forum page
-   or a photo gallery. These templates extend the appropriate section
-   template.
+3. Crie templates individuais para cada tipo de página, como uma página de 
+forum ou uma galeria de fotos. Esses templates extendem na sessão apropriada
+do template.
 
-This approach maximizes code reuse and makes it easy to add items to shared
-areas, such as section-wide navigation.
+Essa abordagem maximiza a reutilização de código e facilita a adição de itens 
+para áreas compartilhadas, como a seção de navegação.
 
-Here are some guidelines for working with template inheritance:
+Aqui estão algumas orientações para trabalhar com a herança de template:
 
-* If you use ``{% extends %}`` in a template, it must be the first
-  template tag in that template. Otherwise, template inheritance won't
-  work.
+* Se você usar ``{% extends %}`` em um template, ele deve ser a primeira 
+  template tag nesse template. Caso contrário, a herança de template não 
+  funionará.
 
-* Generally, the more ``{% block %}`` tags in your base templates, the
-  better. Remember, child templates don't have to define all parent blocks,
-  so you can fill in reasonable defaults in a number of blocks, and then
-  define only the ones you need in the child templates. It's better to have
-  more hooks than fewer hooks.
+* Geralmente, quanto mais tags ``{% block %}`` em seu template base, 
+  melhor. Lembre, templates filhos não precisam definir todos os blocs 
+  do pai, dessa forma você pode preencher com padrôes razoáveis em um 
+  número de blocos e então definir somente aqueles que você precisa nos 
+  templates filhos. É melhor ter mais ganchos do que menos.
 
-* If you find yourself duplicating code in a number of templates, it
-  probably means you should move that code to a ``{% block %}`` in a
-  parent template.
+* Se você se encontrar duplicando código em números templates, isso  
+  provávelmente significa que você deve mover esse código para um 
+  ``{% block %}`` em um template pai.
 
-* If you need to get the content of the block from the parent template,
-  use ``{{ block.super }}``, which is a "magic" variable providing the
-  rendered text of the parent template. This is useful if you want to add
-  to the contents of a parent block instead of completely overriding it.
+* Se você precisa pegar o conteúdo do bloco apartir do template pai, 
+  use ``{{ block.super }}``, que é uma variável "mágica" capaz de prover 
+  o texto renderizado no template pai. Isto é útil se você deseja adicionar 
+  ao conteúdo de um bloco pai, ao invés de sobescrevê-lo completamente.
+  
+* Você não pode definir várias tags ``{% block %}`` com o mesmo nome no 
+  mesmo template. Essa limitação existe porque uma tag block funciona em 
+  "várias" direções. Isto é, uma tag block não apenas disponibiliza um 
+  furo a ser preenchido, também define o conteúdo que enche o furo no 
+  *template pai*. Se houvesse dois nomes similares de tags ``{% block %}`` 
+  em um template, o template pai não saberia qual desses blocos de conteúdo 
+  usar.
+  
+* O nome do template que você passa para ``{% extends %}`` é carregado 
+  usando o mesmo método que ``get_template()`` usa. Isto é, o nome do template 
+  é anexado à sua configuração ``TEMPLATE_DIRS``. 
 
-* You may not define multiple ``{% block %}`` tags with the same name in
-  the same template. This limitation exists because a block tag works in
-  "both" directions. That is, a block tag doesn't just provide a hole to
-  fill, it also defines the content that fills the hole in the *parent*.
-  If there were two similarly named ``{% block %}`` tags in a template,
-  that template's parent wouldn't know which one of the blocks' content to
-  use.
+* Na maioria dos casos, o argumento para ``{% extends %}`` será uma string, 
+  mas também pode ser uma variável, se você desconhecer o nome do template 
+  pai antes da execução. Isso permite que você faça algo legal e dinâmico.
 
-* The template name you pass to ``{% extends %}`` is loaded using the same
-  method that ``get_template()`` uses. That is, the template name is
-  appended to your ``TEMPLATE_DIRS`` setting.
+O que vem depois?
+=================
 
-* In most cases, the argument to ``{% extends %}`` will be a string, but it
-  can also be a variable, if you don't know the name of the parent template
-  until runtime. This lets you do some cool, dynamic stuff.
+Agora você tem as noções básicas do sistema de template do Django. O que vem depois?
 
-What's next?
-============
+Muito dos Web sites modernos são *database-driven*: o conteúdo do web site é 
+armazenado em uma base de dados relacional. Isso permite um clara separação 
+dos dados e da lógica (Da mesma forma que, visão e templates permitem a separação 
+entre lógica e exibição).
 
-You now have the basics of Django's template system under your belt. What's next?
-
-Many modern Web sites are *database-driven*: the content of the Web site is
-stored in a relational database. This allows a clean separation of data and logic
-(in the same way views and templates allow the separation of logic and display.)
-
-The :doc:`next chapter <chapter05>` covers the tools Django gives you to
-interact with a database.
+O :doc:`next chapter <chapter05>` abrange as feramentas disponibilizadas pelo 
+Django para interagir com o banco de dados.
