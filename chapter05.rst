@@ -1,6 +1,9 @@
-=================
-Chapter 5: Models
-=================
+===================
+Capítulo 5: Modelos
+===================
+
+No capítulo 3, cobrimos os fundamentos para construir web sites dinâmicos 
+com Django: 
 
 In Chapter 3, we covered the fundamentals of building dynamic Web sites
 with Django: setting up views and URLconfs. As we explained, a view is
