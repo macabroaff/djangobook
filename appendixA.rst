@@ -4,9 +4,7 @@ Apêndice A: Referência da Definição de Modelos
 
 Capítulo 5 explica o básico da definição dos modelos, e usaremos durante todo o resto do livro. Exite, contudo, uma enorme gama de opções de modelo disponíveis não abrangidas em outros lugares. Esse apêndice explica cada opção de definição de modelo possível.
 
-Note that although these APIs are considered stable, the Django developers
-consistently add new shortcuts and conveniences to the model definition. It's a
-good idea to always check the latest documentation online at
+Note que embora essa API seja considerada estável, os desenvolvedores do Django consistentemente adicionam novos atalhos e conveniências para a definição dos modelos. É uma boa ideia sempre verificar a última documentação online em
 http://docs.djangoproject.com/.
 
 Campos
@@ -15,21 +13,20 @@ Campos
 A parte mais importante do modelo -- e a única parte necessária dos modelos --
 é a lista de campos de banco de dados que define.
 
-.. admonition:: Field Name Restrictions
+.. admonition:: Restrições de nome de campo
 
-    Django places only two restrictions on model field names:
+    Django coloca apenas duas restrições em nomes de campo do modelo:
 
-    1. A field name cannot be a Python reserved word, because that would result
-       in a Python syntax error. For example::
-
-           class Example(models.Model):
-               pass = models.IntegerField() # 'pass' is a reserved word!
-
-    2. A field name cannot contain more than one underscore in a row, due to
-       the way Django's query lookup syntax works. For example::
+    1. O nome do campo não pode ser uma palavra reservada pelo Python, por que isso irá resultar em um erro de sintaxe. Por exemplo::
 
            class Example(models.Model):
-               foo__bar = models.IntegerField() # 'foo__bar' has two underscores!
+               pass = models.IntegerField() # 'pass' é uma palavra reservada!
+
+    2. Um campo não pode conter mais do que um underline na linha, devido a
+       forma de sintaxe de pesquisa do Django. Por exemplo::
+
+           class Example(models.Model):
+               foo__bar = models.IntegerField() # 'foo__bar' tem dois underlines!
 
     These limitations can be worked around, though, because your field name
     doesn't necessarily have to match your database column name. See
@@ -82,29 +79,28 @@ A true/false field.
 CharField
 ---------
 
-A string field, for small- to large-sized strings.
+Um campo string, para pequenos a grandes tamanhos de strings.
 
-For very large amounts of text, use ``TextField``.
+Para enormes quantidades de texto, usa ``TextField``.
 
-``CharField`` has one extra required argument: ``max_length``. This is the
-maximum length (in characters) of the field. The ``max_length`` is enforced
-at the database level and in Django's validation.
+``CharField`` tem um argumento extra exigido: ``max_length``. Esse é o tamanho máximo (em caracteres) do campo. O ``max_length`` é aplicado
+a nível de banco de dados e nas validações do Django.
 
 CommaSeparatedIntegerField
 --------------------------
 
-A field of integers separated by commas. As in ``CharField``, the
-``max_length`` argument is required.
+Um campo de inteiros separados por virgulas. Como no ``CharField``, o
+argumento ``max_length`` é exigido.
 
 DateField
 ---------
 
-A date, represented in Python by a ``datetime.date`` instance.
+Uma data, representada em Python por uma instância ``datetime.date``.
 
 DateTimeField
 -------------
 
-A date and time, represented in Python by a ``datetime.datetime`` instance.
+Uma data e hora, representada em Python por uma instância ``datetime.datetime``.
 
 DecimalField
 ------------
@@ -925,8 +921,8 @@ If this isn't given, Django will use a munged version of the class name:
 verbose_name_plural
 -------------------
 
-The plural name for the object::
+O nome plural para o objeto::
 
     verbose_name_plural = "stories"
 
-If this isn't given, Django will use ``verbose_name`` + ``"s"``.
+Se isso não for dado, o Django usará ``verbose_name`` + ``"s"``.
