@@ -1,22 +1,19 @@
 ======================================
-Appendix A: Model Definition Reference
+Apêndice A: Referência da Definição de Modelos
 ======================================
 
-Chapter 5 explains the basics of defining models, and we use them throughout
-the rest of the book. There is, however, a *huge* range of model options
-available not covered elsewhere. This appendix explains each possible model
-definition option.
+Capítulo 5 explica o básico da definição dos modelos, e usaremos durante todo o resto do livro. Exite, contudo, uma enorme gama de opções de modelo disponíveis não abrangidas em outros lugares. Esse apêndice explica cada opção de definição de modelo possível.
 
 Note that although these APIs are considered stable, the Django developers
 consistently add new shortcuts and conveniences to the model definition. It's a
 good idea to always check the latest documentation online at
 http://docs.djangoproject.com/.
 
-Fields
+Campos
 ======
 
-The most important part of a model -- and the only required part of a model --
-is the list of database fields it defines.
+A parte mais importante do modelo -- e a única parte necessária dos modelos --
+é a lista de campos de banco de dados que define.
 
 .. admonition:: Field Name Restrictions
 
