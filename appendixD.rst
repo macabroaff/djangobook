@@ -620,11 +620,9 @@ Essa configuração indica se é para salvar os dados da sessão em toda requisi
 SITE_ID
 -------
 
-*Valor padrão*: Not defined
+*Valor padrão*: Não definido
 
-This is the ID, as an integer, of the current site in the ``django_site`` database
-table. It is used so that application data can hook into specific site(s)
-and a single database can manage content for multiple sites. Ver Capítulo 16.
+Esse é o ID, um número inteiro, do site atual na tabela do banco de dados ``django_site``. É utilizada para que os dados da aplicação possam ser ligados a um(ns) site(s) específico(s) e uma única base de dados pode gerenciar conteúdo de múltiplos sites. Ver Capítulo 16.
 
 TEMPLATE_CONTEXT_PROCESSORS
 ---------------------------
