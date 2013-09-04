@@ -444,9 +444,7 @@ INSTALLED_APPS
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-A tuple of strings designating all applications that are enabled in this Django
-installation. Each string should be a full Python path to a Python package that
-contains a Django application. Ver Capítulo 5 for more about applications.
+Uma tupla de strings designando todas as aplicações que serão habilitadas nessa instalação do Django. Cada string deve ser um caminho completo de módulo Python para um pacote Python que contenha a aplicação Django. Ver Capítulo 5 para mais sobre aplicações.
 
 LANGUAGE_CODE
 -------------
