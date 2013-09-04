@@ -573,8 +573,7 @@ SERVER_EMAIL
 
 *Valor padrão*: ``'root@localhost'``
 
-This is the email address that error messages come from, such as those sent to
-``ADMINS`` and ``MANAGERS``.
+Esse é o endereço de email que mensagens de erros utilizarão ao enviar emails para ``ADMINS`` and ``MANAGERS``.
 
 SESSION_COOKIE_AGE
 ------------------
