@@ -214,14 +214,14 @@ ADMIN_MEDIA_PREFIX
 
 *Valor padrão*: ``'/media/'``
 
-Esta configuração é o prefixo da URL para os arquívos de mídia do admin: CSS, Javascript e imagens. Certifique-se de usar a barra invertida.
+Essa configuração é o prefixo da URL para os arquívos de mídia do admin: CSS, Javascript e imagens. Certifique-se de usar a barra invertida.
 
 ADMINS
 ------
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-Esta é a tupla que lista as pessoas que receberão notificações de erro. Quando ``DEBUG=False`` e a view lançar uma exceção, o Django irá enviar um email para essas pessoas com as informações sobre a exceção gerada. Cada membro da tupla deve ser uma tupla com (Nome completo, endereço de email), por exemplo::
+Essa é a tupla que lista as pessoas que receberão notificações de erro. Quando ``DEBUG=False`` e a view lançar uma exceção, o Django irá enviar um email para essas pessoas com as informações sobre a exceção gerada. Cada membro da tupla deve ser uma tupla com (Nome completo, endereço de email), por exemplo::
 
     (('John', 'john@example.com'), ('Mary', 'mary@example.com'))
 
