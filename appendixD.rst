@@ -516,7 +516,7 @@ MIDDLEWARE_CLASSES
      "django.middleware.common.CommonMiddleware",
      "django.middleware.doc.XViewMiddleware")
 
-This is a tuple of middleware classes to use. Ver Capítulo 17.
+Essa é uma tupla de classes middleware para uso. Ver Capítulo 17.
 
 MONTH_DAY_FORMAT
 ----------------
