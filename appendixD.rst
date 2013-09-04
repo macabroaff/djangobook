@@ -358,9 +358,7 @@ DEFAULT_CONTENT_TYPE
 
 *Valor padrão*: ``'text/html'``
 
-This is the default content type to use for all ``HttpResponse`` objects, if a MIME type
-isn't manually specified. It is used with ``DEFAULT_CHARSET`` to construct the
-``Content-Type`` header. See Appendix G for more about ``HttpResponse`` objects.
+Esse é o tipo de conteúdo padrão usado para todos os objetos ``HttpResponse``, se um MIME type não é manualmente especificado. É usado com ``DEFAULT_CHARSET`` para construção do ``Content-Type`` do cabeçalho. Veja o Apêndice G para mais sobre objetos ``HttpResponse``.
 
 DEFAULT_FROM_EMAIL
 ------------------
