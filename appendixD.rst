@@ -315,7 +315,7 @@ Essa configuração é o nome de usuário usado ao conectar à base de dados. N�
 DATE_FORMAT
 -----------
 
-*Valor padrão*: ``'N j, Y'`` (e.g., ``Feb. 4, 2003``)
+*Valor padrão*: ``'N j, Y'`` (Por exemplo, ``Feb. 4, 2003``)
 
 Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
@@ -325,7 +325,7 @@ Veja também ``DATETIME_FORMAT``, ``TIME_FORMAT``, ``YEAR_MONTH_FORMAT``, e
 DATETIME_FORMAT
 ---------------
 
-*Valor padrão*: ``'N j, Y, P'`` (e.g., ``Feb. 4, 2003, 4 p.m.``)
+*Valor padrão*: ``'N j, Y, P'`` (Por exemplo, ``Feb. 4, 2003, 4 p.m.``)
 
 Essa é a formatação padrão para usar em campos do tipo datetime nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
@@ -544,7 +544,7 @@ ROOT_URLCONF
 
 *Valor padrão*: Not defined
 
-This is a string representing the full Python import path to your root URLconf (e.g.,
+This is a string representing the full Python import path to your root URLconf (Por exemplo,
 ``"mydjangoapps.urls"``). Ver Capítulo 3.
 
 SECRET_KEY
@@ -564,7 +564,7 @@ SEND_BROKEN_LINK_EMAILS
 
 This setting indicates whether to send an email to the ``MANAGERS`` each time somebody visits a
 Django-powered page that is 404-ed with a nonempty referer (i.e., a broken
-link). This is only used if ``CommonMiddleware`` is installed (see Chapter 17).
+link). Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
 Veja também ``IGNORABLE_404_STARTS`` and ``IGNORABLE_404_ENDS``.
 
 SERIALIZATION_MODULES
@@ -696,7 +696,7 @@ TEMPLATE_STRING_IF_INVALID
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is output, as a string, that the template system should use for invalid (e.g.,
+This is output, as a string, that the template system should use for invalid (Por exemplo,
 misspelled) variables. Ver Capítulo 9.
 
 TEST_RUNNER
@@ -721,7 +721,7 @@ which is covered online at http://docs.djangoproject.com/en/dev/topics/testing/.
 TIME_FORMAT
 -----------
 
-*Valor padrão*: ``'P'`` (e.g., ``4 p.m.``)
+*Valor padrão*: ``'P'`` (Por exemplo, ``4 p.m.``)
 
 This is the default formatting to use for time fields on Django admin change-list pages
 -- and, possibly, by other parts of the system. It accepts the same format as the
@@ -771,8 +771,7 @@ USE_ETAGS
 *Valor padrão*: ``False``
 
 This Boolean specifies whether to output the ETag header. It saves
-bandwidth but slows down performance. This is only used if ``CommonMiddleware``
-is installed (see Chapter 17).
+bandwidth but slows down performance. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
 
 USE_I18N
 --------
