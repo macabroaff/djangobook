@@ -489,23 +489,22 @@ MEDIA_ROOT
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is an absolute path to the directory that holds media for this installation (e.g.,
-``"/home/media/media.lawrence.com/"``). Veja também ``MEDIA_URL``.
+Isso é um caminho absoluto para o diretório que contém mídias para esta instalação (por exemplo, ``"/home/media/media.lawrence.com/"``) Veja também ``MEDIA_URL``.
 
 MEDIA_URL
 ---------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This URL handles the media served from ``MEDIA_ROOT`` (e.g.,
+Essa URL lida com as mídias servidas a partir de ``MEDIA_ROOT`` (por exemplo,
 ``"http://media.lawrence.com"``).
 
-Note that this should have a trailing slash if it has a path component:
+Note que isso deve possuir uma barra à direita, se possuir um caminho de componente:
 
-* *Correct*: ``"http://www.example.com/static/"``
-* *Incorrect*: ``"http://www.example.com/static"``
+* *Correto*: ``"http://www.example.com/static/"``
+* *Incorreto*: ``"http://www.example.com/static"``
 
-Ver Capítulo 12 for more on deployment and serving media.
+Ver Capítulo 12 para mais sobre deployment e servir mídias.
 
 MIDDLEWARE_CLASSES
 ------------------
