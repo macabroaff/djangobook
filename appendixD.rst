@@ -430,18 +430,18 @@ IGNORABLE_404_ENDS
 '.php')``
 
 This is a tuple of strings that specify beginnings of URLs that should be
-ignored by the 404 e-mailer. (See Chapter 12 for more on the 404 e-mailer.)
+ignored by the 404 e-mailer. (Ver Capítulo 12 for more on the 404 e-mailer.)
 
 No errors will be sent for URLs end with strings from this sequence.
 
-See also ``IGNORABLE_404_STARTS`` and ``SEND_BROKEN_LINK_EMAILS``.
+Veja também ``IGNORABLE_404_STARTS`` and ``SEND_BROKEN_LINK_EMAILS``.
 
 IGNORABLE_404_STARTS
 --------------------
 
 *Valor padrão*: ``('/cgi-bin/', '/_vti_bin', '/_vti_inf')``
 
-See also ``SEND_BROKEN_LINK_EMAILS`` and ``IGNORABLE_404_ENDS``.
+Veja também ``SEND_BROKEN_LINK_EMAILS`` and ``IGNORABLE_404_ENDS``.
 
 INSTALLED_APPS
 --------------
@@ -450,7 +450,7 @@ INSTALLED_APPS
 
 A tuple of strings designating all applications that are enabled in this Django
 installation. Each string should be a full Python path to a Python package that
-contains a Django application. See Chapter 5 for more about applications.
+contains a Django application. Ver Capítulo 5 for more about applications.
 
 LANGUAGE_CODE
 -------------
@@ -471,7 +471,7 @@ see the current list of translated languages by looking in
 
 The list is a tuple of two-tuples in the format (language code, language name)
 -- for example, ``('ja', 'Japanese')``. This specifies which languages are
-available for language selection. See Chapter 19 for more on language selection.
+available for language selection. Ver Capítulo 19 for more on language selection.
 
 Generally, the default value should suffice. Only set this setting if you want
 to restrict language selection to a subset of the Django-provided languages.
@@ -510,7 +510,7 @@ MEDIA_ROOT
 *Valor padrão*: ``''`` (string vazia)
 
 This is an absolute path to the directory that holds media for this installation (e.g.,
-``"/home/media/media.lawrence.com/"``). See also ``MEDIA_URL``.
+``"/home/media/media.lawrence.com/"``). Veja também ``MEDIA_URL``.
 
 MEDIA_URL
 ---------
@@ -525,7 +525,7 @@ Note that this should have a trailing slash if it has a path component:
 * *Correct*: ``"http://www.example.com/static/"``
 * *Incorrect*: ``"http://www.example.com/static"``
 
-See Chapter 12 for more on deployment and serving media.
+Ver Capítulo 12 for more on deployment and serving media.
 
 MIDDLEWARE_CLASSES
 ------------------
@@ -537,7 +537,7 @@ MIDDLEWARE_CLASSES
      "django.middleware.common.CommonMiddleware",
      "django.middleware.doc.XViewMiddleware")
 
-This is a tuple of middleware classes to use. See Chapter 17.
+This is a tuple of middleware classes to use. Ver Capítulo 17.
 
 MONTH_DAY_FORMAT
 ----------------
@@ -554,7 +554,7 @@ the header for a given day displays the day and month. Different locales have
 different formats. For example, U.S. English would have "January 1," whereas
 Spanish might have "1 Enero."
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
 ``YEAR_MONTH_FORMAT``.
 
 PREPEND_WWW
@@ -563,7 +563,7 @@ PREPEND_WWW
 *Valor padrão*: ``False``
 
 This setting indicates whether to prepend the "www." subdomain to URLs that don't have it.
-This is used only if ``CommonMiddleware`` is installed (see the Chapter 17). See also
+This is used only if ``CommonMiddleware`` is installed (see the Chapter 17). Veja também
 ``APPEND_SLASH``.
 
 ROOT_URLCONF
@@ -572,7 +572,7 @@ ROOT_URLCONF
 *Valor padrão*: Not defined
 
 This is a string representing the full Python import path to your root URLconf (e.g.,
-``"mydjangoapps.urls"``). See Chapter 3.
+``"mydjangoapps.urls"``). Ver Capítulo 3.
 
 SECRET_KEY
 ----------
@@ -592,7 +592,7 @@ SEND_BROKEN_LINK_EMAILS
 This setting indicates whether to send an email to the ``MANAGERS`` each time somebody visits a
 Django-powered page that is 404-ed with a nonempty referer (i.e., a broken
 link). This is only used if ``CommonMiddleware`` is installed (see Chapter 17).
-See also ``IGNORABLE_404_STARTS`` and ``IGNORABLE_404_ENDS``.
+Veja também ``IGNORABLE_404_STARTS`` and ``IGNORABLE_404_ENDS``.
 
 SERIALIZATION_MODULES
 ---------------------
@@ -616,7 +616,7 @@ SESSION_COOKIE_AGE
 
 *Valor padrão*: ``1209600`` (two weeks, in seconds)
 
-This is the age of session cookies, in seconds. See Chapter 14.
+This is the age of session cookies, in seconds. Ver Capítulo 14.
 
 SESSION_COOKIE_DOMAIN
 ---------------------
@@ -625,7 +625,7 @@ SESSION_COOKIE_DOMAIN
 
 This is the domain to use for session cookies. Set this to a string such as
 ``".lawrence.com"`` for cross-domain cookies, or use ``None`` for a standard
-domain cookie. See Chapter 14.
+domain cookie. Ver Capítulo 14.
 
 SESSION_COOKIE_NAME
 -------------------
@@ -633,7 +633,7 @@ SESSION_COOKIE_NAME
 *Valor padrão*: ``'sessionid'``
 
 This is the name of the cookie to use for sessions; it can be whatever you want.
-See Chapter 14.
+Ver Capítulo 14.
 
 SESSION_COOKIE_SECURE
 ---------------------
@@ -643,7 +643,7 @@ SESSION_COOKIE_SECURE
 This setting indicates whether to use a secure cookie for the session cookie.
 If this is set to ``True``, the cookie will be marked as "secure,"
 which means browsers may ensure that the cookie is only sent under an HTTPS connection.
-See Chapter 14.
+Ver Capítulo 14.
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE
 -------------------------------
@@ -651,14 +651,14 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE
 *Valor padrão*: ``False``
 
 This setting indicates whether to expire the session when the user closes
-his browser. See Chapter 14.
+his browser. Ver Capítulo 14.
 
 SESSION_SAVE_EVERY_REQUEST
 --------------------------
 
 *Valor padrão*: ``False``
 
-This setting indicates whether to save the session data on every request. See Chapter 14.
+This setting indicates whether to save the session data on every request. Ver Capítulo 14.
 
 SITE_ID
 -------
@@ -667,7 +667,7 @@ SITE_ID
 
 This is the ID, as an integer, of the current site in the ``django_site`` database
 table. It is used so that application data can hook into specific site(s)
-and a single database can manage content for multiple sites. See Chapter 16.
+and a single database can manage content for multiple sites. Ver Capítulo 16.
 
 TEMPLATE_CONTEXT_PROCESSORS
 ---------------------------
@@ -681,7 +681,7 @@ TEMPLATE_CONTEXT_PROCESSORS
 
 This is a tuple of callables that are used to populate the context in ``RequestContext``.
 These callables take a request object as their argument and return a dictionary
-of items to be merged into the context. See Chapter 9.
+of items to be merged into the context. Ver Capítulo 9.
 
 TEMPLATE_DEBUG
 --------------
@@ -696,7 +696,7 @@ highlighted.
 Note that Django only displays fancy error pages if ``DEBUG`` is ``True``, so
 you'll want to set that to take advantage of this setting.
 
-See also ``DEBUG``.
+Veja também ``DEBUG``.
 
 TEMPLATE_DIRS
 -------------
@@ -716,7 +716,7 @@ TEMPLATE_LOADERS
     'django.template.loaders.app_directories.load_template_source')
 
 This is a tuple of callables (as strings) that know how to import templates from
-various sources. See Chapter 9.
+various sources. Ver Capítulo 9.
 
 TEMPLATE_STRING_IF_INVALID
 --------------------------
@@ -724,7 +724,7 @@ TEMPLATE_STRING_IF_INVALID
 *Valor padrão*: ``''`` (string vazia)
 
 This is output, as a string, that the template system should use for invalid (e.g.,
-misspelled) variables. See Chapter 9.
+misspelled) variables. Ver Capítulo 9.
 
 TEST_RUNNER
 -----------
@@ -754,7 +754,7 @@ This is the default formatting to use for time fields on Django admin change-lis
 -- and, possibly, by other parts of the system. It accepts the same format as the
 ``now`` tag (see Appendix E, Table E-2).
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
 ``YEAR_MONTH_FORMAT``, and ``MONTH_DAY_FORMAT``.
 
 TIME_ZONE
@@ -826,5 +826,5 @@ drill-down, the header for a given month displays the month and the year.
 Different locales have different formats. For example, U.S. English would use
 "January 2006," whereas another locale might use "2006/January."
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
 ``MONTH_DAY_FORMAT``.
