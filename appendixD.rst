@@ -241,8 +241,7 @@ APPEND_SLASH
 
 *Valor padrão*: ``True``
 
-This setting indicates whether to append trailing slashes to URLs. This is used only if
-``CommonMiddleware`` is installed (see Chapter 17). See also ``PREPEND_WWW``.
+Esta configuração indica se será adicionado barras ao final das URLs. Isso é usado somente se o ``CommonMiddleware`` estiver instalado (ver Capítulo 17). Veja também ``PREPEND_WWW``.
 
 CACHE_BACKEND
 -------------
