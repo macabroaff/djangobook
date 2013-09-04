@@ -379,43 +379,39 @@ EMAIL_HOST
 
 *Valor padrão*: ``'localhost'``
 
-This is the host to use for sending email. See also ``EMAIL_PORT``.
+Isso é o host utilizado para enviar email. Veja támbém ``EMAIL_PORT``.
 
 EMAIL_HOST_PASSWORD
 -------------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is the password to use for the SMTP server defined in ``EMAIL_HOST``. This setting is
-used in conjunction with ``EMAIL_HOST_USER`` when authenticating to the SMTP
-server. If either of these settings is empty, Django won't attempt
-authentication.
+Essa é a senha utilizada para o servidor SMTP definido em ``EMAIL_HOST``. Essa configuração é usada em conjunto com ``EMAIL_HOST_USER`` ao autenticar no servidor SMTP. Se qualquer uma dessas configurações estiver vazia, o Django não tentará autenticar.
 
-See also ``EMAIL_HOST_USER``.
+Veja também ``EMAIL_HOST_USER``.
 
 EMAIL_HOST_USER
 ---------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is the username to use for the SMTP server defined in ``EMAIL_HOST``. If it's empty,
-Django won't attempt authentication. See also ``EMAIL_HOST_PASSWORD``.
+Esse é o nome de usuário a ser utilizado para o servidor SMTP definido em ``EMAIL_HOST``. Se estiver vazio, o Django o Django não tentará autenticar. 
+
+Veja também ``EMAIL_HOST_PASSWORD``.
 
 EMAIL_PORT
 ----------
 
 *Valor padrão*: ``25``
 
-This is the port to use for the SMTP server defined in ``EMAIL_HOST``.
+Essa é a porta utilizada para o servidor SMTP definido em ``EMAIL_HOST``.
 
 EMAIL_SUBJECT_PREFIX
 --------------------
 
 *Valor padrão*: ``'[Django] '``
 
-This is the subject-line prefix for email messages sent with ``django.core.mail.mail_admins``
-or ``django.core.mail.mail_managers``. You'll probably want to include the
-trailing space.
+Esse é o prefixo da linha assunto para emails enviados com ``django.core.mail.mail_admins`` ou ``django.core.mail.mail_managers``. Você, provavelmente, vai querer incluir o espaço à direita.
 
 FIXTURE_DIRS
 -------------
