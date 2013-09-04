@@ -551,10 +551,7 @@ SECRET_KEY
 
 *Valor padrão*: (Generated automatically when you start a project)
 
-This is a secret key for this particular Django installation. It is used to provide a seed in
-secret-key hashing algorithms. Set this to a random string -- the longer, the
-better. ``django-admin.py startproject`` creates one automatically and most
-of the time you won't need to change it
+Essa é uma chave secreta para esta instalação do Django em particular. É utilizada para prover uma sememente no algoritmo de hash da chave secreta. Defina isso como uma string randômica -- quanto mais longa melhor. ``django-admin.py startproject`` cria uma automaticamente e a maior parte das vezes você não precisará alterá-la.
 
 SEND_BROKEN_LINK_EMAILS
 -----------------------
