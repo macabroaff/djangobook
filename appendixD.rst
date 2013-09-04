@@ -232,13 +232,9 @@ ALLOWED_INCLUDE_ROOTS
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-This is a tuple of strings representing allowed prefixes for the ``{% ssi %}`` template
-tag. This is a security measure, so that template authors can't access files
-that they shouldn't be accessing.
+Essa é uma tupla de strings representando os prefixos autorizados para a template tag ``{% ssi %}``. Isso é uma medida de segurança, para que os autores de templates não acessem arquivos que eles não deveriam estar acessando.
 
-For example, if ``ALLOWED_INCLUDE_ROOTS`` is ``('/home/html', '/var/www')``,
-then ``{% ssi /home/html/foo.txt %}`` would work, but ``{% ssi /etc/passwd %}``
-wouldn't.
+Por exemplo, se ``ALLOWED_INCLUDE_ROOTS`` é ``('/home/html', '/var/www')`` então ``{% ssi /home/html/foo.txt %}`` funcionaria, mas ``{% ssi /etc/passwd %}`` não.
 
 APPEND_SLASH
 ------------
