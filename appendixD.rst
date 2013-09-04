@@ -248,7 +248,7 @@ CACHE_BACKEND
 
 *Valor padrão*: ``'locmem://'``
 
-This is the cache back-end to use (see Chapter 15).
+Esse é o back-end de cache para usar (ver Capítulo 15).
 
 CACHE_MIDDLEWARE_KEY_PREFIX
 ---------------------------
