@@ -255,7 +255,7 @@ CACHE_MIDDLEWARE_KEY_PREFIX
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is the cache key prefix that the cache middleware should use (see Chapter 15).
+Esse é o prefixo de chave do cache que o middleware de cache deverá usar (ver Capítulo 15).
 
 DATABASE_ENGINE
 ---------------
