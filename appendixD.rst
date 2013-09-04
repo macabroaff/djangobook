@@ -558,10 +558,8 @@ SEND_BROKEN_LINK_EMAILS
 
 *Valor padrão*: ``False``
 
-This setting indicates whether to send an email to the ``MANAGERS`` each time somebody visits a
-Django-powered page that is 404-ed with a nonempty referer (i.e., a broken
-link). Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
-Veja também ``IGNORABLE_404_STARTS`` and ``IGNORABLE_404_ENDS``.
+Essa configuração indica se é para enviar email para os ``MANAGERS`` cada vez que alguém visitar uma página de erro 404 provida pelo Django sem nenhum referer (HTTP referrer‎) (Por exemplo, um link quebrado). Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
+Veja também ``IGNORABLE_404_STARTS`` e ``IGNORABLE_404_ENDS``.
 
 SERIALIZATION_MODULES
 ---------------------
