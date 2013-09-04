@@ -337,17 +337,14 @@ DEBUG
 
 *Valor padrão*: ``False``
 
-This setting is a Boolean that turns debug mode on and off.
+Essa configuração é um Boolean que liga e desliga o modo de debug.
 
-If you define custom settings, ``django/views/debug.py`` has a ``HIDDEN_SETTINGS``
-regular expression that will hide from the ``DEBUG`` view anything that contains
-``'SECRET``, ``PASSWORD``, or ``PROFANITIES'``. This allows untrusted users to
-be able to give backtraces without seeing sensitive (or offensive) settings.
+Se você definir configurações personalizadas, ``django/views/debug.py`` tem uma expressão regular ``HIDDEN_SETTINGS`` que irá esconder da ``DEBUG`` view qualquer coisa que conter ``'SECRET``, ``PASSWORD``, or ``PROFANITIES'``. Isso permite usuários não confiáveis sejam capazes de dar backtraces sem ver configurações sensíveis ou ofensivas.
 
-Still, note that there are always going to be sections of your debug output that
-are inappropriate for public consumption. File paths, configuration options, and
-the like all give attackers extra information about your server. Never deploy a
-site with ``DEBUG`` turned on.
+Mesmo assim, note que sempre haverão seções de saída do seu debug que são inapropriadas para o público. Caminhos de arquivos, opções de configurações, bem como dar informações extra sobre seu servidor para invasores.
+
+Nunca faça o deploy de um site com ``DEBUG`` ligado.
+
 
 DEFAULT_CHARSET
 ---------------
