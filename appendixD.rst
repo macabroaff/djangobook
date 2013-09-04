@@ -564,11 +564,9 @@ Veja também ``IGNORABLE_404_STARTS`` e ``IGNORABLE_404_ENDS``.
 SERIALIZATION_MODULES
 ---------------------
 
-*Valor padrão*: Not defined.
+*Valor padrão*: Não definido.
 
-Serialization is a feature still under heavy development. Refer to the online
-documentation at http://docs.djangoproject.com/en/dev/topics/serialization/
-for more information.
+Serialização é uma funcionalidade ainda sobre árduo desenvolvimento. Visite a documentação online em http://docs.djangoproject.com/en/dev/topics/serialization/ para mais informações.
 
 SERVER_EMAIL
 ------------
