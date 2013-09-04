@@ -426,19 +426,18 @@ IGNORABLE_404_ENDS
 *Valor padrão*: ``('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi', 'favicon.ico',
 '.php')``
 
-This is a tuple of strings that specify beginnings of URLs that should be
-ignored by the 404 e-mailer. (Ver Capítulo 12 for more on the 404 e-mailer.)
+Essa é a tupla de strings que especifica inícios de URLs que devem ser ignoradas pelo 404 e-mailer. (Ver Capítulo 12 para mais sobre 404 e-mailer.)
 
-No errors will be sent for URLs end with strings from this sequence.
+Nenhum erro será enviado para as URLs terminadas com as strings dessa sequência.
 
-Veja também ``IGNORABLE_404_STARTS`` and ``SEND_BROKEN_LINK_EMAILS``.
+Veja também ``IGNORABLE_404_STARTS`` e ``SEND_BROKEN_LINK_EMAILS``.
 
 IGNORABLE_404_STARTS
 --------------------
 
 *Valor padrão*: ``('/cgi-bin/', '/_vti_bin', '/_vti_inf')``
 
-Veja também ``SEND_BROKEN_LINK_EMAILS`` and ``IGNORABLE_404_ENDS``.
+Veja também ``SEND_BROKEN_LINK_EMAILS`` e ``IGNORABLE_404_ENDS``.
 
 INSTALLED_APPS
 --------------
