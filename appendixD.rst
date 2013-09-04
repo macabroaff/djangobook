@@ -262,62 +262,55 @@ DATABASE_ENGINE
 
 *Valor padrão*: ``''`` (string vazia)
 
-This setting indicates which database back-end to use, e.g.
-``'postgresql_psycopg2'``, or ``'mysql'``.
+Essa configuração indica qual back-end de banco de dados usar, por exemplo ``'postgresql_psycopg2'``, ou ``'mysql'``.
 
 DATABASE_HOST
 -------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This setting indicates which host to use when connecting to the database.
-An empty string means ``localhost``. This is not used with SQLite.
+Essa configuração indica qual endereço de host usar ao conectar com o banco de dados. String vazia significa ``localhost``. Isso não é usado com SQLite.
 
-If this value starts with a forward slash (``'/'``) and you're using MySQL,
-MySQL will connect via a Unix socket to the specified socket::
+Se o valor começar com a barra (``'/'``) e você estiver usando MySQL, irá conectar via Unix socket para o socket especificado:
 
     DATABASE_HOST = '/var/run/mysql'
 
-If you're using MySQL and this value *doesn't* start with a forward slash, then
-this value is assumed to be the host.
+Se você estiver usando MySQL e esse valor *não* começar com uma barra, então é assumido que esse valor seja o host.
 
 DATABASE_NAME
 -------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is the name of the database to use. For SQLite, it's the full path to the database
-file.
+Esse é o nome da base de dados para uso. Para SQLite, é o caminho completo para o arquivo da base de dados.
 
 DATABASE_OPTIONS
 ----------------
 
 *Valor padrão*: ``{}`` (dicionário vazio)
 
-This is extra parameters to use when connecting to the database. Consult the back-end
-module's document for available keywords.
+São parâmetros extras para usar ao conectar à base de dados. Consulte a documentação do back-end utilizado para as possíveis palavras-chave.
 
 DATABASE_PASSWORD
 -----------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This setting is the password to use when connecting to the database. It is not used with SQLite.
+Essa configuração é a senha para usar ao conectar à base de dados. Não é usado com SQLite.
 
 DATABASE_PORT
 -------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is the port to use when connecting to the database. An empty string means the
-default port. It is not used with SQLite.
+Essa é a porta para usar ao conectar à base de dados. String vazia significa a porta padrão. Não é usado com SQLite.
 
 DATABASE_USER
 -------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This setting is the username to use when connecting to the database. It is not used with SQLite.
+Essa configuração é o nome de usuário usado ao conectar à base de dados. Não é usado com SQLite.
 
 DATE_FORMAT
 -----------
