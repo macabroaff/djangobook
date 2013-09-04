@@ -365,8 +365,7 @@ DEFAULT_FROM_EMAIL
 
 *Valor padrão*: ``'webmaster@localhost'``
 
-This is the default email address to use for various automated correspondence from the
-site manager(s).
+Esse é o email padrão usado para várias correspondências automáticas dos administradores do site.
 
 DISALLOWED_USER_AGENTS
 ----------------------
