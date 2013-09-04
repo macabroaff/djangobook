@@ -3,11 +3,11 @@ Apêndice C: Generic View Reference
 ==================================
 
 No capítulo 11 fomos introduzidos ao Genetic View, porém de forma superficial e
-sem maiores detalhes. Neste capítulo veremos todos os pontos importantes não
+sem maiores detalhes. Neste apêndice veremos todos os pontos importantes não
 abordados anteriormente, porém é altamente recomendado que você leia o capítulo
-11 antes de tentar entender a referência material que se segue. Você pode
-querer referir-se ao ``Livro``, ``Editor``, e objetos de ``Autor`` definido
-neste capítulo, os exemplos a seguir usam esses modelos.
+11 antes de tentar entender as referências abaixo. Talvez você queira rever os 
+objetos ``Livro``, ``Editor``, e ``Autor`` definido nesse capítulo, os exemplos 
+a seguir usam esses modelos.
 
 
 Argumentos comuns nas Generic Views
@@ -16,19 +16,19 @@ Argumentos comuns nas Generic Views
 A maioria dessas views possuem uma grande quantidade de argumentos que
 possibilitam a modificação do comportamento padrão das generic views. Muitos
 desse argumentos fumcionam da mesma forma na maioria das views. A tabela C-1
-descreve os argumentos mais comuns; sempre que você encontrar um desse
+descreve os argumentos mais comuns; sempre que você encontrar um desses
 argumentos, ele funcionará da forma descrita abaixo
 
 .. table:: Tabela C-1. Argumentos comuns nas Generic Views
 
     ==========================  ===============================================
-    Argumentos                  Descrição
+    Argumento                   Descrição
     ==========================  ===============================================
     ``allow_empty``             Um booleano que especifica se, para carregar a
                                 página, existem ou não objetos disponíveis.
                                 Se este for ``False`` e nenhum objeto estiver
                                 disponível, a view lançará um 404 ao invés de
-                                mostrar uma página vazia. Por padrão, isso é
+                                mostrar uma página vazia. O valor padrão é 
                                 ``True``.
 
     ``context_processors``      Uma lista adicional de ``template-context
@@ -43,11 +43,11 @@ argumentos, ele funcionará da forma descrita abaixo
                                 no dicionário, a genetic view irá chamá-lo
                                 antes de renderizar o template.
 
-    ``mimetype``                O tipo MIME a ser usado para o documento
+    ``mimetype``                O MIME type a ser usado para o documento
                                 resultante. Caso nenhum valor seja fornecido,
                                 será utilizado o valor de
                                 ``DEFAULT_CONTENT_TYPE`` do arquivo de
-                                settings.py.
+                                settings.py que é ``text/html``.
 
     ``queryset``                Um ``QuerySet`` (exemplo ``Author.objects.all()``)
                                 que serve para ler a partir de objetos.
@@ -66,10 +66,12 @@ argumentos, ele funcionará da forma descrita abaixo
 
     ``template_object_name``    Designa o nome da variável do template para
                                 utilizar no contexto do template. Por padrão
-                                seu parâmetro é um ``objeto``.
+                                seu parâmetro é um ``object``. Views que listam
+                                mais que um objeto (exemplo views ``object_list``)
+                                vão adicionar ``_list`` no valor do parâmetro.
     ==========================  ===============================================
 
-"simples" Generic Views
+"Simple" Generic Views
 =======================
 
 O módulo ``django.views.generic.simple`` possui views simples que podem
@@ -160,7 +162,7 @@ Utilize esta view para exibir uma página que representa uma lista de objetos.
 Exemplo
 ```````
 
-Dado o ``Autor`` objeto do capítulo 5, podemos usar o ``object_list`` view
+Dado o objeto ``Autor`` do capítulo 5, podemos usar a view ``object_list``
 para mostrar uma lista simples de todos os autores::
 
     from mysite.books.models import Author
@@ -184,13 +186,12 @@ Argumentos opcionais
 ````````````````````
 
 * ``paginate_by``: Um inteiro que especifica quantos objetos devem ser mostrados
-  por página
-  ``paginate_by`` objetos por página. A view espera por uma página que possua
+  por página. A view espera por uma página que possua
   uma query string (enviada via ``GET``) com indice zero ou uma página variável
   especificada na URLconf. Veja a seção "Notas de paginação".
 
 Além destes, essa view pode utilizar qualquer um desses argumentos descritos na
-descritos na Tabela C-1.
+Tabela C-1.
 
 * ``allow_empty``
 * ``context_processors``
@@ -204,13 +205,14 @@ Template Name
 `````````````
 
 Se ``template_name`` não for especificado, a view irá usar o template
-``<app_label>/<model_name>_list.html`` por padrão. Tanto o rótulo da aplicação
-quanto o nome do modelo são derivados do parâmetro ``queryset``. O rótulo da
+``<app_label>/<model_name>_list.html`` por padrão. Tanto a label da aplicação
+quanto o nome do modelo são derivados do parâmetro ``queryset``. A label da
 aplicação é o nome do aplicativo que o medelo está definito, e o nome do modelo
-é a versão minúsculas do nome do modelo de classe.
+é a versão minúscula do nome do modelo de classe.
 
-No exemplo anterior usando `Author.objects.all()`` como uma ``queryset``, o
-rótulo da aplicação setia ``livros```e olivros/autor_list.html``.
+No exemplo anterior usando ``Author.objects.all()`` como uma ``queryset``, a
+label da aplicação seria ``livros`` e o nome do módulo seria ``autor``. Assim o 
+nome padrão do template seria ``livros/autor_list.html``.
 
 Template Context
 ````````````````
@@ -221,7 +223,7 @@ Além do ``extra_context``, o template context irá conter o seguinte:
   ``template_object_name``, que é ``'object'`` por padrão. Se
   ``template_object_name`` é ``foo``, o nome dessa variável será ``foo_list``.
 
-* ``is_paginated``: Um booleano indica se o resultado é paginado.
+* ``is_paginated``: Um booleano que indica se o resultado é paginado.
   Especificamente, é atribuido ``False`` se o número de objetos é menor ou
   igual ao ``paginate_by``.
 
@@ -249,7 +251,7 @@ Se os resultados forem paginados, possuirá essas variáveis adicionais:
 .. admonition:: Uma nota sobre a paginação
 
     Se o ``paginate_by`` for especificado, o Djando irá paginar o resultado.
-    VocÊ pode especificar o número da página na URL de duas maneiras:
+    Você pode especificar o número da página na URL de duas maneiras:
 
     * Use o parâmetro ``page`` dentro da URLcong. Sua URLconf ficará parecida
       com isso, por exemplo::
@@ -318,8 +320,8 @@ Argumentos opcionais
   esse argumento deverá ser ignorado.
 
 
-* ``template_name_field``: O nome de um campo no objeto cujo valor é
-   o usado pelo template name.
+* ``template_name_field``: O nome de um campo no objeto cujo valor é o usado 
+  pelo template name.
 
   Em outras palavras, se seu objeto possui o campo ``'the_template'`` que
   contenha a string ``'foo.html'``, e você informa ``template_name_field`` para
@@ -352,7 +354,7 @@ Template Context
 Adicionalmente ao ``extra_context``, o template context será como:
 
 * ``object``: O objeto. O nome dessa variável depende do parametro
-  ``template_object_name``, que é ``'object'`` por padrão. se o
+  ``template_object_name``, que é ``'object'`` por padrão. Se o
   ``template_object_name`` for ``'foo'``, o nome dessa variável será ``foo``.
 
 Date-Based Generic Views
@@ -508,7 +510,7 @@ Argumentos opcionais
   valor padrão é ``False``.
 
 * ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
-   nesta página.
+  nesta página.
 
 Esta view também pode tomar os seguintes argumentos (veja a tabela C-1):
 
@@ -552,7 +554,7 @@ Arquivos mês
 *View function*: ``django.views.generic.date_based.archive_month``
 
 Essa view fornece páginas de arquivos mensais mostrando todos os objetos para
-,um determinado mês.
+um determinado mês.
 
 Exemplo
 ```````
@@ -577,20 +579,20 @@ Argumentos obrigatórios
 * ``year``: O ano de quatro dígitos para que o arquivo serve (uma string).
 
 * ``month``: O mês em que o arquivo serve, formatado de acordo com
-   o argumento ``month_format``.
+  o argumento ``month_format``.
 
 * ``queryset``: A ``QuerySet`` de objetos para os quais o arquivo serve.
 
 * ``date_field``: É o nome do ``DateField`` ou ``DateTimeField`` na
   ``QuerySet`` que o arquivo date-based deve usar para determinar
-   os objetos na página.
+  os objetos na página.
 
 Argumentos opcionais
 ````````````````````
 
-* ``month_format``: Um formato que regula o formato do parâmetro ``month`` é
-  usado. Esta deve ser na sintaxe aceita pelo Python ``time.strftime``.
-  (Veja sobre strftime em http://docs.python.org/library/time.html#time.strftime.)
+* ``month_format``: Um formato que regula o formato do parâmetro ``month`` utilizar.
+  Esta deve ser na sintaxe aceita pelo Python ``time.strftime``. (Veja sobre 
+  strftime em http://docs.python.org/library/time.html#time.strftime.)
   Por padrão ``"%b"`` é definido, que é uma abreviação de mês de três letras
   (i.e., "jan", "fev", etc.). Para usar números, use ``"%m"``.
 
@@ -690,7 +692,7 @@ Esta view também possui os seguintes argumentos (veja na tabela C-1):
 Template Name
 `````````````
 
-Se o ``template_name`` não for especificado, essa view irpa usar o template
+Se o ``template_name`` não for especificado, essa view irá usar o template
 ``<app_label>/<model_name>_archive_week.html`` por padrão.
 
 Template Context
@@ -830,8 +832,8 @@ usa URLs como ``/entries/<slug>/``, enquanto essa usa URLs como
 Exemplo
 ```````
 
-Esse é (ligeiramente) diferente de todos os outros exemplos de date-based em
-exemplos que precisamos fornecer o ID de um objeto ou uma slug para que o
+Esse é (ligeiramente) diferente de todos os outros exemplos de date-based 
+que precisamos fornecer o ID de um objeto ou uma slug para que o
 Django tenha formas de encontrar o objeto em questão.
 
 Uma vez que o objeto que estamos usando não tem um campo de slug, usaremos ID
@@ -880,7 +882,7 @@ Argumentos opcionais
 * ``allow_future``: Um booleano que especifica se incluem "futuros" objetos
    nessa página, conforme descrito anteriormente.
 
-* ``day_format``: Ogual ao ``month_format``, mas para o parâmetro ``day``. Ele
+* ``day_format``: Igual ao ``month_format``, mas para o parâmetro ``day``. Ele
   é padrão ``"%d"`` (o dia do mês como um número decimal, 01-31).
 
 * ``month_format``: Um formato que regula o formato ``mês``. Veja a explicação
@@ -889,12 +891,11 @@ Argumentos opcionais
 * ``slug_field``: O nome do campo que contenha o slug. Será obrigatório se você
   usar o argumento ``slug``, mas não será se usar o parâmetro ``object_id``.
 
-* ``template_name_field``: O nome de um campo no objeto cujo valor é
-   o nome que o template irá usar. Isto permite armazenar nomes de modelo nos
-  dados. Em outras palavras, se o seu objeto tiver o campo ``'the_template'``,
-  este conterá a string ``'foo.html'``, e se você definir o
-  ``template_name_field``, a generic view para esse objeto irá usar o template
-  ``'foo.html'``.
+* ``template_name_field``: O nome de um campo no objeto cujo valor é o nome que 
+  o template irá usar. Isto permite armazenar nomes de modelo nos dados. Em 
+  outras palavras, se o seu objeto tiver o campo ``'the_template'``,  este conterá 
+  a string ``'foo.html'``, e se você definir o ``template_name_field``, a generic 
+  view para esse objeto irá usar o template ``'foo.html'``.
 
 Esta view também possui os seguintes argumentos (veja na tabela C-1):
 
@@ -917,6 +918,6 @@ Template Context
 
 Além do ``extra_context``, o template context irá seguir:
 
-* ``object``: Objeto. O nome dessa variável depende do parâmetro
-``template_object_name``, que é ``'object'`` por padrão. Se o
-``template_object_name`` for ``'foo'``, o nome dessa variável será ``foo``.
+* ``object``: Objeto. O nome dessa variável depende do parâmetro 
+  ``template_object_name``, que é ``'object'`` por padrão. Se o 
+  ``template_object_name`` for ``'foo'``, o nome dessa variável será ``foo``.
