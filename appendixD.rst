@@ -317,11 +317,9 @@ DATE_FORMAT
 
 *Valor padrão*: ``'N j, Y'`` (e.g., ``Feb. 4, 2003``)
 
-This is the default formatting to use for date fields on Django admin change-list pages
--- and, possibly, by other parts of the system. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-See also ``DATETIME_FORMAT``, ``TIME_FORMAT``, ``YEAR_MONTH_FORMAT``, and
+Veja também ``DATETIME_FORMAT``, ``TIME_FORMAT``, ``YEAR_MONTH_FORMAT``, e
 ``MONTH_DAY_FORMAT``.
 
 DATETIME_FORMAT
@@ -329,12 +327,10 @@ DATETIME_FORMAT
 
 *Valor padrão*: ``'N j, Y, P'`` (e.g., ``Feb. 4, 2003, 4 p.m.``)
 
-This is the default formatting to use for datetime fields on Django admin change-list
-pages -- and, possibly, by other parts of the system. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo datetime nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
-``YEAR_MONTH_FORMAT``, and ``MONTH_DAY_FORMAT``.
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
+``YEAR_MONTH_FORMAT``, e ``MONTH_DAY_FORMAT``.
 
 DEBUG
 -----
