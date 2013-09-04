@@ -580,49 +580,42 @@ SESSION_COOKIE_AGE
 
 *Valor padrão*: ``1209600`` (two weeks, in seconds)
 
-This is the age of session cookies, in seconds. Ver Capítulo 14.
+Esse é o limite de tempo dos cookies de sessão, em segundos. Ver Capítulo 14.
 
 SESSION_COOKIE_DOMAIN
 ---------------------
 
 *Valor padrão*: ``None``
 
-This is the domain to use for session cookies. Set this to a string such as
-``".lawrence.com"`` for cross-domain cookies, or use ``None`` for a standard
-domain cookie. Ver Capítulo 14.
+Esse é o domínio para ser utilizado nos cookies de sessão. Deve ser uma string como ``".lawrence.com"`` para cross-domain cookies, ou use ``None`` para o domínio padrão em cookies. Ver Capítulo 14.
 
 SESSION_COOKIE_NAME
 -------------------
 
 *Valor padrão*: ``'sessionid'``
 
-This is the name of the cookie to use for sessions; it can be whatever you want.
-Ver Capítulo 14.
+Esse é o nome do cookie usado para sessões; pode ser o que você quiser. Ver Capítulo 14.
 
 SESSION_COOKIE_SECURE
 ---------------------
 
 *Valor padrão*: ``False``
 
-This setting indicates whether to use a secure cookie for the session cookie.
-If this is set to ``True``, the cookie will be marked as "secure,"
-which means browsers may ensure that the cookie is only sent under an HTTPS connection.
-Ver Capítulo 14.
+Essa configuração indica se é para usar um cookie seguro para o cookie de sessão. Se isso está definido como ``True``, o cookie será marcado como "seguro", o que quer dizer que os navegadores podem garantir que o cookie somente seja enviado sob uma conexão HTTPS. Ver Capítulo 14.
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE
 -------------------------------
 
 *Valor padrão*: ``False``
 
-This setting indicates whether to expire the session when the user closes
-his browser. Ver Capítulo 14.
+Essa configuração indica se é para expirar o cookie de sessão toda vez que o usuário fechar o navegador. Ver Capítulo 14.
 
 SESSION_SAVE_EVERY_REQUEST
 --------------------------
 
 *Valor padrão*: ``False``
 
-This setting indicates whether to save the session data on every request. Ver Capítulo 14.
+Essa configuração indica se é para salvar os dados da sessão em toda requisição. Ver Capítulo 14.
 
 SITE_ID
 -------
