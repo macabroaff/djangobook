@@ -634,22 +634,16 @@ TEMPLATE_CONTEXT_PROCESSORS
     "django.core.context_processors.i18n",
     "django.core.context_processors.media")
 
-This is a tuple of callables that are used to populate the context in ``RequestContext``.
-These callables take a request object as their argument and return a dictionary
-of items to be merged into the context. Ver Capítulo 9.
+Essa é a tupla de funções que são usadas para popular o contexto em ``RequestContext``. Essas funções levam um objeto de requisição como seu argumento e retornam um dicionário de itens para serem mesclados com o contexto. Ver Capítulo 9.
 
 TEMPLATE_DEBUG
 --------------
 
 *Valor padrão*: ``False``
 
-This Boolean turns template debug mode on and off. If it is ``True``, the fancy
-error page will display a detailed report for any ``TemplateSyntaxError``. This
-report contains the relevant snippet of the template, with the appropriate line
-highlighted.
+Esse valor Boolean liga e desliga o modo debug do template. Se for ``True``, a página amigável de erro irá mostrar um relatório detalhado para cada ``TemplateSyntaxError``. Esse relatório contém o fragmento relevante do template, com a linha apropriada em destaque.
 
-Note that Django only displays fancy error pages if ``DEBUG`` is ``True``, so
-you'll want to set that to take advantage of this setting.
+Note que o Django somente mostra páginas amigáveis de erro se o ``DEBUG`` for ``True``, então você terá de definir isso para tirar vantagem dessa configuração.
 
 Veja também ``DEBUG``.
 
@@ -658,9 +652,7 @@ TEMPLATE_DIRS
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-This is a list of locations of the template source files, in search order. Note that these
-paths should use Unix-style forward slashes, even on Windows. See Chapters 4 and
-9.
+Essa é a lista de localizações dos arquivos de templates, em ordem de busca. Note que estes caminhos devem usar barras Unix-style, mesmo no Windows. Ver Capítulos 4 e 9.
 
 TEMPLATE_LOADERS
 ----------------
@@ -670,16 +662,14 @@ TEMPLATE_LOADERS
     ('django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source')
 
-This is a tuple of callables (as strings) that know how to import templates from
-various sources. Ver Capítulo 9.
+Essa é a tupla de funções (como strings) que sabem como importar templates de várias fontes. Ver Capítulo 9.
 
 TEMPLATE_STRING_IF_INVALID
 --------------------------
 
 *Valor padrão*: ``''`` (string vazia)
 
-This is output, as a string, that the template system should use for invalid (Por exemplo,
-misspelled) variables. Ver Capítulo 9.
+Essa é a saída, como string, que o sistema de templat deve usar para variáveis inválidas (Por exemplo, grafia incorreta ). Ver Capítulo 9.
 
 TEST_RUNNER
 -----------
