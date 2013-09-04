@@ -482,8 +482,7 @@ MANAGERS
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-This tuple is in the same format as ``ADMINS`` that specifies who should get
-broken-link notifications when ``SEND_BROKEN_LINK_EMAILS=True``.
+Essa tupla está no mesmo formato de ``ADMINS`` que especifica quem irá obter notificações de links quebrados quando ``SEND_BROKEN_LINK_EMAILS=True``.
 
 MEDIA_ROOT
 ----------
