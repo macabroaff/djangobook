@@ -418,10 +418,7 @@ FIXTURE_DIRS
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-This is a list of locations of the fixture data files, in search order. Note that these
-paths should use Unix-style forward slashes, even on Windows. It is used by Django's
-testing framework, which is covered online at
-http://docs.djangoproject.com/en/dev/topics/testing/.
+Essa é a lista de localizações dos arquivos fixture, em ordem de busca. Note que estes caminhos devem usar barras Unix-style, mesmo no Windows. É utilizado pelo framework de testes do Django, que é documentado online em http://docs.djangoproject.com/en/dev/topics/testing/.
 
 IGNORABLE_404_ENDS
 ------------------
