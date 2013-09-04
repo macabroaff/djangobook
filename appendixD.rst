@@ -351,9 +351,7 @@ DEFAULT_CHARSET
 
 *Valor padrão*: ``'utf-8'``
 
-This is the default charset to use for all ``HttpResponse`` objects, if a MIME type isn't
-manually specified. It is used with ``DEFAULT_CONTENT_TYPE`` to construct the
-``Content-Type`` header. See Appendix G for more about ``HttpResponse`` objects.
+Esse é o conjunto de caracteres padrão para usar em todos os objetos ``HttpResponse``, se um MIME type não é manualmente especificado. É usado com ``DEFAULT_CONTENT_TYPE`` para construir o ``Content-Type`` do cabeçalho. Veja o Apêndice G para mais sobre objetos ``HttpResponse``.
 
 DEFAULT_CONTENT_TYPE
 --------------------
