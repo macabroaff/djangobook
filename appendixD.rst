@@ -372,10 +372,7 @@ DISALLOWED_USER_AGENTS
 
 *Valor padrão*: ``()`` (tupla vazia)
 
-This is a list of compiled regular expression objects representing User-Agent strings
-that are not allowed to visit any page, systemwide. Use this for bad
-robots/crawlers. This is used only if ``CommonMiddleware`` is installed (see
-Chapter 17).
+Essa é uma lista de objetos de expressões regulares representando strings de User-Agent que não têm permissão para visitar qualquer página, em todo o sistema. Use isto para robôs/rastreadores mal intencionados. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
 
 EMAIL_HOST
 ----------
