@@ -523,17 +523,11 @@ MONTH_DAY_FORMAT
 
 *Valor padrão*: ``'F j'``
 
-This is the default formatting to use for date fields on Django admin change-list
-pages -- and, possibly, by other parts of the system -- in cases when only the
-month and day are displayed. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema -- em casos quando somente o mês e o dia são mostrados. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-For example, when a Django admin change-list page is being filtered by a date,
-the header for a given day displays the day and month. Different locales have
-different formats. For example, U.S. English would have "January 1," whereas
-Spanish might have "1 Enero."
+Por exemplo, quando uma change-list no Django admin está filtrando por data, o cabeçalho para um determinado dia mostra o dia e o mês; Diferentes localidades têm diferentes formatos. Por exemplo, em U.S. English seria "January 1," onde em Spanish poderia ser "1 Enero."
 
-Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, e
 ``YEAR_MONTH_FORMAT``.
 
 PREPEND_WWW
