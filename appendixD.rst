@@ -451,32 +451,22 @@ LANGUAGE_CODE
 
 *Valor padrão*: ``'en-us'``
 
-This is a string representing the language code for this installation. This should be
-in standard language format -- for example, U.S. English is ``"en-us"``. See
-Chapter 19.
+Essa é a string representando o código de idioma para esta instalação. E deve estar no padrão de formato de linguagem -- for example, U.S. English é ``"en-us"``. Ver Capítulo 19.
 
 LANGUAGES
 ---------
 
-*Valor padrão*: A tuple of all available languages. This list is continually growing
-and any copy included here would inevitably become rapidly out of date. You can
-see the current list of translated languages by looking in
-``django/conf/global_settings.py``.
+*Valor padrão*: Uma tupla com todas os idiomas disponíveis. Essa lista está continuamente crescendo e qualquer cópia incluída aqui irá, inevitavelmente, estar desatualizada. Você pode ver a lista atualizada de idiomas traduzidos em ``django/conf/global_settings.py``.
 
+A lista é uma tupla com uma tupla dupla no formato (código do idioma, nome do idioma) -- por exemplo, ``('ja', 'Japanese')``. Isso especifica quais idiomas estão disponíveis para 
 The list is a tuple of two-tuples in the format (language code, language name)
--- for example, ``('ja', 'Japanese')``. This specifies which languages are
-available for language selection. Ver Capítulo 19 for more on language selection.
+-- for example, ``('ja', 'Japanese')``. Isto especifica quais idiomas estão disponíveis para seleção de idioma. Ver Capítulo 19 para mais sobre seleção de idiomas.
 
-Generally, the default value should suffice. Only set this setting if you want
-to restrict language selection to a subset of the Django-provided languages.
+Geralmente, o valor padrão deve ser suficiente. Somente redefina essa configuração se você quer restringir a seleção de idiomas para um subconjunto de idiomas oferecidos pelo Django.
 
-If you define a custom ``LANGUAGES`` setting, it's OK to mark the languages as
-translation strings, but you should *never* import ``django.utils.translation``
-from within your settings file, because that module in itself depends on the
-settings, and that would cause a circular import.
+Se você definir a configuração ``LANGUAGES`` personalizadamente, está tudo bem em marcar os idiomas como strings de tradução, mas você *nunca* deve importar ``django.utils.translation`` no seu arquivo de configuração, porque esse módulo por si depende do arquivo de configuração, e isto irá causar uma importação circular.
 
-The solution is to use a "dummy" ``gettext()`` function. Here's a sample
-settings file::
+A solução é usar uma função "dummy" ``gettext()``. Aqui está um exemplo de arquivo de configuração::
 
     gettext = lambda s: s
 
@@ -485,10 +475,7 @@ settings file::
         ('en', gettext('English')),
     )
 
-With this arrangement, ``make-messages.py`` will still find and mark these
-strings for translation, but the translation won't happen at runtime -- so
-you'll have to remember to wrap the languages in the *real* ``gettext()`` in
-any code that uses ``LANGUAGES`` at runtime.
+Com essa disposição, ``make-messages.py`` ainda irá encontrar e marcar essa string para tradução, mas a tradução não acontecerá em tempo de execução -- então você tem de lembrar de envolver os idiomas em um *real* ``gettext()`` em qualquer código que usar ``LANGUAGES`` em tempo de execução.
 
 MANAGERS
 --------
