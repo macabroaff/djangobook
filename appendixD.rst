@@ -535,9 +535,9 @@ PREPEND_WWW
 
 *Valor padrão*: ``False``
 
-This setting indicates whether to prepend the "www." subdomain to URLs that don't have it.
-This is used only if ``CommonMiddleware`` is installed (see the Chapter 17). Veja também
-``APPEND_SLASH``.
+Essa configuração indica se será precedido o subdomínio "www." em URLs que não o possui. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
+
+Veja também ``APPEND_SLASH``.
 
 ROOT_URLCONF
 ------------
