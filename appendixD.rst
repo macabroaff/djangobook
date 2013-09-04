@@ -542,10 +542,9 @@ Veja também ``APPEND_SLASH``.
 ROOT_URLCONF
 ------------
 
-*Valor padrão*: Not defined
+*Valor padrão*: Não definido
 
-This is a string representing the full Python import path to your root URLconf (Por exemplo,
-``"mydjangoapps.urls"``). Ver Capítulo 3.
+Essa é uma string respresentando o caminho Python de importação completo para sua URLconf proncipal (Por exemplo, ``"mydjangoapps.urls"``). Ver Capítulo 3.
 
 SECRET_KEY
 ----------
