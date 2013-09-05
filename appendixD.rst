@@ -690,9 +690,7 @@ TIME_FORMAT
 
 *Valor padrão*: ``'P'`` (Por exemplo, ``4 p.m.``)
 
-This is the default formatting to use for time fields on Django admin change-list pages
--- and, possibly, by other parts of the system. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo time nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
 Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
 ``YEAR_MONTH_FORMAT``, and ``MONTH_DAY_FORMAT``.
@@ -702,27 +700,14 @@ TIME_ZONE
 
 *Valor padrão*: ``'America/Chicago'``
 
-This is a string representing the time zone for this installation. Time zones are in the
-Unix-standard ``zic`` format. One relatively complete list of time zone strings
-can be found at
-http://www.postgresql.org/docs/8.1/static/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE.
+Essa é uma string representando o fuso horário para esta instalação. Fusos horários são no formato Unix-standard ``zic``. Uma lista relativamente completa com as strings de fusos horários pode ser encontrada em http://www.postgresql.org/docs/8.1/static/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE.
 
-This is the time zone to which Django will convert all dates/times --
-not necessarily the time zone of the server. For example, one server may serve
-multiple Django-powered sites, each with a separate time-zone setting.
+Esse é o fuso horário que o Django irá converter todos as datas/horários -- não necessariamente o fuso horário do servidor. Por exemplo, um servidor pode servir múltiplos sites feitos com Django, cada um com uma configuração diferente de fuso horário.
 
-Normally, Django sets the ``os.environ['TZ']`` variable to the time zone you
-specify in the ``TIME_ZONE`` setting. Thus, all your views and models will
-automatically operate in the correct time zone. However, if you're using the
-manually configuring settings (described above in the section titled "Using
-Settings Without Setting DJANGO_SETTINGS_MODULE"), Django will *not* touch the
-``TZ`` environment variable, and it will be up to you to ensure your processes
-are running in the correct environment.
+Normalmente, o Django define a variável ``os.environ['TZ']`` para o fuso horário que você especificar na configuração ``TIME_ZONE``. Assim, todas suas views e models estarão automaticamente operando no fuso horário correto. Porém, se você está usando a configuração manual do arquivo de configuração (descrita acima na seção intitulada "Usando as configurações sem definir o DJANGO_SETTINGS_MODULE"), o Django *não* irá acessar a variável de ambiente ``TZ``, e estará em suas mãos garantir que seus processos estejam funcionando no ambiente correto.
 
 .. note::
-    Django cannot reliably use alternate time zones in a Windows environment. If
-    you're running Django on Windows, this variable must be set to match the
-    system time zone.
+    Django não pode, com segurança, usar fusos horários alternados no ambiente Windows. Se você está executando o Django no Windows, essa variável precisa ser definida para o fuso horário do sistema.
 
 URL_VALIDATOR_USER_AGENT
 ------------------------
