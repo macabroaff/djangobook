@@ -444,7 +444,7 @@ colocar a instrução ``datetime.datetime.now()`` em uma view e retornar um
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>É agora %s.</body></html>" % now
+        html = "<html><body>It's now %s.</body></html>" % now
         return HttpResponse(html)
 
 Como na função view ``hello``, esse código deve estar em ``views.py``. Note que
@@ -459,7 +459,7 @@ aqui está como todo o ``views.py`` fica::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>É agora %s.</body></html>" % now
+        html = "<html><body>It's now %s.</body></html>" % now
         return HttpResponse(html)
 
 (De agora em diante não mostraremos código anterior em exemplos, exceto quando

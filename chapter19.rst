@@ -2,6 +2,7 @@
 Chapter 19: Internationalization
 ================================
 
+Django foi originalmente desenvolvido na região central dos Estados Unidos -- mais precisamente, em Lawrence, Kansas, sendo menos do que 64km do centro geográfico do continente norte americano. Como a maioria dos projetos de código aberto, a comunidade também cresceu e incluiu pessoas de todo o globo. Como a comunidade do Django esta cada vez mais diversificada, a "internacionalização" e a "localização" se tornou cada vez mais relevante. Como muitos desenvolvedores tem um conhecimento impreciso desses termos, nós iremos defini-los rapidamente.
 Django was originally developed right in the middle of the United States --
 quite literally, as Lawrence, Kansas, is less than 40 miles from the
 geographic center of the continental United States. Like most open source

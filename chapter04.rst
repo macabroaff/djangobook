@@ -2,17 +2,23 @@
 Capítulo 4: Templates
 ====================
 
-No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente em nosso código Python, tal como::
+No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos
+o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente
+em nosso código Python, tal como::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>Agora é %s.</body></html>" % now
+        html = "<html><body>It is now %s.</body></html>" % now
         return HttpResponse(html)
 
-Embora essa técnica seja conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
+Embora essa técnica seja conveniente para o propósito de demonstrar como as views
+trabalham, não é uma boa idéia codificar HTML diretamente em suas views.
+Aqui está o por que:
 
 * Qualquer modificação no design da página requer modificação no código Python.
-  O design de um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
+  O design de um site tende a mudar com mais freqüência do que o código Python
+  subjacente, por isso seria coveniente se o design pude-se ser modificado sem
+  precisar modificar o código Python.
 
 * Escrever código Python e design HTML são duas diciplinas diferentes,
   e a maioria dos ambientes de desenvolvimento Web professional dividem essas
@@ -42,17 +48,18 @@ página HTML que agradece a uma pessoa por realizar um pedido de uma empresa. Im
 isso como uma carta formulário::
 
     <html>
-    <head><title>Ordem</title></head>
+    <head><title>Ordering notice</title></head>
 
     <body>
 
-    <h1>Ordem</h1>
+    <h1>Ordering notice</h1>
 
-    <p>Prezado {{ person_name }},</p>
+    <p>Dear {{ person_name }},</p>
 
-    <p>Obrigado por fazer o pedido de {{ company }}. Está agendado para enviar em {{ ship_date|date:"F j, Y" }}.</p>
+    <p>Thanks for placing an order from {{ company }}. It's scheduled to
+    ship on {{ ship_date|date:"F j, Y" }}.</p>
 
-    <p>Aqui estão os itens que você encomendou::</p>
+    <p>Here are the items you've ordered:</p>
 
     <ul>
     {% for item in item_list %}
@@ -61,12 +68,13 @@ isso como uma carta formulário::
     </ul>
 
     {% if ordered_warranty %}
-        <p>A sua informação de garantia será incluída na embalagem.</p>
+        <p>Your warranty information will be included in the packaging.</p>
     {% else %}
-        <p>Você não solicitou garantia, sendo assim é por sua conta quando o produto parar de funcionar.</p>
+        <p>You didn't order a warranty, so you're on your own when
+        the products inevitably stop working.</p>
     {% endif %}
 
-    <p>Sinceramente,<br />{{ company }}</p>
+    <p>Sincerely,<br />{{ company }}</p>
 
     </body>
     </html>
@@ -89,7 +97,8 @@ valores para dentro. Vamos análisa-lo:
   permitindo você fazer um laço sobre cada item em uma seqüência. Uma tag ``if``,
   como você pode esperar, age como uma declaração lógica "if". Neste caso
   particular, a tag verifica se o valor da váriavel ``ordered_warranty`` está
-  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}`` e ``{% else %}``. Se não, o sistema de template exibirá
+  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}``
+  e ``{% else %}``. Se não, o sistema de template exibirá
   tudo que está entre ``{% else %}`` e ``{% endif %}``. Perceba que o ``{% else
   %}`` é opcional.
 
@@ -133,13 +142,13 @@ Django em código Python:
 Em código, é assim que se parece::
 
     >>> from django import template
-    >>> t = template.Template('Meu nome é {{ name }}.')
+    >>> t = template.Template('My name is {{ name }}.')
     >>> c = template.Context({'name': 'Adrian'})
     >>> print t.render(c)
-    Meu nome é Adrian.
+    My name is Adrian.
     >>> c = template.Context({'name': 'Fred'})
     >>> print t.render(c)
-    Meu nome é Fred.
+    My name is Fred.
 
 As sessões seguintes descrevem cada etapa com muito mais detalhe.
 
@@ -173,12 +182,13 @@ interativo.
 
     Quando você executa ``python manage.py shell``, o comando se preocupa em definir
     a variável ``DJANGO_SETTINGS_MODULE`` para você. Nós estamos encorajando você a usar
-    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes e configurações que você deva fazer.
+    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes
+    e configurações que você deva fazer.
 
 Vamos passar por alguns princípios básicos do sistema de template::
 
     >>> from django.template import Template
-    >>> t = Template('Meu nome é {{ name }}.')
+    >>> t = Template('My name is {{ name }}.')
     >>> print t
 
 Se você está seguindo a forma interativa, você vai ver algo como isso::
@@ -227,10 +237,10 @@ no módulo ``django.template``. Seu construtor tem um argumento optional:
 ``render()`` do objeto ``Template`` com o contexto para "preencher" o template::
 
     >>> from django.template import Context, Template
-    >>> t = Template('Meu nome é {{ name }}.')
+    >>> t = Template('My name is {{ name }}.')
     >>> c = Context({'name': 'Stephane'})
     >>> t.render(c)
-    u'Meu nome é Stephane.'
+    u'My name is Stephane.'
 
 Uma coisa que devemos salientar, é que o valor de retorno de ``t.render(c)``
 é um objeto Unicode -- não uma string normal Python. Você pode tratar isto
@@ -238,7 +248,8 @@ pelo uso do ``u`` em frente a string. Django usa objetos Unicode ao invés de
 strings normais em seu framework. Se você entende a repercurssão disso, seja
 grato pelas coisas sofisticadas que o Django faz nos bastidores para isto funcionar.
 Se você não entende a repercussão disso, não se preocupe agora; apenas entenda que
-o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
+o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande
+variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
 
 .. admonition:: Dicionários e contextos
 
@@ -248,25 +259,26 @@ o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma g
    no capítulo 9.
 
 Nomes de váriaveis devem iniciar com letras (A-Z or a-z)  podem contem
-mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve). Nomes de váriaves são case sensitive.
+mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve).
+Nomes de váriaves são case sensitive.
 
 Aqui está um exemplo de modelo de compilação e renderização, usando um template
 semelhante ao exemplo no início deste capítulo::
 
     >>> from django.template import Template, Context
-    >>> raw_template = """<p>Prezado {{ person_name }},</p>
+    >>> raw_template = """<p>Dear {{ person_name }},</p>
     ...
-    ... <p>Obrigado por fazer o pedido na {{ company }}. Está agendado
-    ... para enviar em {{ ship_date|date:"F j, Y" }}.</p>
+    ... <p>Thanks for placing an order from {{ company }}. It's scheduled to
+    ... ship on {{ ship_date|date:"F j, Y" }}.</p>
     ...
     ... {% if ordered_warranty %}
-    ... <p>A sua informação de garantia será incluída na embalagem.</p>
+    ... <p>Your warranty information will be included in the packaging.</p>
     ... {% else %}
-    ... <p>Você não solicitou garantia, sendo assim é por sua
-    ... conta quando o produto parar de funcionar.</p>
+    ... <p>You didn't order a warranty, so you're on your own when
+    ... the products inevitably stop working.</p>
     ... {% endif %}
     ...
-    ... <p>Sinceramente,<br />{{ company }}</p>"""
+    ... <p>Sincerely,<br />{{ company }}</p>"""
     >>> t = Template(raw_template)
     >>> import datetime
     >>> c = Context({'person_name': 'John Smith',
@@ -274,10 +286,10 @@ semelhante ao exemplo no início deste capítulo::
     ...     'ship_date': datetime.date(2009, 4, 2),
     ...     'ordered_warranty': False})
     >>> t.render(c)
-    u"<p>Prezado John Smith,</p>\n\n<p>Obrigado por fazer o pedido naa Outdoor
-    Equipment. Está agendado\n para enviar em April 2, 2009.</p>\n\n\n<p>Você não \n
-    solicitou garantia, sendo assim é por sua\n conta quando o produto
-    parar de funcionar.</p>\n\n\n<p>Sinceramente,<br />Outdoor Equipment
+    u"<p>Dear John Smith,</p>\n\n<p>Thanks for placing an order from Outdoor
+    Equipment. It's scheduled to\nship on April 2, 2009.</p>\n\n\n<p>You
+    didn't order a warranty, so you're on your own when\nthe products
+    inevitably stop working.</p>\n\n\n<p>Sincerely,<br />Outdoor Equipment
     </p>"
 
 Vamos passar as instruções de código uma por vez:
@@ -332,13 +344,13 @@ Uma vez que você tem um objeto ``Template``, você pode processar múltiplos
 contextos por ele. Por exemplo::
 
     >>> from django.template import Template, Context
-    >>> t = Template('Olá, {{ name }}')
+    >>> t = Template('Hello, {{ name }}')
     >>> print t.render(Context({'name': 'John'}))
-    Olá, John
+    Hello, John
     >>> print t.render(Context({'name': 'Julie'}))
-    Olá, Julie
+    Hello, Julie
     >>> print t.render(Context({'name': 'Pat'}))
-    Olá, Pat
+    Hello, Pat
 
 Sempre que você está usando o mesmo código de template para renderizar
 multiplos contextos, como isso, é mais eficiente criar o objeto
@@ -610,57 +622,56 @@ E a tag ``{% else %}`` é opcional::
    * Zero (``0``)
    * O objeto especial ``None``
    * O objeto ``False`` (obviamente)
-   * Objetos customizados que definem seu próprio contexto de comportamento
-   booleano (isso é um uso avançado do Python)
+   * Objetos customizados que definem seu próprio contexto de comportamento booleano (isso é um uso avançado do Python)
 
    Todo o resto é avaliado com ``True``.
 
-The ``{% if %}`` tag accepts ``and``, ``or``, or ``not`` for testing multiple
-variables, or to negate a given variable. For example::
+A tag ``{% if %}`` aceita ``and``, ``or`` ou ``not`` para testar multiplas
+váriaveis ou para negar uma determinada váriavel. Por exemplo::
 
     {% if athlete_list and coach_list %}
-        Both athletes and coaches are available.
+        Ambos os atletas e treinadores estão disponíveis.
     {% endif %}
 
     {% if not athlete_list %}
-        There are no athletes.
+        Não existem atletas.
     {% endif %}
 
     {% if athlete_list or coach_list %}
-        There are some athletes or some coaches.
+        Existem alguns atletas ou treinadores.
     {% endif %}
 
     {% if not athlete_list or coach_list %}
-        There are no athletes or there are some coaches.
+        Não existem atletas ou existem alguns treinadores.
     {% endif %}
 
     {% if athlete_list and not coach_list %}
-        There are some athletes and absolutely no coaches.
+        Existem alguns atletas e absulutamente nenhum treinador.
     {% endif %}
 
-``{% if %}`` tags don't allow ``and`` and ``or`` clauses within the same tag,
-because the order of logic would be ambiguous. For example, this is invalid::
+Tags ``{% if %}`` não permitem cláusulas ``and`` e ``or`` juntas,
+porque a ordem da lógica pode ser ambigua. Por exemplo, isso é inválido::
 
     {% if athlete_list and coach_list or cheerleader_list %}
 
-The use of parentheses for controlling order of operations is not supported. If
-you find yourself needing parentheses, consider performing logic outside the
-template and passing the result of that as a dedicated template variable. Or,
-just use nested ``{% if %}`` tags, like this::
+O uso de parênteses para controlar a ordem das operações não é suportado. Se
+você achar que precisa de parênteses, considere a realização da lógica fora do
+template e passe o resultado disso em uma variável de template dedicada. Ou,
+apenas use tags ``{% if %}`` aninhadas, como isso::
 
     {% if athlete_list %}
         {% if coach_list or cheerleader_list %}
-            We have athletes, and either coaches or cheerleaders!
+            Nós temos atletas, e treinadores ou líderes de torcida!
         {% endif %}
     {% endif %}
 
-Multiple uses of the same logical operator are fine, but you can't
-combine different operators. For example, this is valid::
+Multiplo uso de mesmo operador lógica é bom, mas você não pode combinar
+diferentes operadores. Por exemplo, isso é válido::
 
     {% if athlete_list or coach_list or parent_list or teacher_list %}
 
-There is no ``{% elif %}`` tag. Use nested ``{% if %}`` tags to accomplish
-the same thing::
+Não há tag ``{% elif %}``. Use tags aninhadas ``{% if %}`` para realizar a
+mesma coisa::
 
     {% if athlete_list %}
         <p>Here are the athletes: {{ athlete_list }}.</p>
@@ -671,20 +682,20 @@ the same thing::
         {% endif %}
     {% endif %}
 
-Make sure to close each ``{% if %}`` with an ``{% endif %}``. Otherwise, Django
-will throw a ``TemplateSyntaxError``.
+Certifique-se de que fechou cada ``{% if %}`` com um ``{% endif %}``. Senão,
+o Django irá lançar um ``TemplateSyntaxError``.
 
 for
 ~~~
 
-The ``{% for %}`` tag allows you to loop over each item in a sequence. As in
-Python's ``for`` statement, the syntax is ``for X in Y``, where ``Y`` is the
-sequence to loop over and ``X`` is the name of the variable to use for a
-particular cycle of the loop. Each time through the loop, the template system
-will render everything between ``{% for %}`` and ``{% endfor %}``.
+A tag ``{% for %}`` permite você fazer loop sobre cada item em uma sequência.
+Como na declaração ``for`` em Python, a sintaxe é ``for X in Y``, onde ``Y`` é
+a sequência para ser passada pelo loop e ``X`` é o nome da variável a ser usada para
+um ciclo particular do loop. Cada vez que passar pelo loop, o sistema de template irá
+exibir tudo entre ``{% for %}`` e ``{% endfor %}``.
 
-For example, you could use the following to display a list of athletes given a
-variable ``athlete_list``::
+Por exemplo, você pode usar o seguinte para exibir um lista de atletas dada a
+variável ``athlete_list``::
 
     <ul>
     {% for athlete in athlete_list %}
@@ -692,13 +703,13 @@ variable ``athlete_list``::
     {% endfor %}
     </ul>
 
-Add ``reversed`` to the tag to loop over the list in reverse::
+E ``reversed`` para marcar o loop sobre a lista no sentido inverso::
 
     {% for athlete in athlete_list reversed %}
     ...
     {% endfor %}
 
-It's possible to nest ``{% for %}`` tags::
+É possível aninhar tags ``{% for %}``::
 
     {% for athlete in athlete_list %}
         <h1>{{ athlete.name }}</h1>
@@ -709,8 +720,8 @@ It's possible to nest ``{% for %}`` tags::
         </ul>
     {% endfor %}
 
-A common pattern is to check the size of the list before looping over it, and
-outputting some special text if the list is empty::
+Um padrão comum é verificar o tamanho da lista antes de fazer o looping
+sobre ela e produzir um texto especial, se a lista é vazia::
 
     {% if athlete_list %}
         {% for athlete in athlete_list %}
@@ -720,9 +731,9 @@ outputting some special text if the list is empty::
         <p>There are no athletes. Only computer programmers.</p>
     {% endif %}
 
-Because this pattern is so common, the ``for`` tag supports an optional
-``{% empty %}`` clause that lets you define what to output if the list is
-empty. This example is equivalent to the previous one::
+Devido esse padrão ser bastante comum, a tag ``for`` suporta uma cláusula
+opcional ``{% empty %}``, que permite você definir o que será exibido se
+a lista é vazia. Este exemplo é equivalente ao anterior::
 
     {% for athlete in athlete_list %}
         <p>{{ athlete.name }}</p>
@@ -730,115 +741,116 @@ empty. This example is equivalent to the previous one::
         <p>There are no athletes. Only computer programmers.</p>
     {% endfor %}
 
-There is no support for "breaking out" of a loop before the loop is finished.
-If you want to accomplish this, change the variable you're looping over so that
-it includes only the values you want to loop over. Similarly, there is no
-support for a "continue" statement that would instruct the loop processor to
-return immediately to the front of the loop. (See the section "Philosophies and
-Limitations" later in this chapter for the reasoning behind this design
-decision.)
+Não existe suporte para "sair (breaking out)" em um laço antes do laço ser concluído.
+Se você quer fazer isso, altere a variável que está em looping de forma que
+contenha apenas os valores que você deseja varrer. Da mesma forma, não há
+suporte para a declaração "continue", que instrue o processo de laço voltar
+imediatamente para para o laço (Veja a seção "Filosofia e limitações" mais
+tarde nesse capítulo para compreender o raciocínio por trás dessa decisão
+de design).
 
-Within each ``{% for %}`` loop, you get access to a template variable called
-``forloop``. This variable has a few attributes that give you information about
-the progress of the loop:
+Dentro de cada laço ``{% for %}``, você tem acesso a variável de template chamada
+``forloop``. Essa variável tem atributos que lhe dão informações sobre o progresso
+do laço:
 
-* ``forloop.counter`` is always set to an integer representing the number
-  of times the loop has been entered. This is one-indexed, so the first
-  time through the loop, ``forloop.counter`` will be set to ``1``.
-  Here's an example::
+* ``forloop.counter`` é sempre definido como um inteiro que representa
+  o número de vezes que loop foi inserido. Este é indexado como um,
+  então a primeira passada através do laço, ``forloop.counter`` será
+  setado como ``1``. Aqui está um exemplo::
 
-      {% for item in todo_list %}
-          <p>{{ forloop.counter }}: {{ item }}</p>
-      {% endfor %}
+    {% for item in todo_list %}
+        <p>{{ forloop.counter }}: {{ item }}</p>
+    {% endfor %}
 
-* ``forloop.counter0`` is like ``forloop.counter``, except it's
-  zero-indexed. Its value will be set to ``0`` the first time through the
-  loop.
+* ``forloop.counter0`` é como ``forloop.counter``, exceto que é indexado
+  como zero. Seu valor será  setado como ``0`` na primeira vez que o laço
+  passar.
 
-* ``forloop.revcounter`` is always set to an integer representing the
-  number of remaining items in the loop. The first time through the loop,
-  ``forloop.revcounter`` will be set to the total number of items in the
-  sequence you're traversing. The last time through the loop,
-  ``forloop.revcounter`` will be set to ``1``.
+* ``forloop.revcounter`` é sempre definido como um inteiro representando
+  o número restante de itens no laço. A primeira vez através do laço,
+  ``forloop.revcounter`` será definido o número totoal de itens na
+  sequência que você está atravessando. A ultima iteração do laço,
+  ``forloop.revcounter`` será definido como ``1``.
 
-* ``forloop.revcounter0`` is like ``forloop.revcounter``, except it's
-  zero-indexed. The first time through the loop, ``forloop.revcounter0``
-  will be set to the number of elements in the sequence minus 1. The last
-  time through the loop, it will be set to ``0``.
+* ``forloop.revcounter0`` é como ``forloop.revcounter``, exceto que é
+  indexado como zero. A primeira interação do loop, ``forloop.revcounter0``
+  será setado o número de elementos da sequência menos 1. A ultima iteração
+  do laço, será definido como ``0``.
 
-* ``forloop.first`` is a Boolean value set to ``True`` if this is the first
-  time through the loop. This is convenient for special-casing::
+* ``forloop.first`` é um valor booleano definido como ``True`` se está é a
+  primeira iteração do laço. Isso é conveniente para casos especiais::
 
-      {% for object in objects %}
-          {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
-          {{ object }}
-          </li>
-      {% endfor %}
+    {% for object in objects %}
+        {% if forloop.first %}<li class="first">{% else %}<li>{% endif %}
+        {{ object }}
+        </li>
+    {% endfor %}
 
-* ``forloop.last`` is a Boolean value set to ``True`` if this is the last
-  time through the loop. A common use for this is to put pipe
-  characters between a list of links::
+* ``forloop.last`` é um valor booleano definido como ``True`` se está for a
+  ultima iteração do laço. Um uso comum para isso, é colocar caracteres de
+  tabulação entre uma lista de links::
 
-      {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
+    {% for link in links %}{{ link }}{% if not forloop.last %} | {% endif %}{% endfor %}
 
-  The above template code might output something like this::
+  O código do template acima pode imprimir algo assim::
 
-      Link1 | Link2 | Link3 | Link4
+    Link1 | Link2 | Link3 | Link4
 
-  Another common use for this is to put a comma between words in a list::
+  Outro uso comum para isso é colocar vírgula entre palavras em uma lista::
 
-      Favorite places:
-      {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
+    Favorite places:
+    {% for p in places %}{{ p }}{% if not forloop.last %}, {% endif %}{% endfor %}
 
-*  ``forloop.parentloop`` is a reference to the ``forloop`` object for the
-   *parent* loop, in case of nested loops. Here's an example::
+* ``forloop.parentloop`` é uma referência ao objeto ``forloop`` para o
+  laço *pai*, em caso de laços aninhados. Abaixo um exemplo::
 
-      {% for country in countries %}
-          <table>
-          {% for city in country.city_list %}
-              <tr>
-              <td>Country #{{ forloop.parentloop.counter }}</td>
-              <td>City #{{ forloop.counter }}</td>
-              <td>{{ city }}</td>
-              </tr>
-          {% endfor %}
-          </table>
-      {% endfor %}
+    {% for country in countries %}
+        <table>
+        {% for city in country.city_list %}
+            <tr>
+                <td>Country #{{ forloop.parentloop.counter }}</td>
+                <td>City #{{ forloop.counter }}</td>
+                <td>{{ city }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
 
-The magic ``forloop`` variable is only available within loops. After the
-template parser has reached ``{% endfor %}``, ``forloop`` disappears.
+A magia da variável ``forloop`` está disponível dentro do laço. Depois de
+o analizador de templates atingir ``{% endfor %}``, ``forloop`` desaparece.
 
-.. admonition:: Context and the forloop Variable
+.. admonition:: Contexto e a variável forloop
 
-   Inside the ``{% for %}`` block, the existing variables are moved
-   out of the way to avoid overwriting the magic ``forloop``
-   variable. Django exposes this moved context in
-   ``forloop.parentloop``. You generally don't need to worry about
-   this, but if you supply a template variable named ``forloop``
-   (though we advise against it), it will be named
-   ``forloop.parentloop`` while inside the ``{% for %}`` block.
+    Dentro do bloco ``{% for %}``, as variáveis existentes são
+    movidas para fora do caminho evitando sobrescrever a magia
+    da váriavel ``forloop``. Django expõe este contexto movido
+    em ``forloop.parentloop``. Você geralmente não precisa se
+    preocupar com isso, mas se você fornecer uma variável de
+    template chamada ``forloop`` (embora nós tenhamos aconselhado
+    contra), ele vai ser nomeado ``forloop.parentloop`` enquanto
+    dentro do bloco ``{% for %}``.
 
 ifequal/ifnotequal
 ~~~~~~~~~~~~~~~~~~
 
-The Django template system deliberately is not a full-fledged programming
-language and thus does not allow you to execute arbitrary Python statements.
-(More on this idea in the section "Philosophies and Limitations.") However,
-it's quite a common template requirement to compare two values and display
-something if they're equal -- and Django provides an ``{% ifequal %}`` tag for
-that purpose.
+O sistema de template do Django deliberadamente  não é uma linguagem de
+programação completa e portanto não é permite que vocẽ execute declarações
+arbitrárias Python (Mais informações sobre esta idéia na seção "Filosofias
+e limitações"). No entanto, é muito comum requisitar que o template compare
+dois valores e exiba algo se eles forem iguais -- e o Django fornece uma tag
+``{% ifequal %}`` para esse fim.
 
-The ``{% ifequal %}`` tag compares two values and displays everything between
-``{% ifequal %}`` and ``{% endifequal %}`` if the values are equal.
+A tag ``{% ifequal %}`` compara dois valores e exibe tudo entre ``{% ifequal %}``
+e ``{% endifequal %}`` se os valores são iguais.
 
-This example compares the template variables ``user`` and ``currentuser``::
+Esse exemplo compara as variáveis de template ``user`` e ``currentuser``::
 
     {% ifequal user currentuser %}
         <h1>Welcome!</h1>
     {% endifequal %}
 
-The arguments can be hard-coded strings, with either single or double quotes,
-so the following is valid::
+Os argumentos podem ser strings em código fixo, com aspas simples ou duplas,
+então o seguinte é válido::
 
     {% ifequal section 'sitenews' %}
         <h1>Site News</h1>
@@ -848,7 +860,7 @@ so the following is valid::
         <h1>Community</h1>
     {% endifequal %}
 
-Just like ``{% if %}``, the ``{% ifequal %}`` tag supports an optional
+Assim como ``{% if %}``, a tag ``{% ifequal %}`` tem suporte opcional a tag
 ``{% else %}``::
 
     {% ifequal section 'sitenews' %}
@@ -857,170 +869,173 @@ Just like ``{% if %}``, the ``{% ifequal %}`` tag supports an optional
         <h1>No News Here</h1>
     {% endifequal %}
 
-Only template variables, strings, integers, and decimal numbers are allowed as
-arguments to ``{% ifequal %}``. These are valid examples::
+Apenas variáveis de template, strings, números inteiros e decimais são permitidos
+como argumetos para ``{% ifequal %}``. Estes são exemplos válidos::
 
     {% ifequal variable 1 %}
     {% ifequal variable 1.23 %}
     {% ifequal variable 'foo' %}
     {% ifequal variable "foo" %}
 
-Any other types of variables, such as Python dictionaries, lists, or Booleans,
-can't be hard-coded in ``{% ifequal %}``. These are invalid examples::
+Quaisquer outros tipos de variáveis, tais como dicionários Python, listas ou
+booleanos, não pode ser codificados em ``{% ifequal %}``. Estes são exemplos válidos::
 
     {% ifequal variable True %}
     {% ifequal variable [1, 2, 3] %}
     {% ifequal variable {'key': 'value'} %}
 
-If you need to test whether something is true or false, use the ``{% if %}``
-tags instead of ``{% ifequal %}``.
+Se você precisa testar se algo é verdadeiro ou falso, use a tag ``{% if %}``
+em vez de ``{% ifequal %}``.
 
-Comments
+Comentários
 ~~~~~~~~
 
-Just as in HTML or Python, the Django template language allows for comments. To
-designate a comment, use ``{# #}``::
+Assim como em HTML ou Python, a linguagem de template do Django permite
+comentários. Para designar um comentário, use ``{# #}``::
 
     {# This is a comment #}
 
-The comment will not be output when the template is rendered.
+O comentário não será emitido quando o modelo é processado.
 
-Comments using this syntax cannot span multiple lines. This limitation improves
-template parsing performance. In the following template, the rendered output
-will look exactly the same as the template (i.e., the comment tag will
-not be parsed as a comment)::
+Comentários usando essa sintaxe não podem ocupar várias linhas. Esta limitação
+melhora o desempenho análise do template. No template a seguir, a saída processada
+será exatamente igual ao template, ou seja, a tag de comentário não será analizada
+como um comentário::
 
     This is a {# this is not
     a comment #}
     test.
 
-If you want to use multi-line comments, use the ``{% comment %}`` template tag,
-like this::
+Se você quiser usar comentários em várias linhas, use o template tag ``{% comment %}``,
+dessa forma::
 
     {% comment %}
     This is a
     multi-line comment.
     {% endcomment %}
 
-Filters
+Filtros
 -------
 
-As explained earlier in this chapter, template filters are simple ways of
-altering the value of variables before they're displayed. Filters use a pipe
-character, like this::
+Como explicado anteriormente nesse capítulo, filtros de template são caminhos
+simples para alterar os valores de variáveis antes que sejam exibidas. Filtros
+usam o caracter pipe, dessa forma::
 
     {{ name|lower }}
 
-This displays the value of the ``{{ name }}`` variable after being filtered
-through the ``lower`` filter, which converts text to lowercase.
+Isso exibe o valor da variável ``{{ name }}`` depois de ser filtrada através
+do filtro ``lower``, que converte o texto para letras minúsculas.
 
-Filters can be *chained* -- that is, they can be used in tandem such that the
-output of one filter is applied to the next. Here's an example that takes the
-first element in a list and converts it to uppercase::
+Filtros podem ser *acorrentados*, ou seja, eles podem ser usados em conjunto
+de tal modo que a saída de um filtro é aplicado ao seguinte. Aqui um exemplo
+que pega o primeiro elemento em uma lista e converte para letras minúsculas::
 
     {{ my_list|first|upper }}
 
-Some filters take arguments. A filter argument comes after a colon and is
-always in double quotes. For example::
+Alguns filtros devem ter argumentos. O argumento para o filtros deve vir
+após dois pontos e estar sempre entre aspas duplas. Por exemplo::
 
     {{ bio|truncatewords:"30" }}
 
-This displays the first 30 words of the ``bio`` variable.
+Isso exibe as 30 primeiras palavras da váriavel ``bio``.
 
-The following are a few of the most important filters. Appendix E covers the rest.
+A seguir estão alguns dos filtros mais importantes. Apêndice E cobre o resto.
 
-* ``addslashes``: Adds a backslash before any backslash, single quote, or
-  double quote. This is useful if the produced text is included in
-  a JavaScript string.
+* ``addslashes``: Adiciona contrabarra antes de alguma contrabarra, aspas
+  simples ou aspas duplas. Isso é útil se o texto produzido é incluído em
+  um string Javascript.
 
-* ``date``: Formats a ``date`` or ``datetime`` object according to a
-  format string given in the parameter, for example::
+* ``date``: Formata objeto ``date`` ou ``datetime`` de acordo com a string
+  de formatação passada no parâmetro, por exemplo::
 
       {{ pub_date|date:"F j, Y" }}
 
-  Format strings are defined in Appendix E.
+  Formatação de strings são definidas no Apêndice E.
 
-* ``length``: Returns the length of the value. For a list, this returns the
-  number of elements. For a string, this returns the number of characters.
-  (Python experts, take note that this works on any Python object that
-  knows how to determine its length -- i.e., any object that has a
-  ``__len__()`` method.)
+* ``length``: Retorna o comprimento do valor. Para lista, este retorna o número
+  de elementos. Para string, este retorna o número de caracteres (Expecialistas em
+  Python, lembrem-se de que isso funciona em qualque objeto Python que saiba como
+  determinar o seu comprimento -- ex. qualquer objeto que tenha o
+  método ``__len__()``).
 
-Philosophies and Limitations
+Filosofia e limitações
 ============================
 
-Now that you've gotten a feel for the Django template language, we should point
-out some of its intentional limitations, along with some philosophies behind why
-it works the way it works.
+Agora que você ja tem uma idéia sobre a linguagem de template do Django, devemos
+destacar algumas de suas limitações intencionais, juntamente com algumas filosofias
+sobre porque funciona da maneira que funciona.
 
-More than any other component of Web applications, template syntax is highly
-subjective, and programmers' opinions vary wildly. The fact that Python alone
-has dozens, if not hundreds, of open source template-language implementations
-supports this point. Each was likely created because its developer deemed all
-existing template languages inadequate. (In fact, it is said to be a rite of
-passage for a Python developer to write his or her own template language! If
-you haven't done this yet, consider it. It's a fun exercise.)
+Mais do que qualquer outro componente de aplicação Web, sintaxe de template é
+muito subjetiva e as opiniões do programadores variam muito. Fato é que o Python
+possui dezenas, se não centenas, de implementações de linguagem de templates em
+código aberto dando suporte a isso. Cada uma que foi criada deve-se ao fato de que
+o desenvolvedor cosiderava as linguagens existentes inadequadas (Na verdade, diz-se
+ser um rito de passagem desenvolvedores Python escrever a sua própria linguagem de
+template! Se você não tiver feito isso ainda, considere. É um exercicio divertido).
 
-With that in mind, you might be interested to know that Django doesn't require
-that you use its template language. Because Django is intended to be a
-full-stack Web framework that provides all the pieces necessary for Web
-developers to be productive, many times it's *more convenient* to use Django's
-template system than other Python template libraries, but it's not a strict
-requirement in any sense. As you'll see in the upcoming section "Using Templates
-in Views", it's very easy to use another template language with Django.
+Com isso em mente, você pode estar interessado em saber que o Django não requer que
+você utilize a sua linguagem de template. Como o Django se destina a ser o Web
+framework full-stack que fornece todas as partes necessárias para desenvolvedores
+Web serem produtivos, muitas vezes é *mais conveniente* usar o sistema de template
+do Django do que outra biblioteca de templates Python, mas não é uma obrigação
+restrita em qualquer sentido. Como vocẽ verá na próxima seção "Usando templates na
+visão", é muito fácil usar outra linguagem de templates com o Django.
 
-Still, it's clear we have a strong preference for the way Django's template
-language works. The template system has roots in how Web development is done at
-World Online and the combined experience of Django's creators. Here are a few of
-those philosophies:
+Assim, é claro que temos uma forte preferência pela forma como a linguagem de
+templates do Django funciona. O sistema de templates possui raizes na forma como
+o desenvolvimento Web é feito no mundo online e combina a experiência dos criadores
+do Django. Aqui estão algumas dessas filosofias:
 
-* *Business logic should be separated from presentation logic*. Django's
-  developers see a  template system as a tool that controls presentation and
-  presentation-related logic -- and that's it. The template system shouldn't
-  support functionality that goes beyond this basic goal.
+* *Lógica de negócios deve ser separada da lógica de apresentação*.
+  Desenvolvedores Django enchergam o sistema de templates como uma ferramenta
+  de controle da apresentação e apresentação relacionada com lógica -- e é isso.
+  O sistema de templates não deve suportar funcionalidades que vão além dos
+  seus objetivos básicos.
 
-  For that reason, it's impossible to call Python code directly within
-  Django templates. All "programming" is fundamentally limited to the scope
-  of what template tags can do. It *is* possible to write custom template
-  tags that do arbitrary things, but the out-of-the-box Django template
-  tags intentionally do not allow for arbitrary Python code execution.
+  Por essa razão, é impossível chamar código Python diretamente dentro
+  de templates Django. Toda a "programação" é limitada fundamentalmente no
+  escopo do que as tags de template podem fazer. Isso *é* possível escrevendo
+  template tags personalizadas que fazem coisas arbitrárias, mas o out-of-the-box
+  template tags do Django não permite a execução de código arbitrário Python.
 
-* *Syntax should be decoupled from HTML/XML*. Although Django's template
-  system is used primarily to produce HTML, it's intended to be just as
-  usable for non-HTML formats, such as plain text. Some other template
-  languages are XML based, placing all template logic within XML tags or
-  attributes, but Django deliberately avoids this limitation. Requiring
-  valid XML to write templates introduces a world of human mistakes and
-  hard-to-understand error messages, and using an XML engine to parse
-  templates incurs an unacceptable level of overhead in template processing.
+* *Sintaxe deve ser desacoplada de HTML/XML*. Embora o sistema de templates
+  do Django é usado para produzir principalmente HTML, ele tem a intenção
+  de ser útil em formatos não HTML, como texto simples. Algumas outras
+  linguagens de templates são baseadas em XML, colocam todas á lógica de
+  template dento de tags XML ou atributos, mas o Django evita essa limitação
+  deliberadamente. Exigir XML válido para escrever templates introduz um
+  mundo de erros humanos e mensagens de erro difíceis de entender, e usando
+  uma engine XML para analisar templates incorre em um nível inaceitável
+  de sobrecarga no processamento do template.
 
-* *Designers are assumed to be comfortable with HTML code*. The template
-  system isn't designed so that templates necessarily are displayed nicely
-  in WYSIWYG editors such as Dreamweaver. That is too severe a limitation
-  and wouldn't allow the syntax to be as friendly as it is. Django expects
-  template authors to be comfortable editing HTML directly.
+* *Designers são assumidamente mais confortáveis com código HTML*. O sistema
+  de templates não foi projetado para ser necessáriamente exibindo de maneira
+  agradável em editores WYSIWYG como o Dreamweaver. Isso é uma limitação muito
+  grave e não permite que a sintaxe seja amigável como ela é. Django expera que
+  os autores de templates estejam confortáveis editando diretamento HTML.
 
-* *Designers are assumed not to be Python programmers*. The template system
-  authors recognize that Web page templates are most often written by
-  *designers*, not *programmers*, and therefore should not assume Python
-  knowledge.
+* *Designers são assumidamente não programadores Python*. Os autores do sistema
+  de templates reconhecem que templates de páginas web são mais frequentemente
+  escritas por *designers*, não *programadores* e portanto não devem assumir
+  conhecimento em Python.
 
-  However, the system also intends to accommodate small teams in which the
-  templates *are* created by Python programmers. It offers a way to extend
-  the system's syntax by writing raw Python code. (More on this in Chapter
-  9.)
+  No entanto, o sistema também tem a intenção de acomodar pequenas equipes
+  em que os templates *são* criados por programadores Python. Ele oferece
+  uma maneira de extender a sintaxe do sistema, escrevendo em código Python puro
+  (Mais sobre isso no capítulo 9).
 
-* *The goal is not to invent a programming language*. The goal is to offer
-  just enough programming-esque functionality, such as branching and
-  looping, that is essential for making presentation-related decisions.
+* *O objetivo é não inventar uma linguagem de programação*. O objetivo é de
+  oferecer apenas o suficiente de funcionalidades de programação, como branching e
+  looping, que é essencial para tomada de decisões relacionada a apresentação.
 
-Using Templates in Views
-========================
 
-You've learned the basics of using the template system; now let's use this
-knowledge to create a view. Recall the ``current_datetime`` view in
-``mysite.views``, which we started in the previous chapter. Here's what it looks
-like::
+Usando templates na visão
+=========================
+
+Você já aprendeu o básico do uso do sistema de template, agora vamos usar esse
+conhecimento para criar uma view. Lembre-se da view ``current_datetime`` em
+``mysite.views``, que nós começamos no capítulo anterior. Aqui está o que se
+parece::
 
     from django.http import HttpResponse
     import datetime
@@ -1030,8 +1045,8 @@ like::
         html = "<html><body>It is now %s.</body></html>" % now
         return HttpResponse(html)
 
-Let's change this view to use Django's template system. At first, you might
-think to do something like this::
+Vamos modificar essa view para usar o sistema de template do Django. De primeira,
+você poderia pensar em fazer algo assim::
 
     from django.template import Template, Context
     from django.http import HttpResponse
@@ -1043,16 +1058,16 @@ think to do something like this::
         html = t.render(Context({'current_date': now}))
         return HttpResponse(html)
 
-Sure, that uses the template system, but it doesn't solve the problems we
-pointed out in the introduction of this chapter. Namely, the template is still
-embedded in the Python code, so true separation of data and presentation isn't
-achieved. Let's fix that by putting the template in a *separate file*, which
-this view will load.
+Certo, isso usa o sistema de template, mas não resolver os problemas que nós
+apontamos no introdução deste capítulo. Ou seja, o template está ainda incorporado
+ao código Python, então a separação real de dados e apresentação não é alcaçada.
+Vamos corrigir isso, colocando o template em um *arquivo separado*, que essa
+view irá carregar.
 
-You might first consider saving your template somewhere on your
-filesystem and using Python's built-in file-opening functionality to read
-the contents of the template. Here's what that might look like, assuming the
-template was saved as the file ``/home/djangouser/templates/mytemplate.html``::
+Você pode considerar primeiro salvar o seu template em algum lugar do
+seu sistema de arquivos e usar o Python built-in com a funcionalidade de abertura
+de arquivos para ler o conteúdo do template. Aqui está como deve parecer, assumindo
+que o template está salvo no arquivo ``/home/djangouser/templates/mytemplate.html``::
 
     from django.template import Template, Context
     from django.http import HttpResponse
@@ -1068,37 +1083,40 @@ template was saved as the file ``/home/djangouser/templates/mytemplate.html``::
         html = t.render(Context({'current_date': now}))
         return HttpResponse(html)
 
-This approach, however, is inelegant for these reasons:
+Esta abordagem, no entanto, é deselegante pelas seguintes razões::
 
-* It doesn't handle the case of a missing file. If the file
-  ``mytemplate.html`` doesn't exist or isn't readable, the ``open()`` call
-  will raise an ``IOError`` exception.
+* Ela não lida com o caso de um arquivo que está faltando. Se o arquivo
+  ``mytemplate.html`` não existe ou não pode ser lido, a chamada ``open()``
+  irá levantar uma excessão ``IOError``.
 
-* It hard-codes your template location. If you were to use this
-  technique for every view function, you'd be duplicating the template
-  locations. Not to mention it involves a lot of typing!
+* Ela usa códigos fixos na localização do seu template. Se você estivesse usando
+  essa técnica para cada view function, você estaria duplicando a localização
+  do template. Sem mencionar que envolve bastante digitação!
 
-* It includes a lot of boring boilerplate code. You've got better things to
-  do than to write calls to ``open()``, ``fp.read()``, and ``fp.close()``
-  each time you load a template.
+* Ela incluí um série de código clichê chato. Você tem coisa melhor para
+  fazer do que escrever chamadas para ``open()``, ``fp.read()`` e ``fp.close()``
+  cada vez que você carrega um template.
 
-To solve these issues, we'll use *template loading* and *template directories*.
+Para resolver estas questões, nós vamos usar *carregamento de template* e
+*diretório de template*.
 
-Template Loading
-================
+Carregando Template
+===================
 
-Django provides a convenient and powerful API for loading templates from the
-filesystem, with the goal of removing redundancy both in your template-loading
-calls and in your templates themselves.
+Django fornece uma API conveniente e poderosa para carregamento de templates
+apartir do sistema de arquivos, com o objetivo de remover a redundância, tanto na
+chamada do carregamento de template e bem como em seus templates propriamente
+ditos.
 
-In order to use this template-loading API, first you'll need to tell the
-framework where you store your templates. The place to do this is in your
-settings file -- the ``settings.py`` file that we mentioned last chapter, when
-we introduced the ``ROOT_URLCONF`` setting.
+Para poder utilizar esse API de carregamento de template, primeiro você
+precisa dizer ao framework onde você armazena seus templates. O local para
+fazer isso é em seu arquivo de configurações -- o arquivo ``settings.py``
+que mencionamos no último capítulo, quando nós introduzimos a configuração
+``ROOT_URLCONF``.
 
-If you're following along, open your ``settings.py`` and find the
-``TEMPLATE_DIRS`` setting. By default, it's an empty tuple, likely containing
-some auto-generated comments::
+Se voce está acompanhando, abra seu ``settings.py`` e encontre a
+configuração ``TEMPLATE_DIRS``. Por padrão, é uma tupla vazia, provavelmente
+contendo alguns comentários gerados automaticamente::
 
     TEMPLATE_DIRS = (
         # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -1106,56 +1124,56 @@ some auto-generated comments::
         # Don't forget to use absolute paths, not relative paths.
     )
 
-This setting tells Django's template-loading mechanism where to look for
-templates. Pick a directory where you'd like to store your templates and add it
-to ``TEMPLATE_DIRS``, like so::
+Essa configuração informa o mecanismo de carregamento de template do Django onde
+procurar por templates. Escolha o diretório onde você gostaria de armazenar seus templates
+e adicione ele ao ``TEMPLATE_DIRS``, dessa forma::
 
     TEMPLATE_DIRS = (
         '/home/django/mysite/templates',
     )
 
-There are a few things to note:
+Existem algumas coisas para serem observadas:
 
-* You can specify any directory you want, as long as the directory and
-  templates within that directory are readable by the user account under
-  which your Web server runs. If you can't think of an appropriate
-  place to put your templates, we recommend creating a ``templates``
-  directory within your project (i.e., within the ``mysite`` directory you
-  created in Chapter 2).
+* Você pode especificar qualquer diretório que você deseja, contanto que
+  o diretório e os templates dentro desse diretório possam ser lidos pela
+  conta de usuário sob o qual o servidor web é executado. Se você não pensa
+  em um local apropriado para colocar seus templates, nós recomendamos a
+  criação de um diretório ``templates`` dentro de seu projeto, ou seja,
+  dentro do diretório ``mysite`` criador por você no capítulo 2.
 
-* If your ``TEMPLATE_DIRS`` contains only one directory, don't forget the
-  comma at the end of the directory string!
+* Se o seu ``TEMPLATE_DIRS`` contém somente um diretório, não esqueça da
+  vírgula ao final da string do diretório!
 
-  Bad::
+  Ruim::
 
-      # Missing comma!
+      # Faltando vírgula!
       TEMPLATE_DIRS = (
           '/home/django/mysite/templates'
       )
 
-  Good::
+  Bom::
 
-      # Comma correctly in place.
+      # Vírgula corretamente no lugar.
       TEMPLATE_DIRS = (
           '/home/django/mysite/templates',
       )
 
-  The reason for this is that Python requires commas within single-element
-  tuples to disambiguate the tuple from a parenthetical expression. This is
-  a common newbie gotcha.
+  O motivo para isso é que o Python exige vírgula dentro de tuplas com
+  elemento unico para remover ambigüidade da tupla de uma expressão entre
+  parênteses. Isso é uma pegadinha para novatos muito comum.
 
-* If you're on Windows, include your drive letter and use Unix-style
-  forward slashes rather than backslashes, as follows::
+* Se você está no Windows, inclua a letra da unidade e use o estilo
+  Unix de barras ao invés de barras invertidas, como segue::
 
       TEMPLATE_DIRS = (
           'C:/www/django/templates',
       )
 
-* It's simplest to use absolute paths (i.e., directory paths that start at
-  the root of the filesystem). If you want to be a bit more flexible and
-  decoupled, though, you can take advantage of the fact that Django
-  settings files are just Python code by constructing the contents of
-  ``TEMPLATE_DIRS`` dynamically. For example::
+* É mais simples usar caminhos absolutos, ou seja, caminhos de diretório
+  que começam na raiz do sistema de arquivos. Se você quiser ser mais
+  flexível, dissociado, você pode tirar vantagem do fato de que os arquivos
+  de configuração do Django são apenas código Python empregados para contrução
+  dos conteúdos de ``TEMPLATE_DIRS`` dinâmicamente. Por exemplo::
 
       import os.path
 
@@ -1163,22 +1181,22 @@ There are a few things to note:
           os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/'),
       )
 
-  This example uses the "magic" Python variable ``__file__``, which is
-  automatically set to the file name of the Python module in which the code
-  lives. It gets the name of the directory that contains ``settings.py``
-  (``os.path.dirname``), then joins that with ``templates`` in a
-  cross-platform way (``os.path.join``), then ensures that everything uses
-  forward slashes instead of backslashes (in case of Windows).
+  Esse exemplo usa a variável mágica Python ``__file__``, que é automaticamente
+  definida para o nome do arquivo do módulo Python em que o código vive. Ela
+  recebe o nome do diretório que contém``settings.py`` (``os.path.dirname``),
+  depois junta com ``templates`` em um caminho cross-platform (``os.path.join``),
+  então assegura que tudo usa barras ao invés de barras invertidas (no
+  caso do Windows).
 
-  While we're on the topic of dynamic Python code in settings files, we
-  should point out that it's very important to avoid Python errors in your
-  settings file. If you introduce a syntax error, or a runtime error, your
-  Django-powered site will likely crash.
+  Enquanto estamos no tópico de código Python dinâmico em arquivos de
+  configuraçôes, devemos salientar que é muito importante evitar erros
+  Python em seu arquivo de configuração. Se você introduzir erro de sintaxe,
+  ou erro de execução, seu site em Django provavelmente vai falhar.
 
-With ``TEMPLATE_DIRS`` set, the next step is to change the view code to
-use Django's template-loading functionality rather than hard-coding the
-template paths. Returning to our ``current_datetime`` view, let's change it
-like so::
+Com a definição de ``TEMPLATE_DIRS``, o próximo passo é modificar o código
+da view para usar a funcionalidade de carregamento de template do Django,
+em vez de embutir códigos fixos nos caminhos de template. Voltando à nossa
+view ``current_datetime``, vamos modificar para algo assim::
 
     from django.template.loader import get_template
     from django.template import Context
@@ -1191,70 +1209,71 @@ like so::
         html = t.render(Context({'current_date': now}))
         return HttpResponse(html)
 
-In this example, we're using the function
-``django.template.loader.get_template()`` rather than loading the template from
-the filesystem manually. The ``get_template()`` function takes a template name
-as its argument, figures out where the template lives on the filesystem, opens
-that file, and returns a compiled ``Template`` object.
+Neste exemplo, estamos usando a função
+``django.template.loader.get_template()`` em vez de carregar o template do
+sistema de arquivo manualmente. A função ``get_template()`` recebe o nome do
+template como argumento, descobre onde o template vive no sistema de arquivo,
+abre o arquivo e devolve um objeto ``Template`` compilado.
 
-Our template in this example is ``current_datetime.html``, but there's nothing
-special about that ``.html`` extension. You can give your templates whatever
-extension makes sense for your application, or you can leave off extensions
-entirely.
+Nosso template nesse exemplo é  ``current_datetime.html``, mas não há nada
+especial sobre a extensão ``.html``. Você pode passar em seus templates qualquer
+extensão que faça sentido para sua aplicação, ou você pode deixar de fora as
+extensões completamente.
 
-To determine the location of the template on your filesystem,
-``get_template()`` combines your template directories from ``TEMPLATE_DIRS``
-with the template name that you pass to ``get_template()``. For example, if
-your ``TEMPLATE_DIRS`` is set to ``'/home/django/mysite/templates'``, the above
-``get_template()`` call would look for the template
+Para determinar a localização do template em seu sistema de arquivo,
+``get_template()`` combina seus diretórios de template apartir de ``TEMPLATE_DIRS``
+com o nome do template que você passou para ``get_template()``. Por exemplo, se
+seu ``TEMPLATE_DIRS`` está definido para ``'/home/django/mysite/templates'``, a
+chamada acima ``get_template()`` ficaria para o template de
 ``/home/django/mysite/templates/current_datetime.html``.
 
-If ``get_template()`` cannot find the template with the given name, it raises
-a ``TemplateDoesNotExist`` exception. To see what that looks like, fire up the
-Django development server again by running ``python manage.py runserver``
-within your Django project's directory. Then, point your browser at the page
-that activates the ``current_datetime`` view (e.g.,
-``http://127.0.0.1:8000/time/``). Assuming your ``DEBUG`` setting is set to
-``True`` and you haven't yet created a ``current_datetime.html`` template, you
-should see a Django error page highlighting the ``TemplateDoesNotExist`` error.
+Se ``get_template()`` não encontrar o template com o nome informado, ele levantará
+uma exceção ``TemplateDoesNotExist``. Para ver como se parece, dispare o servidor
+de desenvolvimento do Django novamente rodando ``python manage.py runserver``
+dentro do diretório do seu projeto Django. Depois, aponte seu browser para a página
+que ativa a view ``current_datetime`` (por exemplo, ``http://127.0.0.1:8000/time/``).
+Assumindo que a sua configuração ``DEBUG`` está definida como ``True`` e você
+ainda não tenha criado um template ``current_datetime.html``, você deverá ver uma
+página de erro Django destacando o erro ``TemplateDoesNotExist``.
 
 .. figure:: graphics/chapter04/missing_template.png
    :alt: Screenshot of a "TemplateDoesNotExist" error.
 
-   Figure 4-1: The error page shown when a template cannot be found.
+   Figura 4-1: A página de erro é mostrada quando um template não pode ser encontrado.
 
-This error page is similar to the one we explained in Chapter 3, with one
-additional piece of debugging information: a "Template-loader postmortem"
-section. This section tells you which templates Django tried to load, along with
-the reason each attempt failed (e.g., "File does not exist"). This information
-is invaluable when you're trying to debug template-loading errors.
+Esta página de erro é semelhante ao que explanamos no Capítulo 3, com um pedaço
+adicional de informação de debugging: uma seção "Template-loader postmortem".
+Esta seção informa você quais templates Django tentou-se carregar, juntamente
+com o motivo de cada tentativa fracassada (por exemplo, "File does not exist").
+Esta informação é inestimável quando você está tentando depurar erros no carregamento
+de template.
 
-Moving along, create the ``current_datetime.html`` file within your template
-directory using the following template code::
+Continuando, crie o arquivo ``current_datetime.html`` dentro seu diretório
+de templates usando o seguinte código de template::
 
     <html><body>It is now {{ current_date }}.</body></html>
 
-Refresh the page in your Web browser, and you should see the fully rendered
-page.
+Atualize a página em seu web browser e você deverá ver a renderização completa
+da página.
 
 render()
 --------
 
-We've shown you how to load a template, fill a ``Context`` and return an
-``HttpResponse`` object with the result of the rendered template. We've
-optimized it to use ``get_template()`` instead of hard-coding templates and
-template paths. But it still requires a fair amount of typing to do those
-things. Because this is such a common idiom, Django provides a shortcut that
-lets you load a template, render it and return an ``HttpResponse`` -- all in
-one line of code.
+Nós mostramos para você como carregar um template, preencher um ``Context``
+e retornar um objeto ``HttpResponse`` com os resultados da renderização do
+template. Nós otimizamos para usar ``get_template()`` ao invés de códigos
+fixos em templates e caminhos de templates. Mas ainda requer uma boa quantidade
+de codificação para fazer essas coisas. Devido ser um idioma comum, Django
+fornece um atalho que permite você carregar um template, renderizar e retornar
+um ``HttpResponse`` -- tudo em uma linha de código.
 
-This shortcut is a function called ``render()``, which lives in the
-module ``django.shortcuts``. Most of the time, you'll be using
-``render()`` rather than loading templates and creating ``Context``
-and ``HttpResponse`` objects manually -- unless your employer judges your work
-by total lines of code written, that is.
+Esse atalho é uma função chamada ``render()``, que vive no módulo
+``django.shortcuts``. Na maioria das vezes, você estará usando
+``render()`` em vez de carregar templates e criar objetos ``Context``
+e ``HttpResponse`` manualmente -- a não ser que seu chefe julgue o seu trabalho
+pelo total de linhas de código escritas, então tudo bem.
 
-Here's the ongoing ``current_datetime`` example rewritten to use
+Aqui está a continuação do exemplo ``current_datetime``, reescrito para usar
 ``render()``::
 
     from django.shortcuts import render
@@ -1264,85 +1283,86 @@ Here's the ongoing ``current_datetime`` example rewritten to use
         now = datetime.datetime.now()
         return render(request, 'current_datetime.html', {'current_date': now})
 
-What a difference! Let's step through the code changes:
+Que diferença! Vamos percorrer as alterações de código:
 
-* We no longer have to import ``get_template``, ``Template``, ``Context``,
-  or ``HttpResponse``. Instead, we import
-  ``django.shortcuts.render``. The ``import datetime`` remains.
+* Não temos mais que importar ``get_template``, ``Template``, ``Context``,
+  ou ``HttpResponse``. Em vez disso, importamos
+  ``django.shortcuts.render``. O ``import datetime`` permanece.
 
-* Within the ``current_datetime`` function, we still calculate ``now``, but
-  the template loading, context creation, template rendering, and
-  ``HttpResponse`` creation are all taken care of by the
-  ``render()`` call. Because ``render()`` returns
-  an ``HttpResponse`` object, we can simply ``return`` that value in the
-  view.
+* Dentro da função ``current_datetime``, nós ainda calculamos ``now``, mas
+  o carregamento de template, criação do contexto, renderização do template e
+  a criação ``HttpResponse`` são todos realizados pela chamada ``render()``.
+  Pois ``render()`` retorna um objeto ``HttpResponse``, podemos simplesmente
+  ``retornar`` este valor na view.
 
-The first argument to ``render()`` is the request, the second is the name of
-the template to use. The third argument, if given, should be a dictionary to
-use in creating a ``Context`` for that template. If you don't provide a third
-argument, ``render()`` will use an empty dictionary.
+O primeiro argumento de ``render()`` é a requisição, o segundo é o nome do
+template que será usado. O terceiro argumento, se informado, deve ser um
+dicionário para ser usado na criação de um um ``Context`` para este template.
+Se você não prover um terceiro argumento, ``render()``usará-se um dicionário vazio.
 
-Subdirectories in get_template()
---------------------------------
+Subdiretórios em get_template()
+-------------------------------
 
-It can get unwieldy to store all of your templates in a single directory. You
-might like to store templates in subdirectories of your template directory, and
-that's fine. In fact, we recommend doing so; some more advanced Django
-features (such as the generic views system, which we cover in
-Chapter 11) expect this template layout as a default convention.
+Ele pode ficar pesado para armazenar todos os seus templates em um unico diretório.
+Você pode gostar de armazenar os templates em subdiretórios em seu diretório de
+template, e isso é bom. Na verdade, recomendamos faze-lo; alguns recursos mais
+avançados do Django (tais como o sistema de views genéricas, que cobrimos no
+Capítulo 11) expera esse layout de template como uma convenção padrão.
 
-Storing templates in subdirectories of your template directory is easy.
-In your calls to ``get_template()``, just include
-the subdirectory name and a slash before the template name, like so::
+Armazerar templates em subdiretórios de seu diretório de templates é fácil.
+Em suas chamadas para ``get_template()``, apenas inclua
+o nome do subdiretório e uma barra antes do nome do template, assim::
 
     t = get_template('dateapp/current_datetime.html')
 
-Because ``render()`` is a small wrapper around ``get_template()``,
-you can do the same thing with the second argument to ``render()``,
-like this::
+Devido ``render()`` ser um pequeno invólucro em torno de ``get_template()``,
+você pode fazer a mesma coisa com o segundo argumento para ``render()``,
+assim::
 
     return render(request, 'dateapp/current_datetime.html', {'current_date': now})
 
-There's no limit to the depth of your subdirectory tree. Feel free to use
-as many subdirectories as you like.
+Não há limites para a profundidade da sua árvore de diretórios. Sinta-se a
+vontade para usar a quantidade de subdiretórios que desejar.
 
 .. note::
 
-    Windows users, be sure to use forward slashes rather than backslashes.
-    ``get_template()`` assumes a Unix-style file name designation.
+    Usuários Windows, certifiquem-se de utilizar barras ao invés de barras
+    invertidas. ``get_template()`` assume o estilo Unix de designação
+    do nome de arquivo.
 
-The ``include`` Template Tag
-----------------------------
+A template tag ``include``
+--------------------------
 
-Now that we've covered the template-loading mechanism, we can introduce a
-built-in template tag that takes advantage of it: ``{% include %}``. This tag
-allows you to include the contents of another template. The argument to the tag
-should be the name of the template to include, and the template name can be
-either a variable or a hard-coded (quoted) string, in either single or double
-quotes. Anytime you have the same code in multiple templates,
-consider using an ``{% include %}`` to remove the duplication.
+Agora que nós cobrimos o mecanismo de carregamento de templates, podemos
+introduzir uma tag integrada ao template para tirar vantagem disso: ``{% include %}``.
+Essa tag permite você incluir conteúdo de outro template. O argumento para a
+tag deve ser o nome do template a ser incluído e o nome do template pode ser tanto
+uma váriavel ou uma string fixa (entre aspas), podendo ser aspas simples ou duplas.
+Quando você tem o mesmo código em vários templates, considere
+o uso de um ``{% include %}`` para remover a duplicação.
 
-These two examples include the contents of the template ``nav.html``. The
-examples are equivalent and illustrate that either single or double quotes
-are allowed::
+Estes dois exemplos incluem o conteúdo do template ``nav.html``. Os
+exemplos são equivalentes e ilustram que tanto aspas simples ou duplas são
+permitidas:
 
     {% include 'nav.html' %}
     {% include "nav.html" %}
 
-This example includes the contents of the template ``includes/nav.html``::
+Esse exemplo incluí o conteúdo do template ``includes/nav.html``:
 
     {% include 'includes/nav.html' %}
 
-This example includes the contents of the template whose name is contained in
-the variable ``template_name``::
+Esse exemplo incluí o conteúdo do template cujo o nome está contido na
+váriavel ``template_name``::
 
     {% include template_name %}
 
-As in ``get_template()``, the file name of the template is determined by adding
-the template directory from ``TEMPLATE_DIRS`` to the requested template name.
+Como em ``get_template()``, o nome do arquivo do template é determinado pela
+adição do diretório de template do ``TEMPLATE_DIRS`` para o nome de template
+solicitado.
 
-Included templates are evaluated with the context of the template
-that's including them. For example, consider these two templates::
+Templates incluídos são avaliados com o contexto dos templates que os incluí.
+Por exemplo, considere estes dois templates::
 
     # mypage.html
 
@@ -1359,41 +1379,42 @@ that's including them. For example, consider these two templates::
         You are in: {{ current_section }}
     </div>
 
-If you render ``mypage.html`` with a context containing ``current_section``,
-then the variable will be available in the "included" template, as you would
-expect.
+Se você exibir ``mypage.html`` com um contexto contendo ``current_section``,
+então a variável estará disponível no template "incluído", como seria de
+esperar.
 
-If, in an ``{% include %}`` tag, a template with the given name isn't found,
-Django will do one of two things:
+Se, em uma tag ``{% include %}``, o template com o nome passado não é encontrado,
+o Django fará umda das duas coisas:
 
-* If ``DEBUG`` is set to ``True``, you'll see the
-  ``TemplateDoesNotExist`` exception on a Django error page.
+* Se ``DEBUG`` está definido como ``True``, você verá a exceção
+  ``TemplateDoesNotExist`` em uma página de erro do Django.
 
-* If ``DEBUG`` is set to ``False``, the tag will fail
-  silently, displaying nothing in the place of the tag.
+* Se ``DEBUG`` está definido como ``False``, a tag falhará
+  silenciosamente, exibindo nada no lugar da tag.
 
-Template Inheritance
-====================
 
-Our template examples so far have been tiny HTML snippets, but in the real
-world, you'll be using Django's template system to create entire HTML pages.
-This leads to a common Web development problem: across a Web site, how does
-one reduce the duplication and redundancy of common page areas, such as
-sitewide navigation?
+Herança de Template
+==================
 
-A classic way of solving this problem is to use *server-side includes*,
-directives you can embed within your HTML pages to "include" one Web page
-inside another. Indeed, Django supports that approach, with the
-``{% include %}`` template tag just described. But the preferred way of
-solving this problem with Django is to use a more elegant strategy called
-*template inheritance*.
+Nosso template exemplo até agora tem sido pequenos snippets HTML, mas no
+mundo real, você usará o sistema de template do Django para criar páginas
+HTML completas. Isso leva a um problema comum de desenvolvimento web: em
+um web site, como reduzir a duplicação e a redundância de áreas em páginas
+que são comuns, bem como a navegação no site inteiro?
 
-In essence, template inheritance lets you build a base "skeleton" template that
-contains all the common parts of your site and defines "blocks" that child
-templates can override.
+Uma forma clássica de resolução desse problema é usar *server-sides
+includes*, diretivas que você pode colocar junto a suas páginas HTML
+para "incluir" uma página web dentro de outra. De fato, Django suporta
+essa possibilidade, com a tag template ``{% include %}`` que acabamos de
+descrever. Mas a forma preferida de resolução desse problema com Django
+é usar uma estratégia mais elegante chamada *template inheritance*.
 
-Let's see an example of this by creating a more complete template for our
-``current_datetime`` view, by editing the ``current_datetime.html`` file::
+Na essência, herança de template permite você construir um "esqueleto" inicial
+de template, que contém todas as partes comuns de seu site e define "blocos" que
+templates filhos podem ser substituir.
+
+Vejamos um exemplo disso com a criação de um template mais completo para
+nossa view ``current_datetime``, pela edição do arquivo ``current_datetime.html``::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
@@ -1409,9 +1430,11 @@ Let's see an example of this by creating a more complete template for our
     </body>
     </html>
 
-That looks just fine, but what happens when we want to create a template for
-another view -- say, the ``hours_ahead`` view from Chapter 3? If we want again
-to make a nice, valid, full HTML template, we'd create something like::
+
+Isso parece bom, mas o que acontece quando queremos criar um template para
+outra view, por exemplo, a view ``hours_ahead`` do capítulo 3? Se queremos
+mais uma vez fazer uma bom, válido e completo template HTML, criaremos algo
+como::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
@@ -1427,41 +1450,42 @@ to make a nice, valid, full HTML template, we'd create something like::
     </body>
     </html>
 
-Clearly, we've just duplicated a lot of HTML. Imagine if we had a more
-typical site, including a navigation bar, a few style sheets, perhaps some
-JavaScript -- we'd end up putting all sorts of redundant HTML into each
-template.
+Claramente, simplesmente duplicamos um monte de HTML. Imagine se tivessemos um
+site típico, incluíndo uma barra de navegação, algumas folhas de estilo,
+talvés um pouco de Javascript, que nos acabaria colocando todos os tipos de HTML
+redundantes em cada template.
 
-The server-side include solution to this problem is to factor out the
-common bits in both templates and save them in separate template snippets,
-which are then included in each template. Perhaps you'd store the top
-bit of the template in a file called ``header.html``::
+A solução do lado servidor para esse problema é fatorar os pedaços comuns em
+ambos os templates e salvar eles em trechos de templates separados, que então
+são incluídos em cada template. Possivelmente você armazene o pedaço superior do
+template em um arquivo chamado ``header.html``::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
     <head>
 
-And perhaps you'd store the bottom bit in a file called ``footer.html``::
+E possivelmente armazene o pedaço inferior em um arquivo chamado ``footer.html``::
 
         <hr>
         <p>Thanks for visiting my site.</p>
     </body>
     </html>
 
-With an include-based strategy, headers and footers are easy. It's the
-middle ground that's messy. In this example, both pages feature a title --
-``<h1>My helpful timestamp site</h1>`` -- but that title can't fit into
-``header.html`` because the ``<title>`` on both pages is different. If we
-included the ``<h1>`` in the header, we'd have to include the ``<title>``,
-which wouldn't allow us to customize it per page. See where this is going?
+Com um estratégoa baseada em inclusão, o cabeçalho e rodapé são fáceis de inserir.
+Há o meio termo que confunde. Nesse exemplo, ambas as páginas tem um título --
+``<h1>My helpful timestamp site</h1>`` -- mas esse título não pode caber em
+``header.html`` porque o ``<title>`` em ambas as páginas é diferente. Se
+incluírmos o ``<h1>`` no cabeçalho, teríamos de incluir o ``<title>``, que
+nos permite um personalização por página. Está vendo onde isso vai dar?
 
-Django's template inheritance system solves these problems. You can think of it
-as an "inside-out" version of server-side includes. Instead of defining the
-snippets that are *common*, you define the snippets that are *different*.
+O sistema de herança de template do Django soluciona esse problema. Você pode
+imaginar isso como sendo uma versão "inside-out" do server-side includes. Ao
+invés de definir os trechos que são *comuns*, você define os trechos que
+são *diferentes*.
 
-The first step is to define a *base template* -- a skeleton of your page that
-*child templates* will later fill in. Here's a base template for our ongoing
-example::
+O primeiro passo é definir um *template base* -- um esqueleto de sua página
+que *templates filhos* irão mais tarde preencher. Aqui está um template base
+para o nosso exemplo em curso::
 
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
     <html lang="en">
@@ -1478,18 +1502,27 @@ example::
     </body>
     </html>
 
-This template, which we'll call ``base.html``, defines a simple HTML skeleton
-document that we'll use for all the pages on the site. It's the job of child
-templates to override, or add to, or leave alone the contents of the blocks.
-(If you're following along, save this file to your template directory as
-``base.html``.)
+Esse template, que vamos chamar de ``base.html``, define um simples esqueleto
+HTML, que usaremos para todas as páginas do site. É o trabalho de templates
+filhos para substituir, adicionar ou isolar o conteúdo dos blocos
+(Se estiver acompanhando, salve esse arquivo em seu diretório de templates
+como ``base.html``). // Revisar
 
-We're using a template tag here that you haven't seen before: the
-``{% block %}`` tag. All the ``{% block %}`` tags do is tell the template
-engine that a child template may override those portions of the template.
+Estamos usando uma template tag aqui que você não viu anteriormente: a
+<<<<<<< HEAD
+tag ``{% block %}``. O que todas as tags ``{% block %}`` fazem é falar ao
+template engine que um template filho deve pode ser substituido naquelas
+partes do template.
 
-Now that we have this base template, we can modify our existing
-``current_datetime.html`` template to use it::
+Agora que temos este template base, podemos modificar o nosso template
+=======
+tag ``{% block %}``. O que todas as tags ``{% block %}`` fazem é falar ao 
+template engine que um template filho deve pode ser substituido naquelas 
+partes do template.
+
+Agora que temos este template base, podemos modificar o nosso template 
+>>>>>>> 2a97a21339ce4f1622d636cbbf25323bc602da93
+existente ``current_datetime.html`` para usá-lo::
 
     {% extends "base.html" %}
 
@@ -1499,10 +1532,10 @@ Now that we have this base template, we can modify our existing
     <p>It is now {{ current_date }}.</p>
     {% endblock %}
 
-While we're at it, let's create a template for the ``hours_ahead`` view from
-Chapter 3. (If you're following along with code, we'll leave it up to you to
-change ``hours_ahead`` to use the template system instead of hard-coded HTML.)
-Here's what that could look like::
+Já que estamos no assunto, vamos criar um template para a view ``hours_ahead`` 
+do Capítulo 3 (Se você está acompanhando com código, vamos deixar para que 
+você altere ``hours_ahead`` para usar o sistema de template, ao invés de código 
+fixo em HTML). Aqui está como deve se parecer::
 
     {% extends "base.html" %}
 
@@ -1512,92 +1545,93 @@ Here's what that could look like::
     <p>In {{ hour_offset }} hour(s), it will be {{ next_time }}.</p>
     {% endblock %}
 
-Isn't this beautiful? Each template contains only the code that's *unique* to
-that template. No redundancy needed. If you need to make a site-wide design
-change, just make the change to ``base.html``, and all of the other templates
-will immediately reflect the change.
+Não é lindo? Cada template contém apenas o código que é *unico* para o 
+template. Sem necessidade de redundância. Se você precisa fazer um site ter o 
+design modificado, apenas faça a alteração em ``base.html``, e todos os outros 
+templates imediatamente terão a modificação refletida.
 
-Here's how it works. When you load the template ``current_datetime.html``,
-the template engine sees the ``{% extends %}`` tag, noting that
-this template is a child template. The engine immediately loads the
-parent template -- in this case, ``base.html``.
+Aqui está como isso funciona. Quando você carrega o template 
+``current_datetime.html``, o mecanismo de template reconhece a tag 
+``{% extends %}``, lembrando que esse template é um template filho. O mecanismo 
+carrega imediatamente o template pai, neste caso, ``base.html``.
 
-At that point, the template engine notices the three ``{% block %}`` tags
-in ``base.html`` and replaces those blocks with the contents of the child
-template. So, the title we've defined in ``{% block title %}`` will be
-used, as will the ``{% block content %}``.
+Nesse ponto, o mecanismo de template reconhece as três tags ``{% block %}`` 
+no ``base.html`` e substitui esses blocos com o conteúdo do template 
+filho. Assim, o título que havíamos definido em ``{% block title %}`` 
+será usado, assim como ``{% block content %}``.
 
-Note that since the child template doesn't define the ``footer`` block,
-the template system uses the value from the parent template instead.
-Content within a ``{% block %}`` tag in a parent template is always
-used as a fallback.
+Perceba, desde que o template filho não defina o bloco ``footer``, o 
+sistema de template usa em seu lugar o valor vindo do template pai. 
+Conteúdo dentro de uma tag ``{% block %}`` em um template pai é sempre 
+usado como um retorno.
 
-Inheritance doesn't affect the template context. In other words, any template
-in the inheritance tree will have access to every one of your template
-variables from the context.
+Herança não afeta o contexto do template. Em outras palavras, qualquer template 
+na árvore de herança devera ter acesso a cada uma de suas variáveis de 
+templates a partir do contexto.
 
-You can use as many levels of inheritance as needed. One common way of using
-inheritance is the following three-level approach:
+Você pode usar muitos níveis de herança, como julgar necessário. Uma maneira comum 
+de usar herança é a abordagem em três níveis descrito a baixo:
 
-1. Create a ``base.html`` template that holds the main look and feel of
-   your site. This is the stuff that rarely, if ever, changes.
+1. Crie um template ``base.html`` que mantenha a aparência principal do 
+seu site. Esse é o material que raramente ou nunca muda.
 
-2. Create a ``base_SECTION.html`` template for each "section" of your site
-   (e.g., ``base_photos.html`` and ``base_forum.html``). These templates
-   extend ``base.html`` and include section-specific styles/design.
+2. Crie um template ``base_SECTION.html`` para cada "section" do seu site 
+(ex.: ``base_photos.html`` e ``base_forum.html``). Esses templates extendem 
+`base.html`` e incluem sessões especificas de estilo e design.
 
-3. Create individual templates for each type of page, such as a forum page
-   or a photo gallery. These templates extend the appropriate section
-   template.
+3. Crie templates individuais para cada tipo de página, como uma página de 
+forum ou uma galeria de fotos. Esses templates extendem na sessão apropriada
+do template.
 
-This approach maximizes code reuse and makes it easy to add items to shared
-areas, such as section-wide navigation.
+Essa abordagem maximiza a reutilização de código e facilita a adição de itens 
+para áreas compartilhadas, como a seção de navegação.
 
-Here are some guidelines for working with template inheritance:
+Aqui estão algumas orientações para trabalhar com a herança de template:
 
-* If you use ``{% extends %}`` in a template, it must be the first
-  template tag in that template. Otherwise, template inheritance won't
-  work.
+* Se você usar ``{% extends %}`` em um template, ele deve ser a primeira 
+  template tag nesse template. Caso contrário, a herança de template não 
+  funionará.
 
-* Generally, the more ``{% block %}`` tags in your base templates, the
-  better. Remember, child templates don't have to define all parent blocks,
-  so you can fill in reasonable defaults in a number of blocks, and then
-  define only the ones you need in the child templates. It's better to have
-  more hooks than fewer hooks.
+* Geralmente, quanto mais tags ``{% block %}`` em seu template base, 
+  melhor. Lembre, templates filhos não precisam definir todos os blocs 
+  do pai, dessa forma você pode preencher com padrôes razoáveis em um 
+  número de blocos e então definir somente aqueles que você precisa nos 
+  templates filhos. É melhor ter mais ganchos do que menos.
 
-* If you find yourself duplicating code in a number of templates, it
-  probably means you should move that code to a ``{% block %}`` in a
-  parent template.
+* Se você se encontrar duplicando código em números templates, isso  
+  provávelmente significa que você deve mover esse código para um 
+  ``{% block %}`` em um template pai.
 
-* If you need to get the content of the block from the parent template,
-  use ``{{ block.super }}``, which is a "magic" variable providing the
-  rendered text of the parent template. This is useful if you want to add
-  to the contents of a parent block instead of completely overriding it.
+* Se você precisa pegar o conteúdo do bloco apartir do template pai, 
+  use ``{{ block.super }}``, que é uma variável "mágica" capaz de prover 
+  o texto renderizado no template pai. Isto é útil se você deseja adicionar 
+  ao conteúdo de um bloco pai, ao invés de sobescrevê-lo completamente.
+  
+* Você não pode definir várias tags ``{% block %}`` com o mesmo nome no 
+  mesmo template. Essa limitação existe porque uma tag block funciona em 
+  "várias" direções. Isto é, uma tag block não apenas disponibiliza um 
+  furo a ser preenchido, também define o conteúdo que enche o furo no 
+  *template pai*. Se houvesse dois nomes similares de tags ``{% block %}`` 
+  em um template, o template pai não saberia qual desses blocos de conteúdo 
+  usar.
+  
+* O nome do template que você passa para ``{% extends %}`` é carregado 
+  usando o mesmo método que ``get_template()`` usa. Isto é, o nome do template 
+  é anexado à sua configuração ``TEMPLATE_DIRS``. 
 
-* You may not define multiple ``{% block %}`` tags with the same name in
-  the same template. This limitation exists because a block tag works in
-  "both" directions. That is, a block tag doesn't just provide a hole to
-  fill, it also defines the content that fills the hole in the *parent*.
-  If there were two similarly named ``{% block %}`` tags in a template,
-  that template's parent wouldn't know which one of the blocks' content to
-  use.
+* Na maioria dos casos, o argumento para ``{% extends %}`` será uma string, 
+  mas também pode ser uma variável, se você desconhecer o nome do template 
+  pai antes da execução. Isso permite que você faça algo legal e dinâmico.
 
-* The template name you pass to ``{% extends %}`` is loaded using the same
-  method that ``get_template()`` uses. That is, the template name is
-  appended to your ``TEMPLATE_DIRS`` setting.
+O que vem depois?
+=================
 
-* In most cases, the argument to ``{% extends %}`` will be a string, but it
-  can also be a variable, if you don't know the name of the parent template
-  until runtime. This lets you do some cool, dynamic stuff.
+Agora você tem as noções básicas do sistema de template do Django. O que vem depois?
 
-What's next?
-============
+Muito dos Web sites modernos são *database-driven*: o conteúdo do web site é 
+armazenado em uma base de dados relacional. Isso permite um clara separação 
+dos dados e da lógica (Da mesma forma que, visão e templates permitem a separação 
+entre lógica e exibição).
 
-You now have the basics of Django's template system under your belt. What's next?
-
-Many modern Web sites are *database-driven*: the content of the Web site is
-stored in a relational database. This allows a clean separation of data and logic
-(in the same way views and templates allow the separation of logic and display.)
-
-The :doc:`next chapter <chapter05>` covers the tools Django gives you to
-interact with a database.
+O :doc:`next chapter <chapter05>` abrange as feramentas disponibilizadas pelo 
+Django para interagir com o banco de dados.

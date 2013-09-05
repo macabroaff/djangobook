@@ -1,23 +1,23 @@
-=================
-Chapter 5: Models
-=================
+===================
+Capítulo 5: Modelos
+===================
 
-In Chapter 3, we covered the fundamentals of building dynamic Web sites
-with Django: setting up views and URLconfs. As we explained, a view is
-responsible for doing *some arbitrary logic*, and then returning a response. In
-one of the examples, our arbitrary logic was to calculate the current date and
-time.
+No capítulo 3, cobrimos os fundamentos para construir web sites dinâmicos 
+com Django: criando views e URLconfs. Como vimos, uma view é responsável
+por fazer *alguma lógica arbitrária*, e então retornar uma resposta. Em um  
+desses exemplos, nóssa lógica arbitrária era calcular a data e hora atual.
 
-In modern Web applications, the arbitrary logic often involves interacting
-with a database. Behind the scenes, a *database-driven Web site* connects to
-a database server, retrieves some data out of it, and displays that data on a
-Web page. The site might also provide ways for site visitors to populate the
-database on their own.
+Em aplicações web modernas, a lógica arbitrária geralmente envolve interação 
+com uma base de dados. Por trás das cenas,  um *web site guiado a dados* conecta a 
+um servidor de banco de dados, recupera algum dado de fora e exibe esse dado 
+em uma página web. O web site também pode fornecer formas para que os próprios 
+visitantes populem a base de dados.
 
-Many complex Web sites provide some combination of the two. Amazon.com, for
-instance, is a great example of a database-driven site. Each product page is
-essentially a query into Amazon's product database formatted as HTML, and when
-you post a customer review, it gets inserted into the database of reviews.
+Muitos web sites complexos fornecem alguma combinação dos dois. Amazon.com, por 
+exemplo, é um grande exemplo de um site dirigido a base de dados. Cada página 
+de produtos é essencialmente uma query na base de dados de produtos da Amazon 
+formatada em HTML e quando você posta um comentário como cliente, ele é inserido 
+no banco de dados de comentários.
 
 Django is well suited for making database-driven Web sites, because it comes
 with easy yet powerful tools for performing database queries using Python. This

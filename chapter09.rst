@@ -1,6 +1,6 @@
-=============================
-Chapter 9: Advanced Templates
-=============================
+===============================
+Cápitulo 9: Templates Avançados
+===============================
 
 Although most of your interactions with Django's template language will be in
 the role of template author, you may want to customize and extend the template
@@ -21,11 +21,10 @@ chapter.
 Template Language Review
 ========================
 
-First, let's quickly review a number of terms introduced in Chapter 4:
+Primeiramente, vamos revisar um número de termos que nos foram introduzidos no Capítulo 4:
 
-* A *template* is a text document, or a normal Python string, that is
-  marked up using the Django template language. A template can contain
-  template tags and variables.
+* Um *template* é um documento de texto, ou uma string normal de Python, na qual é marcada
+usando a linguagem de template do Django. Um template pode conter tags de tamplate e variáveis.
 
 * A *template tag* is a symbol within a template that does something. This
   definition is deliberately vague. For example, a template tag can produce
@@ -67,7 +66,7 @@ When rendering a template, you need a context. This can be an instance of
 ``django.template.RequestContext``, that acts slightly differently.
 ``RequestContext`` adds a bunch of variables to your template context by
 default -- things like the ``HttpRequest`` object or information about the
-currently logged-in user. The ``render()`` shortcut creates a ``RequestContext`` 
+currently logged-in user. The ``render()`` shortcut creates a ``RequestContext``
 unless it is passed a different context instance explicitly.
 
 

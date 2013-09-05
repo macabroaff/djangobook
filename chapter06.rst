@@ -210,29 +210,29 @@ você verá estes erros quando for tentar salvar, conforme mostra a Figura 6-5.
 
 .. DWP As screenshots ainda acompanham o exemplo de um livro.
 
-When you edit an existing object, you'll notice a History link in the
-upper-right corner of the window. Every change made through the admin interface
-is logged, and you can examine this log by clicking the History link (see
-Figure 6-6).
+Quando você edita um objeto existente, você irá perceber um link de Histórico
+no canto superior direito da janela. Qualquer alteração feita através da interface
+admin é registrada e você pode examinar esse registro clicando no link Histórico
+(ver Figura 6-6)
 
-.. figure:: graphics/chapter06/user_history.png
-   :alt: Screenshot of an object history page.
+.. figura:: graphics/chapter06/user_history.png
+   :alt: Screenshot da página de histórico de um objeto.
 
-   Figure 6-6. An object history page
+   Figura 6-6. Uma página de histórico de um objeto
 
-.. DWP Still using a book in the pictures.
+.. DWP Ainda usando um livro nas figuras.
 
-Adding Your Models to the Admin Site
-====================================
+Adicionando Seus Modelos ao Site Admin
+======================================
 
-There's one crucial part we haven't done yet. Let's add our own models to the
-admin site, so we can add, change and delete objects in our custom database
-tables using this nice interface. We'll continue the ``books`` example from
-Chapter 5, where we defined three models: ``Publisher``, ``Author`` and
-``Book``.
+Há uma parte crucial que ainda não vimos. Vamos adicionar nossos próprios modelos
+ao site admin, para que possamos adicionar, alterar e deletar objetos nas tabelas
+de nossa base de dados customizada usando esta bela interface. Iremos continuar
+com o exemplo ``books`` do Capítulo 5, onde nós definimos três modelos: ``Publisher``, 
+``Author`` e ``Book``.
 
-Within the ``books`` directory (``mysite/books``), create a file called
-``admin.py``, and type in the following lines of code::
+Dentro do diretório ``books`` (``mysite/books``), crie um arquivo chamado
+``admin.py``, e  digite as seguintes linhas de código::
 
     from django.contrib import admin
     from mysite.books.models import Publisher, Author, Book
@@ -241,27 +241,27 @@ Within the ``books`` directory (``mysite/books``), create a file called
     admin.site.register(Author)
     admin.site.register(Book)
 
-This code tells the Django admin site to offer an interface for each of these
-models.
+Este código dirá ao admin site do Django para oferecer uma interface para cada um
+desses modelos.
 
-Once you've done this, go to your admin home page in your Web browser
-(``http://127.0.0.1:8000/admin/``), and you should see a "Books" section with
-links for Authors, Books and Publishers. (You might have to stop and start the
-``runserver`` for the changes to take effect.)
+Feito isso, vá para a home page admin no seu Web browser
+(``http://127.0.0.1:8000/admin/``), e  você deverá ver uma seção "Books" com links
+para Authors, Books e Publishers. (Talvez seja necessário parar e reiniciar o
+``runserver`` para que as mudanças surtam efeito.)
 
 .. SL Tested ok
 
-You now have a fully functional admin interface for each of those three models.
-That was easy!
+Agora você tem uma interface admin inteiramente funcional para cada um dos três
+modelos.Foi bem fácil!
 
-Take some time to add and change records, to populate your database with some
-data. If you followed Chapter 5's examples of creating ``Publisher`` objects
-(and you didn't delete them), you'll already see those records on the publisher
-change list page.
+Fique à vontade para adicionar e alterar registros, popular sua base de dados
+com dados. Se você seguiu os exemplos de criar objetos ``Publisher`` no Capítulo 5
+(e desde que não tenha deletado-os), você verá esses registros na página publisher
+de alterações.
 
-One feature worth mentioning here is the admin site's handling of foreign keys
-and many-to-many relationships, both of which appear in the ``Book`` model. As
-a reminder, here's what the ``Book`` model looks like::
+Uma característica digna de ser mencionada é a capacidade do site admin de manusear
+chavers estrangeiras e relações muitos-para-muitos, ambas as quais aparecem no modelo
+``Book``. Como lembrete, aqui segue como o modelo ``Book`` se parece:
 
     class Book(models.Model):
         title = models.CharField(max_length=100)
@@ -272,20 +272,20 @@ a reminder, here's what the ``Book`` model looks like::
         def __unicode__(self):
             return self.title
 
-On the Django admin site's "Add book" page
-(``http://127.0.0.1:8000/admin/books/book/add/``), the publisher (a
-``ForeignKey``) is represented by a select box, and the authors field
-(a ``ManyToManyField``) is represented by a multiple-select box. Both fields
-sit next to a green plus sign icon that lets you add related records of that
-type. For example, if you click the green plus sign next to the "Publisher"
-field, you'll get a pop-up window that lets you add a publisher. After you
-successfully create the publisher in the pop-up, the "Add book" form will be
-updated with the newly created publisher. Slick.
+Na página "Add book" do site admin do Django
+(``http://127.0.0.1:8000/admin/books/book/add/``), o publisher (uma
+``ForeignKey``) é representada por uma caixa de seleção, e o campo authors 
+(um ``ManyToManyField``) é representado por uma caixa de seleção múltipla. 
+Ambos os campos ficam perto de um sinal de mais verde que permite a você adicionar
+registros relacionados daquele tipo. Por exemplo, se você clicar no sinal de mais
+próximo do campo "Publisher", aparecerá uma janela pop-up que permite adicionar um
+publisher. Depois de criar o publisher na janela pop-up, o formulário "Add book" será
+atualizado com o recém-criado publisher. Moleza.
 
-How the Admin Site Works
-========================
+Como o Site Admin Funciona
+==========================
 
-Behind the scenes, how does the admin site work? It's pretty straightforward.
+Como o site admin funciona? É bastante simples e direto.
 
 When Django loads your URLconf from ``urls.py`` at server startup, it executes
 the ``admin.autodiscover()`` statement that we added as part of activating the

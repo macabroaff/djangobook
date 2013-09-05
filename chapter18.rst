@@ -83,137 +83,129 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    aplicação adicionar *novos* registros a estas tabelas.
    
 
-3. Cada tipo de (por exemplo, `` CharField ``, `` DateField ``) é determinada 
-   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR``, ``DATE``). Se
-   ``inspectdb`` não puder maperar o tipo da coluna para o um tipo de campo no modelo, então será usado
-   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` next to the field in the generated
-   model. Keep an eye out for that, and change the field type accordingly
-   if needed.
+3. Cada tipo (por exemplo, ``CharField`` , ``DateField`` ) é determinado 
+   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR`` , ``DATE`` ). Se o
+   ``inspectdb`` não puder mapear o tipo da coluna para um tipo de campo no modelo, então será usado
+   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` ,próximo ao campo do modelo gerado.
+   . Fique atento a isso e mude o campo de acordo com suas necessidades.
 
-   If a field in your database has no good Django equivalent, you can
-   safely leave it off. The Django model layer is not required to include
-   every field in your table(s).
+   Se o campo no seu banco de dados não tiver nenhum equivalente no Django
+   você pode deixa-lo desabilitado. Não é obrigatório incluir todos os campos da sua tabela
+   na camada do modelo do Django.
 
-4. If a database column name is a Python reserved word (such as ``pass``,
-   ``class``, or ``for``), ``inspectdb`` will append ``'_field'`` to the
-   attribute name and set the ``db_column`` attribute to the real field
-   name (e.g., ``pass``, ``class``, or ``for``).
+4. Se o nome da coluna no banco de dados é uma palavra reservada em Python (como ``pass``,
+   ``class``, ou ``for``), o ``inspectdb`` irá inserir ``'_field'`` ao nome do atributo e irá colocar
+   ``db_coluna`` no nome do campo (por exemplo, ``pass``, ``class``, or ``for``).
 
-   For example, if a table has an ``INT`` column called ``for``, the generated
-   model will have a field like this::
+   Por exemplo, se a tabela tem uma coluna chamada do tipo ``INT`` chamada ``for``,o modelo gerado terá um
+   campo desta maneira::
 
        for_field = models.IntegerField(db_column='for')
 
-   ``inspectdb`` will insert the Python comment
-   ``'Field renamed because it was a Python reserved word.'`` next to the
-   field.
+   ``inspectdb`` irá inserir um comentário em Python
+   ``'Campo renomeado pois essa é uma palavra reservada em Python.'`` próximo ao campo.
 
-5. If your database contains tables that refer to other tables (as most
-   databases do), you might need to rearrange the order of the generated
-   models so that models that refer to other models are ordered properly.
-   For example, if model ``Book`` has a ``ForeignKey`` to model ``Author``,
-   model ``Author`` should be defined before model ``Book``.  If you need
-   to create a relationship on a model that has not yet been defined, you
-   can use a string containing the name of the model, rather than the model
-   object itself.
+5. Se o banco de dados tiver tabelas que referenciam outras tabelas (como a maioria
+   dos banco de dados fazem), talvez seja necessário reorganizar a ordem dos modelos gerados,
+   de modo que os modelos que remetem a outros modelos sejam ordenados corretamente.
+   Por exemplo, se o modelo ``Book`` tem uma ``ForeignKey`` para o modelo ``Author``, o
+   modelo ``Author`` deve ser definido antes do modelo ``Book``. Se você precisa 
+   criar um relacionamento em um modelo que ainda não foi definido, você pode usar um texto contendo 
+   o nome do modelo ao invés do objeto modelo propriamente dito.
 
-6. ``inspectdb`` detects primary keys for PostgreSQL, MySQL, and SQLite.
-   That is, it inserts ``primary_key=True`` where appropriate. For other
-   databases, you'll need to insert ``primary_key=True`` for at least one
-   field in each model, because Django models are required to have a
-   ``primary_key=True`` field.
+6. ``inspectdb`` detecta as chaves primárias do PostgreSQL, MySQL, and SQLite.
+   Ou seja, ele insere ``primary_key=True`` onde é apropriado. Para os outros banco de dados
+   ,você precisa inserir ``primary_key=True`` para pelo menos um campo em cada modelo
+   , porque no modelo do Django são obrigatório ter campos ``primary_key=True``.
 
-7. Foreign-key detection only works with PostgreSQL and with certain types
-   of MySQL tables. In other cases, foreign-key fields will be generated as
-   ``IntegerField``s, assuming the foreign-key column was an ``INT``
-   column.
+7. Detecção de chave estrangeira "Foreign-key" só funciona com o PostgreSQL e com certos tipos de tabelas do MySQL.
+   Em outros casos, a chave estrangeira será gerada como ``IntegerField``s, assumindo a coluna da chave estrangeira como uma coluna ``INT``.
 
-Integrating with an Authentication System
+Integrando com Sistema de Auteticação
 =========================================
 
-It's possible to integrate Django with an existing authentication system --
-another source of usernames and passwords or authentication methods.
+É possível integrar o Django com um sistema de autenticação existente --
+outros reposiórios de usuarios e senhas ou métodos de autenticação.
 
-For example, your company may already have an LDAP setup that stores a username
-and password for every employee. It would be a hassle for both the network
-administrator and the users themselves if users had separate accounts in LDAP
-and the Django-based applications.
+Por exemplo, sua compania pode ter uma instalação LDAP que armazena o usuário
+e a senha para cada empregado. Isto pode ser um aborrecimento tanto para o administrador de 
+rede e para os usuários, se os mesmes tiverem contas separadas no LDAP
+e na aplicação do Django.
 
-To handle situations like this, the Django authentication system lets you
-plug in other authentication sources. You can override Django's default
-database-based scheme, or you can use the default system in tandem with other
-systems.
+Para lidar com situações como esta, o sistema de autenticação do Django permite que você 
+se conecte a outros repositórios de autenticação. Você pode substituir o banco de dados de autenticação
+padrão do Django, ou você pode usar o sistema padrão em conjunto com outros sistemas.
 
-Specifying Authentication Backends
+Especificando backends de autenticação
 ----------------------------------
 
-Behind the scenes, Django maintains a list of "authentication backends" that it
-checks for authentication. When somebody calls
-``django.contrib.auth.authenticate()`` (as described in Chapter 14), Django
-tries authenticating across all of its authentication backends. If the first
-authentication method fails, Django tries the second one, and so on, until all
-backends have been attempted.
+Por trás dos panos, o Django mantém uma lista de "backends de autenticação" que checa
+a autenticação. Quando alguém chama
+``django.contrib.auth.authenticate()`` (como descrito no capítulo 14), o Django
+tenta se autenticar através de todas as backends de autenticação. Se o primeiro 
+método de autenticação falhar, o Django tenta o segundo, e assim por diante, até todos os 
+backends terem sidos testados.
 
-The list of authentication backends to use is specified in the
-``AUTHENTICATION_BACKENDS`` setting. This should be a tuple of Python path
-names that point to Python classes that know how to authenticate. These classes
-can be anywhere on your Python path.
+A lista de backends de autenticação a ser usada é especificada nas configuração 
+``AUTHENTICATION_BACKENDS``. Esta deve ser uma tupla de Python path,
+nomes que apontam para classes Python que sabem como autenticar. Essas classes
+pode estar em qualquer lugar em seu Python path.
 
-By default, ``AUTHENTICATION_BACKENDS`` is set to the following::
+Por padrão , ``AUTHENTICATION_BACKENDS`` é está definido desta maneira:
 
     ('django.contrib.auth.backends.ModelBackend',)
 
-That's the basic authentication scheme that checks the Django users database.
+Esse é o esquema de autenticação básica que verifica o banco de dados de usuários do Django..
 
-The order of ``AUTHENTICATION_BACKENDS`` matters, so if the same username and
-password are valid in multiple backends, Django will stop processing at the
-first positive match.
+A ordem do ``AUTHENTICATION_BACKENDS`` importa , portanto se o mesmo usuário e
+senha é válido em diversos backends, Django irá parar de processar no primeiro caso onde coincidir 
+o usuário e senha.
 
-Writing an Authentication Backend
+Escrevendo um Backend de Autenticação
 ---------------------------------
 
-An authentication backend is a class that implements two methods:
-``get_user(id)`` and ``authenticate(**credentials)``.
+Um backend de autenticação é uma classe que implementa dois métodos:
+``get_user(id)`` e ``authenticate(**credentials)``.
 
-The ``get_user`` method takes an ``id`` -- which could be a username, database
-ID, or whatever -- and returns a ``User`` object.
+O método``get_user`` pega um ``id`` -- que pode ser um usuário, banco de dados
+ID, ou o que quer que seja -- e retorna um objeto ``User``.
 
-The  ``authenticate`` method takes credentials as keyword arguments. Most of
-the time it looks like this::
+O método ``authenticate`` pega credenciais como argumentos. Na maioria das vezes
+será assim::
 
     class MyBackend(object):
         def authenticate(self, username=None, password=None):
-            # Check the username/password and return a User.
+            # Checa o usuário/senha e retorna um User.
 
-But it could also authenticate a token, like so::
+Mas também pode autenticar um token, tipo::
 
     class MyBackend(object):
         def authenticate(self, token=None):
-            # Check the token and return a User.
+            # Checa o token e retorna um User.
 
-Either way, ``authenticate`` should check the credentials it gets, and it
-should return a ``User`` object that matches those credentials, if the
-credentials are valid. If they're not valid, it should return ``None``.
+De qualquer maneira, ``authenticate`` deve verificar as credenciais que receber, e que
+deve retornar um object ``User`` que coincide com essas credenciais, se as
+credenciais são válidas. Se elas não forem válidas , devem retornar ``None``.
 
-The Django admin system is tightly coupled to Django's own database-backed
-``User`` object described in Chapter 14. The best way to deal with this is to
-create a Django ``User`` object for each user that exists for your backend
-(e.g., in your LDAP directory, your external SQL database, etc.). Either you can
-write a script to do this in advance or your ``authenticate`` method can do it
-the first time a user logs in.
+O sistema de administração do Django está intimamente ligado ao próprio banco de dados do Django-backend
+o obejeto ``User`` descrito no capítulo 14. A melhor maneira de lidar com isso é 
+criar um objeto Django ``User`` para cada usuário que existe no backend
+(por exemplo, em seu diretório LDAP, seu banco de dados SQL externo, etc). Ou você pode
+escrever um script para fazer isso com antecedência ou o seu método ``authenticate`` pode fazer isso
+a primeira vez que o susário logar no sistema.
 
-Here's an example backend that authenticates against a username and password
-variable defined in your ``settings.py`` file and creates a Django ``User``
-object the first time a user authenticates::
+Aqui está um exemplo do backend que autentica uma variável de um nome de usuário e senha
+definida no arquivo ``settings.py`` e cria um objeto ``User`` do Django
+na primeira vez que um usuário se autentica::
 
     from django.conf import settings
     from django.contrib.auth.models import User, check_password
 
     class SettingsBackend(object):
         """
-        Authenticate against the settings ADMIN_LOGIN and ADMIN_PASSWORD.
+        Autenticar nas configurações admin_login e admin_password.
 
-        Use the login name, and a hash of the password. For example:
+         Usar o nome de login, e um hash da senha. por exemplo:
 
         ADMIN_LOGIN = 'admin'
         ADMIN_PASSWORD = 'sha1$4e987$afbcf42e21bd417fb71db8c66b321e9fc33051de'
@@ -241,21 +233,21 @@ object the first time a user authenticates::
             except User.DoesNotExist:
                 return None
 
-For more on authentication backends, see the official Django documentation.
+Para saber mais sobre backends de autenticação, consulte a documentação oficial do Django..
 
-Integrating with Legacy Web Applications
+Integrando com Aplicações Web Legadas
 ========================================
 
-It's possible to run a Django application on the same Web server as an
-application powered by another technology. The most straightforward way of
-doing this is to use Apache's configuration file, ``httpd.conf``, to delegate
-different URL patterns to different technologies. (Note that Chapter 12 covers
-Django deployment on Apache/mod_python, so it might be worth reading that
-chapter first before attempting this integration.)
+É possivel rodar uma aplicação do Django no mesmo servidor Web com uma
+aplicação servida por outra tecnologia. A maneira mais simples de
+fazer isso é usar o arquivo de configuração do Apache, ``httpd.conf``, para delegar 
+diferentes padrões de URL para diferentes tecnologias. (Note-se que o Capítulo 12 cobre
+a implantação do Django no Apache / mod_python, então pode valer a pena a leitura desse
+primeiro capítulo antes de tentar essa integração.)
 
-The key is that Django will be activated for a particular URL pattern only if
-your ``httpd.conf`` file says so. The default deployment explained in Chapter
-12 assumes you want Django to power every page on a particular domain::
+O principal é que o Django irá ser ativado por um padrão de URL em partiular somente se
+o seu `` httpd.conf `` disser isso. A implantação padrão explicado no Capítulo
+12 assume que você deseja que o Django sirva cada página em um determinado domínio ::
 
     <Location "/">
         SetHandler python-program
@@ -264,14 +256,14 @@ your ``httpd.conf`` file says so. The default deployment explained in Chapter
         PythonDebug On
     </Location>
 
-Here, the ``<Location "/">`` line means "handle every URL, starting at the
-root," with Django.
+Aqui , a linha  ``<Location "/">`` quer dizer "lidar com cada URL, a partir da
+raiz ", com o Django.
 
-It's perfectly fine to limit this ``<Location>`` directive to a certain
-directory tree. For example, say you have a legacy PHP application that powers
-most pages on a domain and you want to install a Django admin site at
-``/admin/`` without disrupting the PHP code. To do this, just set the
-``<Location>`` directive to ``/admin/``::
+É perfeitamente possível limitar essa diretiva ``<Location>`` para uma certa 
+árvore de diretórios. Por exemplo, digamos que você tem uma aplicação legada em PHP que serve 
+a maioria das páginas em um domínio e você quer instalar o site administrativo do Djangoem em 
+``/admin/`` sem quebrar o codigo do PHP. Para fazer isso , apenas configurea diretiva
+``<Location>`` para ``/admin/``::
 
     <Location "/admin/">
         SetHandler python-program
@@ -280,23 +272,22 @@ most pages on a domain and you want to install a Django admin site at
         PythonDebug On
     </Location>
 
-With this in place, only the URLs that start with ``/admin/`` will activate
-Django. Any other page will use whatever infrastructure already existed.
+Com isso no lugar, apenas as URLs que começam com `` admin / / `` serão ativadas no
+Django. Qualquer outra página irá utilizar qualquer infra-estrutura já existente.
 
-Note that attaching Django to a qualified URL (such as ``/admin/`` in this
-section's example) does not affect the Django URL parsing. Django works with the
-absolute URL (e.g., ``/admin/people/person/add/``), not a "stripped" version of
-the URL (e.g., ``/people/person/add/``). This means that your root URLconf
-should include the leading ``/admin/``.
 
-What's Next?
+Note que anexar uma URL válida (como ``/admin/`` nesta seção de exemplo)
+não afeta a análise da URL do Django. Django trabalha com as 
+URL absoluta (por exemplo., ``/admin/people/person/add/``), e não uma versão "enxuta" da
+URL (por exemplo, ``/people/person/add/``). Isso quer dizer que a raiz do URLconf
+deve incluir o principal ``/admin/``.
+
+Qual é o próximo?
 ============
 
-If you're a native English speaker, you might not have noticed one of the
-coolest features of Django's admin site: it's available in more than 50
-different languages! This is made possible by Django's internationalization
-framework (and the hard work of Django's volunteer translators). The
-`next chapter`_ explains how to use this framework to provide localized Django
-sites.
+Se você é nativo em Inglês, você pode não ter notado um dos
+características mais legais do site de administração do Django: Está disponível em mais de 50
+línguas diferentes! Isso é possível graças a internacionalização do Django 
+framework (e do trabalho duro dos tradutores voluntários do Django). O próximo capítulo
+explica como usar essa estrutura para fornecer sites com Django na língua local.
 
-.. _next chapter: ../chapter19/
