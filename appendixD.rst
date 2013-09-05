@@ -721,18 +721,14 @@ USE_ETAGS
 
 *Valor padrão*: ``False``
 
-This Boolean specifies whether to output the ETag header. It saves
-bandwidth but slows down performance. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
+Esse valor Boolean especifíca se é para imprimir o cabeçalho ETag. Economiza largura de banda, mas diminui a performance. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
 
 USE_I18N
 --------
 
 *Valor padrão*: ``True``
 
-This Boolean specifies whether Django's internationalization system (see
-Chapter 19) should be enabled. It provides an easy way to turn off internationalization, for
-performance. If this is set to ``False``, Django will make some optimizations so
-as not to load the internationalization machinery.
+Esse valor Boolean especifica se o sistema de internacionalização do Django (ver Capítulo 19) deve ser habilitado. Fornece uma forma fácil de desligar a internacionalização, para performance. Se isso estiver definido como ``False``, o Django irá fazer algumas otimizações, tal como não carregar os mecanismos de internacionalização.
 
 YEAR_MONTH_FORMAT
 -----------------
