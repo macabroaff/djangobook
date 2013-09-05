@@ -735,15 +735,9 @@ YEAR_MONTH_FORMAT
 
 *Valor padrão*: ``'F Y'``
 
-This is the default formatting to use for date fields on Django admin change-list pages
--- and, possibly, by other parts of the system -- in cases when only the year
-and month are displayed. It accepts the same format as the ``now`` tag (see
-Appendix E).
+Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema -- em casos quando somente o ano e o mês são mostrados. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E).
 
-For example, when a Django admin change-list page is being filtered by a date
-drill-down, the header for a given month displays the month and the year.
-Different locales have different formats. For example, U.S. English would use
-"January 2006," whereas another locale might use "2006/January."
+Por exemplo, quando uma change-list no Django admin está filtrando por data, o cabeçalho para um determinado mês mostra o mês e o ano; Diferentes localidades têm diferentes formatos. Por exemplo, em U.S. English seria "January 2006," onde em outras localidades poderia ser "2006/January."
 
-Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, e
 ``MONTH_DAY_FORMAT``.
