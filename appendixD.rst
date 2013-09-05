@@ -714,8 +714,7 @@ URL_VALIDATOR_USER_AGENT
 
 *Valor padrão*: ``Django/<version> (http://www.djangoproject.com/)``
 
-This is the string to use as the ``User-Agent`` header when checking to see if URLs
-exist (see the ``verify_exists`` option on ``URLField``; see Appendix A).
+Essa é a string para ser usada como cabeçalho ``User-Agent``, quando estiver checando para ver se as URLs existem (ver a opção ``verify_exists`` em ``URLField``; veja o Apêndice A).
 
 USE_ETAGS
 ---------
