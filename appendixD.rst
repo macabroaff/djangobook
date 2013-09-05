@@ -676,19 +676,14 @@ TEST_RUNNER
 
 *Valor padrão*: ``'django.test.simple.run_tests'``
 
-This is the name of the method to use for starting the test suite. It is used by Django's
-testing framework, which is covered online at
-http://docs.djangoproject.com/en/dev/topics/testing/.
+Esse é o nome do método que será usado para iniciar o suíte de testes. É usado pelo framework de testes do Django, que está documentado em http://docs.djangoproject.com/en/dev/topics/testing/.
 
 TEST_DATABASE_NAME
 ------------------
 
 *Valor padrão*: ``None``
 
-This is the name of database to use when running the test suite. If a value of ``None``
-is specified, the test database will use the name ``'test_' +
-settings.DATABASE_NAME``. See the documentation for Django's testing framework,
-which is covered online at http://docs.djangoproject.com/en/dev/topics/testing/.
+Esse é o nome da base de dados para usar quando está executando o suíte de tests. Se o valor ``None`` for especificado, a base de dados para teste usará o nome ``'test_' + settings.DATABASE_NAME``. Veja a documentação online para o framework de testes do Django em http://docs.djangoproject.com/en/dev/topics/testing/.
 
 TIME_FORMAT
 -----------
