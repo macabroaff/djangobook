@@ -1,159 +1,130 @@
-====================
-Appendix D: Settings
-====================
+=========================
+Apêndice D: Configurações
+=========================
 
-Your Django settings file contains all the configuration of your Django
-installation. This appendix explains how settings work and which settings are
-available.
+Seu arquivo de configurações do Django contém toda a configuração de sua instalação do Django. Esse apêndice descreve como as configurações funcionam e quais estão disponíveis.
 
-What's a Settings File?
-=======================
+O que é um arquivo de configuração?
+===================================
 
-A *settings file* is just a Python module with module-level variables.
+Um *arquivo de configuração* é apenas um módulo Python com variáveis no nível de módulo.
 
-Here are a couple of example settings::
+Eis aqui alguns exemplos de configurações::
 
     DEBUG = False
     DEFAULT_FROM_EMAIL = 'webmaster@example.com'
     TEMPLATE_DIRS = ('/home/templates/mike', '/home/templates/john')
 
-Because a settings file is a Python module, the following apply:
+Porque um arquivo de configuração é um módulo Python, o seguinte se aplica:
 
-* It must be valid Python code; syntax errors aren't allowed.
+* O código Python deve ser válido; erros de sintaxe não são permitidos.
 
-* It can assign settings dynamically using normal Python syntax,
-  for example::
+* Configurações podem ser dinamicamente declaradas usando a sintaxe normal do Python, por exemplo::
 
       MY_SETTING = [str(i) for i in range(30)]
 
-* It can import values from other settings files.
+* Valores de outros arquivos de configurações podem ser importados.
 
-Default Settings
-----------------
+Configurações padrão
+--------------------
 
-A Django settings file doesn't have to define any settings if it doesn't need
-to. Each setting has a sensible default value. These defaults live in the file
+Não é preciso definir nenhuma configuração em um arquivo de configurações do Django se ela não for necessária. Cada configuração tem um valor padrão. Essas predefinições estão no arquivo 
 ``django/conf/global_settings.py``.
 
-Here's the algorithm Django uses in compiling settings:
+Eis o algoritmo que o Django utiliza na compilação das configurações:
 
-* Load settings from ``global_settings.py``.
-* Load settings from the specified settings file, overriding the global
-  settings as necessary.
+* Carregue as configurações de ``global_settings.py``.
+* Carregue as configurações do arquivo de configurações específico, sobrescrevendo as configurações globais conforme necessário.
 
-Note that a settings file should *not* import from ``global_settings``, because
-that's redundant.
+Note que um arquivo de configurações *não* deve ter um import from ``global_settings``, porque isso é redundante.
 
-Seeing Which Settings You've Changed
-------------------------------------
+Vendo quais configurações você alterou
+--------------------------------------
 
-There's an easy way to view which of your settings deviate from the default
-settings. The command ``manage.py diffsettings`` displays differences between
-the current settings file and Django's default settings.
+Há uma forma fácil de ver quais das suas configurações desviam das configurações padrão. O comando ``manage.py diffsettings`` mostra as diferenças entre o arquivo de configurações atual e o arquivo de configurações padrão do Django.
 
-``manage.py`` is described in more detail in Appendix F.
+``manage.py`` é descrito com mais detalhes no Apêndice F.
 
-Using Settings in Python Code
------------------------------
+Usando as configurações no código Python
+----------------------------------------
 
-In your Django applications, use settings by importing the object
-``django.conf.settings``, for example::
+Nas suas aplicações Django, use as configurações importando o objeto ``django.conf.settings``, por exemplo::
 
     from django.conf import settings
 
     if settings.DEBUG:
-        # Do something
+        # Faça algo
 
-Note that ``django.conf.settings`` isn't a module -- it's an object. So
-importing individual settings is not possible::
+Note que ``django.conf.settings`` não é um módulo -- é um objeto. Então não é possível importar configurações individuais::
 
-    from django.conf.settings import DEBUG  # This won't work.
+    from django.conf.settings import DEBUG  # Isso não vai funcionar.
 
-Also note that your code should *not* import from either ``global_settings`` or
-your own settings file. ``django.conf.settings`` abstracts the concepts of
-default settings and site-specific settings; it presents a single interface.
-It also decouples the code that uses settings from the location of your
-settings.
+Também note que seu código *não* deve importar de ``global_settings`` ou mesmo de seu próprio arquivo de configurações. ``django.conf.settings`` abstrai os conceitos das configurações padrão e das configurações específicas do projeto; apresenta uma interface única. Também dissocia o código que usa as configurações do local das suas configurações.
 
-Altering Settings at Runtime
-----------------------------
+Alterando configurações em tempo de execução
+--------------------------------------------
 
-You shouldn't alter settings in your applications at runtime. For example,
-don't do this in a view::
+Você não deve alterar as configurações em suas aplicações em tempo de execução. Por exemplo, não faça isto em uma view::
 
     from django.conf import settings
 
-    settings.DEBUG = True   # Don't do this!
+    settings.DEBUG = True   # Não faça isso!
 
-The only place that settings should be defined in is a settings file.
+O único lugar que as configurações devem ser definidas é em um arquivo de configuração.
 
-Security
---------
+Segurança
+---------
 
-Because a settings file contains sensitive information, such as the database
-password, you should make every attempt to limit access to it. For example,
-change its file permissions so that only you and your Web server's user can
-read it. This is especially important in a shared-hosting environment.
+Como um arquivo de configurações contém informações sensíveis, tal como a senha do banco de dados, você deve tentar de qualquer forma limitar o acesso a ele. Por exemplo, mude as permissões do arquivo para que somente você e seu usuário do servidor web possam lê-lo. Isso é especialmente importante em um ambiente de servidor de hospedagem compartilhado.
 
-Creating Your Own Settings
---------------------------
+Criando suas próprias configurações
+-----------------------------------
 
-There's nothing stopping you from creating your own settings, for your own
-Django applications. Just follow these conventions:
+Não há nada que lhe impeça de criar suas próprias configurações, para suas aplicações Django. Basta seguir estas convenções:
 
-* Use all uppercase for setting names.
+* Use todas as letras maiúsculas para definir os nomes das configurações.
 
-* For settings that are sequences, use tuples instead of lists. Settings
-  should be considered immutable and shouldn't be changed once they're
-  defined. Using tuples mirrors these semantics.
+* Para configurações que são sequências, use tuplas ao invés de listas. Configurações devem ser consideradas imutáveis e não devem ser alteradas uma vez que foram definidas. O uso de tuplas reflete essa semântica.
 
-* Don't reinvent an already existing setting.
+* Não reinvente uma configuração que já existe.
 
-Designating the Settings: DJANGO_SETTINGS_MODULE
-================================================
+Designando as configurações: DJANGO_SETTINGS_MODULE
+===================================================
 
-When you use Django, you have to tell it which settings you're using. Do this
-by using the environment variable ``DJANGO_SETTINGS_MODULE``.
+Quando você usa Django, você tem de dizer a ele quais configurações você está usando. Faça isto por usar a variável de ambiente ``DJANGO_SETTINGS_MODULE``.
 
-The value of ``DJANGO_SETTINGS_MODULE`` should be in Python path syntax (e.g.,
-``mysite.settings``). Note that the settings module should be on the
-Python import search path (``PYTHONPATH``).
+O valor de ``DJANGO_SETTINGS_MODULE`` deve ser na sintaxe de caminhos do Python (por exemplo, ``mysite.settings``). Note que o módulo de configurações deve estar no caminho de pesquisa de importação do Python (``PYTHONPATH``).
 
-.. admonition:: Tip:
+.. admonition:: Dica:
 
-    A good guide to ``PYTHONPATH`` can be found at
+    Um bom guia para ``PYTHONPATH`` pode ser encontrada em 
     http://diveintopython.org/getting_to_know_python/everything_is_an_object.html.
 
-The django-admin.py Utility
----------------------------
+O utilitário django-admin.py
+----------------------------
 
-When using ``django-admin.py`` (see Appendix F), you can either set the
-environment variable once or explicitly pass in the settings module each time
-you run the utility.
+Ao usar o ``django-admin.py`` (veja o Apêndice F), você pode definir a variável de ambiente uma vez ou mesmo pode passar explicitamente no módulo de configurações cada vez que você executar o utilitário.
 
-Here's an example using the Unix Bash shell::
+Eis um exemplo usando o shell do Unix::
 
     export DJANGO_SETTINGS_MODULE=mysite.settings
     django-admin.py runserver
 
-Here's an example using the Windows shell::
+Eis um exemplo usando o shell do Windows::
 
     set DJANGO_SETTINGS_MODULE=mysite.settings
     django-admin.py runserver
 
-Use the ``--settings`` command-line argument to specify the settings manually::
+Use o argumento de linha de comando ``--settings`` para especificar a configuração manualmente::
 
     django-admin.py runserver --settings=mysite.settings
 
-The ``manage.py`` utility created by ``startproject`` as part of the project
-skeleton sets ``DJANGO_SETTINGS_MODULE`` automatically; see Appendix F for more
-about ``manage.py``.
+O utilitário ``manage.py`` criado pelo ``startproject`` como parte do esqueleto do projeto define o ``DJANGO_SETTINGS_MODULE`` automaticamente; veja o Apêndice F para mais informações sobre o ``manage.py``.
 
-On the Server (mod_python)
---------------------------
+No servidor (mod_python)
+------------------------
 
-In your live server environment, you'll need to tell Apache/mod_python which
-settings file to use. Do that with ``SetEnv``::
+No seu ambiente de produção, você vai precisar dizer ao Apache/mod_python qual arquivo de configuração usar. Faça isso com ``SetEnv``::
 
     <Location "/mysite/">
         SetHandler python-program
@@ -161,19 +132,14 @@ settings file to use. Do that with ``SetEnv``::
         SetEnv DJANGO_SETTINGS_MODULE mysite.settings
     </Location>
 
-For more information, read the Django mod_python documentation online at
-http://docs.djangoproject.com/en/dev/howto/deployment/modpython/.
+Para mais informações, leia a documentação online do Django mod_python em http://docs.djangoproject.com/en/dev/howto/deployment/modpython/.
 
-Using Settings Without Setting DJANGO_SETTINGS_MODULE
-=====================================================
+Usando as configurações sem definir o DJANGO_SETTINGS_MODULE
+============================================================
 
-In some cases, you might want to bypass the ``DJANGO_SETTINGS_MODULE``
-environment variable. For example, if you're using the template system by
-itself, you likely don't want to have to set up an environment variable
-pointing to a settings module.
+Em alguns casos, talvez você queira ignorar a variável de ambiente ``DJANGO_SETTINGS_MODULE``. Por exemplo, se você está usando somente o sistema de templates, provavelmente não vai querer ter de configurarar uma variável de ambiente apontando para o módulo de configuração.
 
-In these cases, you can configure Django's settings manually. Do this by
-calling ``django.conf.settings.configure()``. Here's an example::
+Nesses casos, você pode setar as configurações do Django manualmente. Faça isto chamando ``django.conf.settings.configure()``. Eis aqui um exemplo::
 
     from django.conf import settings
 
@@ -186,403 +152,321 @@ calling ``django.conf.settings.configure()``. Here's an example::
         ]
     )
 
-Pass ``configure()`` as many keyword arguments as you'd like, with each keyword
-argument representing a setting and its value. Each argument name should be all
-uppercase, with the same name as the settings described earlier. If a particular
-setting is not passed to ``configure()`` and is needed at some later point,
-Django will use the default setting value.
+Informe no ``configure()`` quantos argumentos/palavras-chave você quiser, com cada argumento representando uma configuração e seu valor. Cada nome do argumento (palavra-chave que representa o nome da variável) deve estar em maiúsculas, com o mesmo nome das configurações descritas anteriormente. Se uma configuração em particular não for informada em ``configure()`` e for necessária em algum momento no futuro, o Django irá usar o valor padrão da configuração.
 
-Configuring Django in this fashion is mostly necessary -- and, indeed,
-recommended -- when you're using a piece of the framework inside a larger
-application.
+Configurar o Django desta forma é, na maior parte das vezes, -- e, de fato, recomendado -- quando você está usando uma parte do framework dentro de uma aplicação maior.
 
-Consequently, when configured via ``settings.configure()``, Django will not
-make any modifications to the process environment variables. (See the
-explanation of ``TIME_ZONE`` later in this appendix for why this would normally occur.)
-It's assumed that you're already in full control of your environment in these cases.
+Consequentemente, quando configurando via ``settings.configure()``, o Django não irá fazer nenhuma modificação nas variáveis de ambiente do processo. (Veja a explicação sobre ``TIME_ZONE`` mais tarde neste apêndice para o porquê de isso normalmente ocorrer.)
+Se presume que você já possui total controle sobre seu ambiente, nesses casos.
 
-Custom Default Settings
------------------------
+Configurações padrão personalizadas
+-----------------------------------
 
-If you'd like default values to come from somewhere other than
-``django.conf.global_settings``, you can pass in a module or class that
-provides the default settings as the ``default_settings`` argument (or as the
-first positional argument) in the call to ``configure()``.
+Se você quer que os valores padrão venham de outro lugar que não seja de ``django.conf.global_settings``, você pode passar em um módulo ou classe que fornece as configurações padrão como o argumento ``default_settings`` (ou na primeira posição como argumento) na chamada para o ``configure()``.
 
-In this example, default settings are taken from ``myapp_defaults``, and the
-``DEBUG`` setting is set to ``True``, regardless of its value in
-``myapp_defaults``::
+Neste exemplo, as configurações padrão são obtidas de ``myapp_defaults``, e a cofiguração ``DEBUG`` está setada como ``True``, independentemente de seu valor em ``myapp_defaults``::
 
     from django.conf import settings
     from myapp import myapp_defaults
 
     settings.configure(default_settings=myapp_defaults, DEBUG=True)
 
-The following example, which uses ``myapp_defaults`` as a positional argument,
-is equivalent::
+O exemplo a seguir, que usa ``myapp_defaults`` como um argumento posicional é equivalente a::
 
     settings.configure(myapp_defaults, DEBUG = True)
 
-Normally, you will not need to override the defaults in this fashion. The
-Django defaults are sufficiently tame that you can safely use them. Be aware
-that if you do pass in a new default module, it entirely *replaces* the Django
-defaults, so you must specify a value for every possible setting that might be
-used in that code you are importing. Check in
-``django.conf.settings.global_settings`` for the full list.
+Normalmente, você não vai precisar sobrescrever os padrões dessa forma. Os padrões do Django são suficientemente inofencivos que você pode usá-los tranquilamente. Esteja ciente de que se você passar um novo módulo padrão, ele *substitui* inteiramente os padrões do Django, então você precisa especificar valores para cada configuração possível que possa ser utilizada no código que você está importando. Dê uma olhada em ``django.conf.settings.global_settings`` para lista compelta.
 
-Either configure() or DJANGO_SETTINGS_MODULE Is Required
---------------------------------------------------------
+Ou o configure() ou o DJANGO_SETTINGS_MODULE é necessário
+---------------------------------------------------------
 
-If you're not setting the ``DJANGO_SETTINGS_MODULE`` environment variable, you
-*must* call ``configure()`` at some point before using any code that reads
-settings.
+Se você não configurar a variável de ambiente ``DJANGO_SETTINGS_MODULE``, você *precisa* executar o ``configure()`` em algum lugar antes de usar qualquer código que leia o arquivo de configurações.
 
-If you don't set ``DJANGO_SETTINGS_MODULE`` and don't call ``configure()``,
-Django will raise an ``EnvironmentError`` exception the first time a setting
-is accessed.
+Se você não definir o ``DJANGO_SETTINGS_MODULE`` e não executar o ``configure()``, o Django irá gerar uma exceção do tipo ``EnvironmentError`` na hora que o arquivo de configurações for acessado.
 
-If you set ``DJANGO_SETTINGS_MODULE``, access settings values somehow, and *then*
-call ``configure()``, Django will raise an ``EnvironmentError`` stating that settings
-have already been configured.
+Se você definir o ``DJANGO_SETTINGS_MODULE``, acessar as configurações de alguma forma, e *então* executar o ``configure()``, o Django irá gerar uma exceção do tipo ``EnvironmentError`` afirmando que as configurações já foram definidas.
 
-Also, it's an error to call ``configure()`` more than once, or to call
-``configure()`` after any setting has been accessed.
+Também, é um erro executar o ``configure()`` mais de uma vez, ou executar o ``configure()`` após o arquivo de configurações ter sido acessado.
 
-It boils down to this: use exactly one of either ``configure()`` or
-``DJANGO_SETTINGS_MODULE``, and only once.
+Em resumo faça assim: use somente um, ou o ``configure()`` ou o ``DJANGO_SETTINGS_MODULE``, e somente uma vez.
 
-Available Settings
-==================
+Configurações Disponíveis
+=========================
 
-The following sections consist of a list of the main available settings,
-in alphabetical order, and their default values.
+As seções a seguir consistem em uma lista das principais configurações disponíveis, em ordem alfabética, e seus respectivos valores.
 
 ABSOLUTE_URL_OVERRIDES
 ----------------------
 
-*Default*: ``{}`` (empty dictionary)
+*Valor padrão*: ``{}`` (dicionário vazio)
 
-This is a dictionary mapping ``"app_label.model_name"`` strings to functions that take
-a model object and return its URL. This is a way of overriding
-``get_absolute_url()`` methods on a per-installation basis. Here's an example::
+Esse é um dicionário de mapeamento de strings ``"app_label.model_name"`` para funções que assume um model object e retorna sua URL. Essa é uma forma de sobrescrever o método ``get_absolute_url()`` em cada uma de seus módulos instalados. Eis um exemplo::
 
     ABSOLUTE_URL_OVERRIDES = {
         'blogs.weblog': lambda o: "/blogs/%s/" % o.slug,
         'news.story': lambda o: "/stories/%s/%s/" % (o.pub_year, o.slug),
     }
 
-Note that the model name used in this setting should be all lowercase, regardless
-of the case of the actual model class name.
+Note que o nome do model usado nessa configuração deve ser todo em minúsculo, independentemente do real nome da classe.
 
 ADMIN_MEDIA_PREFIX
 ------------------
 
-*Default*: ``'/media/'``
+*Valor padrão*: ``'/media/'``
 
-This setting is the URL prefix for admin media: CSS, JavaScript, and images.
-Make sure to use a trailing slash.
+Essa configuração é o prefixo da URL para os arquívos de mídia do admin: CSS, Javascript e imagens. Certifique-se de usar a barra invertida.
 
 ADMINS
 ------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-This is a tuple that lists people who get code error notifications. When
-``DEBUG=False`` and a view raises an exception, Django will email these people
-with the full exception information. Each member of the tuple should be a tuple
-of (Full name, e-mail address), for example::
+Essa é a tupla que lista as pessoas que receberão notificações de erro. Quando ``DEBUG=False`` e a view lançar uma exceção, o Django irá enviar um email para essas pessoas com as informações sobre a exceção gerada. Cada membro da tupla deve ser uma tupla com (Nome completo, endereço de email), por exemplo::
 
     (('John', 'john@example.com'), ('Mary', 'mary@example.com'))
 
-Note that Django will email *all* of these people whenever an error happens.
+Observe que o Django irá enviar email para todas essas pessoas sempre que os erros aparecerem.
 
 ALLOWED_INCLUDE_ROOTS
 ---------------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-This is a tuple of strings representing allowed prefixes for the ``{% ssi %}`` template
-tag. This is a security measure, so that template authors can't access files
-that they shouldn't be accessing.
+Essa é uma tupla de strings representando os prefixos autorizados para a template tag ``{% ssi %}``. Isso é uma medida de segurança, para que os autores de templates não acessem arquivos que eles não deveriam estar acessando.
 
-For example, if ``ALLOWED_INCLUDE_ROOTS`` is ``('/home/html', '/var/www')``,
-then ``{% ssi /home/html/foo.txt %}`` would work, but ``{% ssi /etc/passwd %}``
-wouldn't.
+Por exemplo, se ``ALLOWED_INCLUDE_ROOTS`` é ``('/home/html', '/var/www')`` então ``{% ssi /home/html/foo.txt %}`` funcionaria, mas ``{% ssi /etc/passwd %}`` não.
 
 APPEND_SLASH
 ------------
 
-*Default*: ``True``
+*Valor padrão*: ``True``
 
-This setting indicates whether to append trailing slashes to URLs. This is used only if
-``CommonMiddleware`` is installed (see Chapter 17). See also ``PREPEND_WWW``.
+Esta configuração indica se será adicionado barras ao final das URLs. Isso é usado somente se o ``CommonMiddleware`` estiver instalado (ver Capítulo 17). Veja também ``PREPEND_WWW``.
 
 CACHE_BACKEND
 -------------
 
-*Default*: ``'locmem://'``
+*Valor padrão*: ``'locmem://'``
 
-This is the cache back-end to use (see Chapter 15).
+Esse é o back-end de cache para usar (ver Capítulo 15).
 
 CACHE_MIDDLEWARE_KEY_PREFIX
 ---------------------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is the cache key prefix that the cache middleware should use (see Chapter 15).
+Esse é o prefixo de chave do cache que o middleware de cache deverá usar (ver Capítulo 15).
 
 DATABASE_ENGINE
 ---------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This setting indicates which database back-end to use, e.g.
-``'postgresql_psycopg2'``, or ``'mysql'``.
+Essa configuração indica qual back-end de banco de dados usar, por exemplo ``'postgresql_psycopg2'``, ou ``'mysql'``.
 
 DATABASE_HOST
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This setting indicates which host to use when connecting to the database.
-An empty string means ``localhost``. This is not used with SQLite.
+Essa configuração indica qual endereço de host usar ao conectar com o banco de dados. String vazia significa ``localhost``. Isso não é usado com SQLite.
 
-If this value starts with a forward slash (``'/'``) and you're using MySQL,
-MySQL will connect via a Unix socket to the specified socket::
+Se o valor começar com a barra (``'/'``) e você estiver usando MySQL, irá conectar via Unix socket para o socket especificado:
 
     DATABASE_HOST = '/var/run/mysql'
 
-If you're using MySQL and this value *doesn't* start with a forward slash, then
-this value is assumed to be the host.
+Se você estiver usando MySQL e esse valor *não* começar com uma barra, então é assumido que esse valor seja o host.
 
 DATABASE_NAME
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is the name of the database to use. For SQLite, it's the full path to the database
-file.
+Esse é o nome da base de dados para uso. Para SQLite, é o caminho completo para o arquivo da base de dados.
 
 DATABASE_OPTIONS
 ----------------
 
-*Default*: ``{}`` (empty dictionary)
+*Valor padrão*: ``{}`` (dicionário vazio)
 
-This is extra parameters to use when connecting to the database. Consult the back-end
-module's document for available keywords.
+São parâmetros extras para usar ao conectar à base de dados. Consulte a documentação do back-end utilizado para as possíveis palavras-chave.
 
 DATABASE_PASSWORD
 -----------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This setting is the password to use when connecting to the database. It is not used with SQLite.
+Essa configuração é a senha para usar ao conectar à base de dados. Não é usado com SQLite.
 
 DATABASE_PORT
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is the port to use when connecting to the database. An empty string means the
-default port. It is not used with SQLite.
+Essa é a porta para usar ao conectar à base de dados. String vazia significa a porta padrão. Não é usado com SQLite.
 
 DATABASE_USER
 -------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This setting is the username to use when connecting to the database. It is not used with SQLite.
+Essa configuração é o nome de usuário usado ao conectar à base de dados. Não é usado com SQLite.
 
 DATE_FORMAT
 -----------
 
-*Default*: ``'N j, Y'`` (e.g., ``Feb. 4, 2003``)
+*Valor padrão*: ``'N j, Y'`` (Por exemplo, ``Feb. 4, 2003``)
 
-This is the default formatting to use for date fields on Django admin change-list pages
--- and, possibly, by other parts of the system. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-See also ``DATETIME_FORMAT``, ``TIME_FORMAT``, ``YEAR_MONTH_FORMAT``, and
+Veja também ``DATETIME_FORMAT``, ``TIME_FORMAT``, ``YEAR_MONTH_FORMAT``, e
 ``MONTH_DAY_FORMAT``.
 
 DATETIME_FORMAT
 ---------------
 
-*Default*: ``'N j, Y, P'`` (e.g., ``Feb. 4, 2003, 4 p.m.``)
+*Valor padrão*: ``'N j, Y, P'`` (Por exemplo, ``Feb. 4, 2003, 4 p.m.``)
 
-This is the default formatting to use for datetime fields on Django admin change-list
-pages -- and, possibly, by other parts of the system. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo datetime nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
-``YEAR_MONTH_FORMAT``, and ``MONTH_DAY_FORMAT``.
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
+``YEAR_MONTH_FORMAT``, e ``MONTH_DAY_FORMAT``.
 
 DEBUG
 -----
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This setting is a Boolean that turns debug mode on and off.
+Essa configuração é um Boolean que liga e desliga o modo de debug.
 
-If you define custom settings, ``django/views/debug.py`` has a ``HIDDEN_SETTINGS``
-regular expression that will hide from the ``DEBUG`` view anything that contains
-``'SECRET``, ``PASSWORD``, or ``PROFANITIES'``. This allows untrusted users to
-be able to give backtraces without seeing sensitive (or offensive) settings.
+Se você definir configurações personalizadas, ``django/views/debug.py`` tem uma expressão regular ``HIDDEN_SETTINGS`` que irá esconder da ``DEBUG`` view qualquer coisa que conter ``'SECRET``, ``PASSWORD``, or ``PROFANITIES'``. Isso permite usuários não confiáveis sejam capazes de dar backtraces sem ver configurações sensíveis ou ofensivas.
 
-Still, note that there are always going to be sections of your debug output that
-are inappropriate for public consumption. File paths, configuration options, and
-the like all give attackers extra information about your server. Never deploy a
-site with ``DEBUG`` turned on.
+Mesmo assim, note que sempre haverão seções de saída do seu debug que são inapropriadas para o público. Caminhos de arquivos, opções de configurações, bem como dar informações extra sobre seu servidor para invasores.
+
+Nunca faça o deploy de um site com ``DEBUG`` ligado.
+
 
 DEFAULT_CHARSET
 ---------------
 
-*Default*: ``'utf-8'``
+*Valor padrão*: ``'utf-8'``
 
-This is the default charset to use for all ``HttpResponse`` objects, if a MIME type isn't
-manually specified. It is used with ``DEFAULT_CONTENT_TYPE`` to construct the
-``Content-Type`` header. See Appendix G for more about ``HttpResponse`` objects.
+Esse é o conjunto de caracteres padrão para usar em todos os objetos ``HttpResponse``, se um MIME type não é manualmente especificado. É usado com ``DEFAULT_CONTENT_TYPE`` para construir o ``Content-Type`` do cabeçalho. Veja o Apêndice G para mais sobre objetos ``HttpResponse``.
 
 DEFAULT_CONTENT_TYPE
 --------------------
 
-*Default*: ``'text/html'``
+*Valor padrão*: ``'text/html'``
 
-This is the default content type to use for all ``HttpResponse`` objects, if a MIME type
-isn't manually specified. It is used with ``DEFAULT_CHARSET`` to construct the
-``Content-Type`` header. See Appendix G for more about ``HttpResponse`` objects.
+Esse é o tipo de conteúdo padrão usado para todos os objetos ``HttpResponse``, se um MIME type não é manualmente especificado. É usado com ``DEFAULT_CHARSET`` para construção do ``Content-Type`` do cabeçalho. Veja o Apêndice G para mais sobre objetos ``HttpResponse``.
 
 DEFAULT_FROM_EMAIL
 ------------------
 
-*Default*: ``'webmaster@localhost'``
+*Valor padrão*: ``'webmaster@localhost'``
 
-This is the default email address to use for various automated correspondence from the
-site manager(s).
+Esse é o email padrão usado para várias correspondências automáticas dos administradores do site.
 
 DISALLOWED_USER_AGENTS
 ----------------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-This is a list of compiled regular expression objects representing User-Agent strings
-that are not allowed to visit any page, systemwide. Use this for bad
-robots/crawlers. This is used only if ``CommonMiddleware`` is installed (see
-Chapter 17).
+Essa é uma lista de objetos de expressões regulares representando strings de User-Agent que não têm permissão para visitar qualquer página, em todo o sistema. Use isto para robôs/rastreadores mal intencionados. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
 
 EMAIL_HOST
 ----------
 
-*Default*: ``'localhost'``
+*Valor padrão*: ``'localhost'``
 
-This is the host to use for sending email. See also ``EMAIL_PORT``.
+Isso é o host utilizado para enviar email. Veja támbém ``EMAIL_PORT``.
 
 EMAIL_HOST_PASSWORD
 -------------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is the password to use for the SMTP server defined in ``EMAIL_HOST``. This setting is
-used in conjunction with ``EMAIL_HOST_USER`` when authenticating to the SMTP
-server. If either of these settings is empty, Django won't attempt
-authentication.
+Essa é a senha utilizada para o servidor SMTP definido em ``EMAIL_HOST``. Essa configuração é usada em conjunto com ``EMAIL_HOST_USER`` ao autenticar no servidor SMTP. Se qualquer uma dessas configurações estiver vazia, o Django não tentará autenticar.
 
-See also ``EMAIL_HOST_USER``.
+Veja também ``EMAIL_HOST_USER``.
 
 EMAIL_HOST_USER
 ---------------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is the username to use for the SMTP server defined in ``EMAIL_HOST``. If it's empty,
-Django won't attempt authentication. See also ``EMAIL_HOST_PASSWORD``.
+Esse é o nome de usuário a ser utilizado para o servidor SMTP definido em ``EMAIL_HOST``. Se estiver vazio, o Django o Django não tentará autenticar. 
+
+Veja também ``EMAIL_HOST_PASSWORD``.
 
 EMAIL_PORT
 ----------
 
-*Default*: ``25``
+*Valor padrão*: ``25``
 
-This is the port to use for the SMTP server defined in ``EMAIL_HOST``.
+Essa é a porta utilizada para o servidor SMTP definido em ``EMAIL_HOST``.
 
 EMAIL_SUBJECT_PREFIX
 --------------------
 
-*Default*: ``'[Django] '``
+*Valor padrão*: ``'[Django] '``
 
-This is the subject-line prefix for email messages sent with ``django.core.mail.mail_admins``
-or ``django.core.mail.mail_managers``. You'll probably want to include the
-trailing space.
+Esse é o prefixo da linha assunto para emails enviados com ``django.core.mail.mail_admins`` ou ``django.core.mail.mail_managers``. Você, provavelmente, vai querer incluir o espaço à direita.
 
 FIXTURE_DIRS
 -------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-This is a list of locations of the fixture data files, in search order. Note that these
-paths should use Unix-style forward slashes, even on Windows. It is used by Django's
-testing framework, which is covered online at
-http://docs.djangoproject.com/en/dev/topics/testing/.
+Essa é a lista de localizações dos arquivos fixture, em ordem de busca. Note que estes caminhos devem usar barras Unix-style, mesmo no Windows. É utilizado pelo framework de testes do Django, que é documentado online em http://docs.djangoproject.com/en/dev/topics/testing/.
 
 IGNORABLE_404_ENDS
 ------------------
 
-*Default*: ``('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi', 'favicon.ico',
+*Valor padrão*: ``('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi', 'favicon.ico',
 '.php')``
 
-This is a tuple of strings that specify beginnings of URLs that should be
-ignored by the 404 e-mailer. (See Chapter 12 for more on the 404 e-mailer.)
+Essa é a tupla de strings que especifica inícios de URLs que devem ser ignoradas pelo 404 e-mailer. (Ver Capítulo 12 para mais sobre 404 e-mailer.)
 
-No errors will be sent for URLs end with strings from this sequence.
+Nenhum erro será enviado para as URLs terminadas com as strings dessa sequência.
 
-See also ``IGNORABLE_404_STARTS`` and ``SEND_BROKEN_LINK_EMAILS``.
+Veja também ``IGNORABLE_404_STARTS`` e ``SEND_BROKEN_LINK_EMAILS``.
 
 IGNORABLE_404_STARTS
 --------------------
 
-*Default*: ``('/cgi-bin/', '/_vti_bin', '/_vti_inf')``
+*Valor padrão*: ``('/cgi-bin/', '/_vti_bin', '/_vti_inf')``
 
-See also ``SEND_BROKEN_LINK_EMAILS`` and ``IGNORABLE_404_ENDS``.
+Veja também ``SEND_BROKEN_LINK_EMAILS`` e ``IGNORABLE_404_ENDS``.
 
 INSTALLED_APPS
 --------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-A tuple of strings designating all applications that are enabled in this Django
-installation. Each string should be a full Python path to a Python package that
-contains a Django application. See Chapter 5 for more about applications.
+Uma tupla de strings designando todas as aplicações que serão habilitadas nessa instalação do Django. Cada string deve ser um caminho completo de módulo Python para um pacote Python que contenha a aplicação Django. Ver Capítulo 5 para mais sobre aplicações.
 
 LANGUAGE_CODE
 -------------
 
-*Default*: ``'en-us'``
+*Valor padrão*: ``'en-us'``
 
-This is a string representing the language code for this installation. This should be
-in standard language format -- for example, U.S. English is ``"en-us"``. See
-Chapter 19.
+Essa é a string representando o código de idioma para esta instalação. E deve estar no padrão de formato de linguagem -- for example, U.S. English é ``"en-us"``. Ver Capítulo 19.
 
 LANGUAGES
 ---------
 
-*Default*: A tuple of all available languages. This list is continually growing
-and any copy included here would inevitably become rapidly out of date. You can
-see the current list of translated languages by looking in
-``django/conf/global_settings.py``.
+*Valor padrão*: Uma tupla com todas os idiomas disponíveis. Essa lista está continuamente crescendo e qualquer cópia incluída aqui irá, inevitavelmente, estar desatualizada. Você pode ver a lista atualizada de idiomas traduzidos em ``django/conf/global_settings.py``.
 
+A lista é uma tupla com uma tupla dupla no formato (código do idioma, nome do idioma) -- por exemplo, ``('ja', 'Japanese')``. Isso especifica quais idiomas estão disponíveis para 
 The list is a tuple of two-tuples in the format (language code, language name)
--- for example, ``('ja', 'Japanese')``. This specifies which languages are
-available for language selection. See Chapter 19 for more on language selection.
+-- for example, ``('ja', 'Japanese')``. Isto especifica quais idiomas estão disponíveis para seleção de idioma. Ver Capítulo 19 para mais sobre seleção de idiomas.
 
-Generally, the default value should suffice. Only set this setting if you want
-to restrict language selection to a subset of the Django-provided languages.
+Geralmente, o valor padrão deve ser suficiente. Somente redefina essa configuração se você quer restringir a seleção de idiomas para um subconjunto de idiomas oferecidos pelo Django.
 
-If you define a custom ``LANGUAGES`` setting, it's OK to mark the languages as
-translation strings, but you should *never* import ``django.utils.translation``
-from within your settings file, because that module in itself depends on the
-settings, and that would cause a circular import.
+Se você definir a configuração ``LANGUAGES`` personalizadamente, está tudo bem em marcar os idiomas como strings de tradução, mas você *nunca* deve importar ``django.utils.translation`` no seu arquivo de configuração, porque esse módulo por si depende do arquivo de configuração, e isto irá causar uma importação circular.
 
-The solution is to use a "dummy" ``gettext()`` function. Here's a sample
-settings file::
+A solução é usar uma função "dummy" ``gettext()``. Aqui está um exemplo de arquivo de configuração::
 
     gettext = lambda s: s
 
@@ -591,340 +475,269 @@ settings file::
         ('en', gettext('English')),
     )
 
-With this arrangement, ``make-messages.py`` will still find and mark these
-strings for translation, but the translation won't happen at runtime -- so
-you'll have to remember to wrap the languages in the *real* ``gettext()`` in
-any code that uses ``LANGUAGES`` at runtime.
+Com essa disposição, ``make-messages.py`` ainda irá encontrar e marcar essa string para tradução, mas a tradução não acontecerá em tempo de execução -- então você tem de lembrar de envolver os idiomas em um *real* ``gettext()`` em qualquer código que usar ``LANGUAGES`` em tempo de execução.
 
 MANAGERS
 --------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-This tuple is in the same format as ``ADMINS`` that specifies who should get
-broken-link notifications when ``SEND_BROKEN_LINK_EMAILS=True``.
+Essa tupla está no mesmo formato de ``ADMINS`` que especifica quem irá obter notificações de links quebrados quando ``SEND_BROKEN_LINK_EMAILS=True``.
 
 MEDIA_ROOT
 ----------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is an absolute path to the directory that holds media for this installation (e.g.,
-``"/home/media/media.lawrence.com/"``). See also ``MEDIA_URL``.
+Isso é um caminho absoluto para o diretório que contém mídias para esta instalação (por exemplo, ``"/home/media/media.lawrence.com/"``) Veja também ``MEDIA_URL``.
 
 MEDIA_URL
 ---------
 
-*Default*: ``''`` (empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This URL handles the media served from ``MEDIA_ROOT`` (e.g.,
+Essa URL lida com as mídias servidas a partir de ``MEDIA_ROOT`` (por exemplo,
 ``"http://media.lawrence.com"``).
 
-Note that this should have a trailing slash if it has a path component:
+Note que isso deve possuir uma barra à direita, se possuir um caminho de componente:
 
-* *Correct*: ``"http://www.example.com/static/"``
-* *Incorrect*: ``"http://www.example.com/static"``
+* *Correto*: ``"http://www.example.com/static/"``
+* *Incorreto*: ``"http://www.example.com/static"``
 
-See Chapter 12 for more on deployment and serving media.
+Ver Capítulo 12 para mais sobre deployment e servir mídias.
 
 MIDDLEWARE_CLASSES
 ------------------
 
-*Default*::
+*Valor padrão*::
 
     ("django.contrib.sessions.middleware.SessionMiddleware",
      "django.contrib.auth.middleware.AuthenticationMiddleware",
      "django.middleware.common.CommonMiddleware",
      "django.middleware.doc.XViewMiddleware")
 
-This is a tuple of middleware classes to use. See Chapter 17.
+Essa é uma tupla de classes middleware para uso. Ver Capítulo 17.
 
 MONTH_DAY_FORMAT
 ----------------
 
-*Default*: ``'F j'``
+*Valor padrão*: ``'F j'``
 
-This is the default formatting to use for date fields on Django admin change-list
-pages -- and, possibly, by other parts of the system -- in cases when only the
-month and day are displayed. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema -- em casos quando somente o mês e o dia são mostrados. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-For example, when a Django admin change-list page is being filtered by a date,
-the header for a given day displays the day and month. Different locales have
-different formats. For example, U.S. English would have "January 1," whereas
-Spanish might have "1 Enero."
+Por exemplo, quando uma change-list no Django admin está filtrando por data, o cabeçalho para um determinado dia mostra o dia e o mês; Diferentes localidades têm diferentes formatos. Por exemplo, em U.S. English seria "January 1," onde em Spanish poderia ser "1 Enero."
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, e
 ``YEAR_MONTH_FORMAT``.
 
 PREPEND_WWW
 -----------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This setting indicates whether to prepend the "www." subdomain to URLs that don't have it.
-This is used only if ``CommonMiddleware`` is installed (see the Chapter 17). See also
-``APPEND_SLASH``.
+Essa configuração indica se será precedido o subdomínio "www." em URLs que não o possui. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
+
+Veja também ``APPEND_SLASH``.
 
 ROOT_URLCONF
 ------------
 
-*Default*: Not defined
+*Valor padrão*: Não definido
 
-This is a string representing the full Python import path to your root URLconf (e.g.,
-``"mydjangoapps.urls"``). See Chapter 3.
+Essa é uma string respresentando o caminho Python de importação completo para sua URLconf proncipal (Por exemplo, ``"mydjangoapps.urls"``). Ver Capítulo 3.
 
 SECRET_KEY
 ----------
 
-*Default*: (Generated automatically when you start a project)
+*Valor padrão*: (Generated automatically when you start a project)
 
-This is a secret key for this particular Django installation. It is used to provide a seed in
-secret-key hashing algorithms. Set this to a random string -- the longer, the
-better. ``django-admin.py startproject`` creates one automatically and most
-of the time you won't need to change it
+Essa é uma chave secreta para esta instalação do Django em particular. É utilizada para prover uma sememente no algoritmo de hash da chave secreta. Defina isso como uma string randômica -- quanto mais longa melhor. ``django-admin.py startproject`` cria uma automaticamente e a maior parte das vezes você não precisará alterá-la.
 
 SEND_BROKEN_LINK_EMAILS
 -----------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This setting indicates whether to send an email to the ``MANAGERS`` each time somebody visits a
-Django-powered page that is 404-ed with a nonempty referer (i.e., a broken
-link). This is only used if ``CommonMiddleware`` is installed (see Chapter 17).
-See also ``IGNORABLE_404_STARTS`` and ``IGNORABLE_404_ENDS``.
+Essa configuração indica se é para enviar email para os ``MANAGERS`` cada vez que alguém visitar uma página de erro 404 provida pelo Django sem nenhum referer (HTTP referrer‎) (Por exemplo, um link quebrado). Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
+Veja também ``IGNORABLE_404_STARTS`` e ``IGNORABLE_404_ENDS``.
 
 SERIALIZATION_MODULES
 ---------------------
 
-*Default*: Not defined.
+*Valor padrão*: Não definido.
 
-Serialization is a feature still under heavy development. Refer to the online
-documentation at http://docs.djangoproject.com/en/dev/topics/serialization/
-for more information.
+Serialização é uma funcionalidade ainda sobre árduo desenvolvimento. Visite a documentação online em http://docs.djangoproject.com/en/dev/topics/serialization/ para mais informações.
 
 SERVER_EMAIL
 ------------
 
-*Default*: ``'root@localhost'``
+*Valor padrão*: ``'root@localhost'``
 
-This is the email address that error messages come from, such as those sent to
-``ADMINS`` and ``MANAGERS``.
+Esse é o endereço de email que mensagens de erros utilizarão ao enviar emails para ``ADMINS`` and ``MANAGERS``.
 
 SESSION_COOKIE_AGE
 ------------------
 
-*Default*: ``1209600`` (two weeks, in seconds)
+*Valor padrão*: ``1209600`` (two weeks, in seconds)
 
-This is the age of session cookies, in seconds. See Chapter 14.
+Esse é o limite de tempo dos cookies de sessão, em segundos. Ver Capítulo 14.
 
 SESSION_COOKIE_DOMAIN
 ---------------------
 
-*Default*: ``None``
+*Valor padrão*: ``None``
 
-This is the domain to use for session cookies. Set this to a string such as
-``".lawrence.com"`` for cross-domain cookies, or use ``None`` for a standard
-domain cookie. See Chapter 14.
+Esse é o domínio para ser utilizado nos cookies de sessão. Deve ser uma string como ``".lawrence.com"`` para cross-domain cookies, ou use ``None`` para o domínio padrão em cookies. Ver Capítulo 14.
 
 SESSION_COOKIE_NAME
 -------------------
 
-*Default*: ``'sessionid'``
+*Valor padrão*: ``'sessionid'``
 
-This is the name of the cookie to use for sessions; it can be whatever you want.
-See Chapter 14.
+Esse é o nome do cookie usado para sessões; pode ser o que você quiser. Ver Capítulo 14.
 
 SESSION_COOKIE_SECURE
 ---------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This setting indicates whether to use a secure cookie for the session cookie.
-If this is set to ``True``, the cookie will be marked as "secure,"
-which means browsers may ensure that the cookie is only sent under an HTTPS connection.
-See Chapter 14.
+Essa configuração indica se é para usar um cookie seguro para o cookie de sessão. Se isso está definido como ``True``, o cookie será marcado como "seguro", o que quer dizer que os navegadores podem garantir que o cookie somente seja enviado sob uma conexão HTTPS. Ver Capítulo 14.
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE
 -------------------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This setting indicates whether to expire the session when the user closes
-his browser. See Chapter 14.
+Essa configuração indica se é para expirar o cookie de sessão toda vez que o usuário fechar o navegador. Ver Capítulo 14.
 
 SESSION_SAVE_EVERY_REQUEST
 --------------------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This setting indicates whether to save the session data on every request. See Chapter 14.
+Essa configuração indica se é para salvar os dados da sessão em toda requisição. Ver Capítulo 14.
 
 SITE_ID
 -------
 
-*Default*: Not defined
+*Valor padrão*: Não definido
 
-This is the ID, as an integer, of the current site in the ``django_site`` database
-table. It is used so that application data can hook into specific site(s)
-and a single database can manage content for multiple sites. See Chapter 16.
+Esse é o ID, um número inteiro, do site atual na tabela do banco de dados ``django_site``. É utilizada para que os dados da aplicação possam ser ligados a um(ns) site(s) específico(s) e uma única base de dados pode gerenciar conteúdo de múltiplos sites. Ver Capítulo 16.
 
 TEMPLATE_CONTEXT_PROCESSORS
 ---------------------------
 
-*Default*::
+*Valor padrão*::
 
     ("django.core.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media")
 
-This is a tuple of callables that are used to populate the context in ``RequestContext``.
-These callables take a request object as their argument and return a dictionary
-of items to be merged into the context. See Chapter 9.
+Essa é a tupla de funções que são usadas para popular o contexto em ``RequestContext``. Essas funções levam um objeto de requisição como seu argumento e retornam um dicionário de itens para serem mesclados com o contexto. Ver Capítulo 9.
 
 TEMPLATE_DEBUG
 --------------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This Boolean turns template debug mode on and off. If it is ``True``, the fancy
-error page will display a detailed report for any ``TemplateSyntaxError``. This
-report contains the relevant snippet of the template, with the appropriate line
-highlighted.
+Esse valor Boolean liga e desliga o modo debug do template. Se for ``True``, a página amigável de erro irá mostrar um relatório detalhado para cada ``TemplateSyntaxError``. Esse relatório contém o fragmento relevante do template, com a linha apropriada em destaque.
 
-Note that Django only displays fancy error pages if ``DEBUG`` is ``True``, so
-you'll want to set that to take advantage of this setting.
+Note que o Django somente mostra páginas amigáveis de erro se o ``DEBUG`` for ``True``, então você terá de definir isso para tirar vantagem dessa configuração.
 
-See also ``DEBUG``.
+Veja também ``DEBUG``.
 
 TEMPLATE_DIRS
 -------------
 
-*Default*: ``()`` (empty tuple)
+*Valor padrão*: ``()`` (tupla vazia)
 
-This is a list of locations of the template source files, in search order. Note that these
-paths should use Unix-style forward slashes, even on Windows. See Chapters 4 and
-9.
+Essa é a lista de localizações dos arquivos de templates, em ordem de busca. Note que estes caminhos devem usar barras Unix-style, mesmo no Windows. Ver Capítulos 4 e 9.
 
 TEMPLATE_LOADERS
 ----------------
 
-*Default*::
+*Valor padrão*::
 
     ('django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source')
 
-This is a tuple of callables (as strings) that know how to import templates from
-various sources. See Chapter 9.
+Essa é a tupla de funções (como strings) que sabem como importar templates de várias fontes. Ver Capítulo 9.
 
 TEMPLATE_STRING_IF_INVALID
 --------------------------
 
-*Default*: ``''`` (Empty string)
+*Valor padrão*: ``''`` (string vazia)
 
-This is output, as a string, that the template system should use for invalid (e.g.,
-misspelled) variables. See Chapter 9.
+Essa é a saída, como string, que o sistema de templat deve usar para variáveis inválidas (Por exemplo, grafia incorreta ). Ver Capítulo 9.
 
 TEST_RUNNER
 -----------
 
-*Default*: ``'django.test.simple.run_tests'``
+*Valor padrão*: ``'django.test.simple.run_tests'``
 
-This is the name of the method to use for starting the test suite. It is used by Django's
-testing framework, which is covered online at
-http://docs.djangoproject.com/en/dev/topics/testing/.
+Esse é o nome do método que será usado para iniciar o suíte de testes. É usado pelo framework de testes do Django, que está documentado em http://docs.djangoproject.com/en/dev/topics/testing/.
 
 TEST_DATABASE_NAME
 ------------------
 
-*Default*: ``None``
+*Valor padrão*: ``None``
 
-This is the name of database to use when running the test suite. If a value of ``None``
-is specified, the test database will use the name ``'test_' +
-settings.DATABASE_NAME``. See the documentation for Django's testing framework,
-which is covered online at http://docs.djangoproject.com/en/dev/topics/testing/.
+Esse é o nome da base de dados para usar quando está executando o suíte de tests. Se o valor ``None`` for especificado, a base de dados para teste usará o nome ``'test_' + settings.DATABASE_NAME``. Veja a documentação online para o framework de testes do Django em http://docs.djangoproject.com/en/dev/topics/testing/.
 
 TIME_FORMAT
 -----------
 
-*Default*: ``'P'`` (e.g., ``4 p.m.``)
+*Valor padrão*: ``'P'`` (Por exemplo, ``4 p.m.``)
 
-This is the default formatting to use for time fields on Django admin change-list pages
--- and, possibly, by other parts of the system. It accepts the same format as the
-``now`` tag (see Appendix E, Table E-2).
+Essa é a formatação padrão para usar em campos do tipo time nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E, Tabela E-2).
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``,
 ``YEAR_MONTH_FORMAT``, and ``MONTH_DAY_FORMAT``.
 
 TIME_ZONE
 ---------
 
-*Default*: ``'America/Chicago'``
+*Valor padrão*: ``'America/Chicago'``
 
-This is a string representing the time zone for this installation. Time zones are in the
-Unix-standard ``zic`` format. One relatively complete list of time zone strings
-can be found at
-http://www.postgresql.org/docs/8.1/static/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE.
+Essa é uma string representando o fuso horário para esta instalação. Fusos horários são no formato Unix-standard ``zic``. Uma lista relativamente completa com as strings de fusos horários pode ser encontrada em http://www.postgresql.org/docs/8.1/static/datetime-keywords.html#DATETIME-TIMEZONE-SET-TABLE.
 
-This is the time zone to which Django will convert all dates/times --
-not necessarily the time zone of the server. For example, one server may serve
-multiple Django-powered sites, each with a separate time-zone setting.
+Esse é o fuso horário que o Django irá converter todos as datas/horários -- não necessariamente o fuso horário do servidor. Por exemplo, um servidor pode servir múltiplos sites feitos com Django, cada um com uma configuração diferente de fuso horário.
 
-Normally, Django sets the ``os.environ['TZ']`` variable to the time zone you
-specify in the ``TIME_ZONE`` setting. Thus, all your views and models will
-automatically operate in the correct time zone. However, if you're using the
-manually configuring settings (described above in the section titled "Using
-Settings Without Setting DJANGO_SETTINGS_MODULE"), Django will *not* touch the
-``TZ`` environment variable, and it will be up to you to ensure your processes
-are running in the correct environment.
+Normalmente, o Django define a variável ``os.environ['TZ']`` para o fuso horário que você especificar na configuração ``TIME_ZONE``. Assim, todas suas views e models estarão automaticamente operando no fuso horário correto. Porém, se você está usando a configuração manual do arquivo de configuração (descrita acima na seção intitulada "Usando as configurações sem definir o DJANGO_SETTINGS_MODULE"), o Django *não* irá acessar a variável de ambiente ``TZ``, e estará em suas mãos garantir que seus processos estejam funcionando no ambiente correto.
 
 .. note::
-    Django cannot reliably use alternate time zones in a Windows environment. If
-    you're running Django on Windows, this variable must be set to match the
-    system time zone.
+    Django não pode, com segurança, usar fusos horários alternados no ambiente Windows. Se você está executando o Django no Windows, essa variável precisa ser definida para o fuso horário do sistema.
 
 URL_VALIDATOR_USER_AGENT
 ------------------------
 
-*Default*: ``Django/<version> (http://www.djangoproject.com/)``
+*Valor padrão*: ``Django/<version> (http://www.djangoproject.com/)``
 
-This is the string to use as the ``User-Agent`` header when checking to see if URLs
-exist (see the ``verify_exists`` option on ``URLField``; see Appendix A).
+Essa é a string para ser usada como cabeçalho ``User-Agent``, quando estiver checando para ver se as URLs existem (ver a opção ``verify_exists`` em ``URLField``; veja o Apêndice A).
 
 USE_ETAGS
 ---------
 
-*Default*: ``False``
+*Valor padrão*: ``False``
 
-This Boolean specifies whether to output the ETag header. It saves
-bandwidth but slows down performance. This is only used if ``CommonMiddleware``
-is installed (see Chapter 17).
+Esse valor Boolean especifíca se é para imprimir o cabeçalho ETag. Economiza largura de banda, mas diminui a performance. Isso é somente utilizado se ``CommonMiddleware`` estiver instalado (ver Capítulo 17).
 
 USE_I18N
 --------
 
-*Default*: ``True``
+*Valor padrão*: ``True``
 
-This Boolean specifies whether Django's internationalization system (see
-Chapter 19) should be enabled. It provides an easy way to turn off internationalization, for
-performance. If this is set to ``False``, Django will make some optimizations so
-as not to load the internationalization machinery.
+Esse valor Boolean especifica se o sistema de internacionalização do Django (ver Capítulo 19) deve ser habilitado. Fornece uma forma fácil de desligar a internacionalização, para performance. Se isso estiver definido como ``False``, o Django irá fazer algumas otimizações, tal como não carregar os mecanismos de internacionalização.
 
 YEAR_MONTH_FORMAT
 -----------------
 
-*Default*: ``'F Y'``
+*Valor padrão*: ``'F Y'``
 
-This is the default formatting to use for date fields on Django admin change-list pages
--- and, possibly, by other parts of the system -- in cases when only the year
-and month are displayed. It accepts the same format as the ``now`` tag (see
-Appendix E).
+Essa é a formatação padrão para usar em campos do tipo date nas páginas de listagem (change-list) do Django admin -- e, possivelmente, por outras partes do sistema -- em casos quando somente o ano e o mês são mostrados. Os formatos aceitos são os mesmos da tag ``now`` (ver Apêndice E).
 
-For example, when a Django admin change-list page is being filtered by a date
-drill-down, the header for a given month displays the month and the year.
-Different locales have different formats. For example, U.S. English would use
-"January 2006," whereas another locale might use "2006/January."
+Por exemplo, quando uma change-list no Django admin está filtrando por data, o cabeçalho para um determinado mês mostra o mês e o ano; Diferentes localidades têm diferentes formatos. Por exemplo, em U.S. English seria "January 2006," onde em outras localidades poderia ser "2006/January."
 
-See also ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, and
+Veja também ``DATE_FORMAT``, ``DATETIME_FORMAT``, ``TIME_FORMAT``, e
 ``MONTH_DAY_FORMAT``.

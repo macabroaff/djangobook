@@ -65,7 +65,7 @@ Appendix B: Database API Reference - [@embs] (https://github.com/embs)
 
 Appendix C: Generic View Reference - [@fernandovalente] (https://github.com/fernandovalente)
 
-Appendix D: Settings
+Appendix D: Settings - [@douglasmiranda] (https://github.com/douglasmiranda)
 
 Appendix E: Built-in Template Tags and Filters - [@BkCherry] (https://github.com/BkCherry)
 
