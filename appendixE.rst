@@ -1,43 +1,34 @@
 ==============================================
-Appendix E: Built-in Template Tags and Filters
+Apêndice E: Template Tags embutidos e Filtros
 ==============================================
 
-Chapter 4 lists a number of the most useful built-in template tags and
-filters. However, Django ships with many more built-in tags and filters.
-This appendix covers them.
+O capítulo 4 apresenta uma lista das mais úteis template tags e filtros. Entretanto, Django traz muito mais tags e filtros embutidos. Este apêndice fala sobre eles.
 
-Built-in Tag Reference
-======================
+Referência de Tag incorporada
+==============================
 
 autoescape
 ----------
 
-Control the current auto-escaping behavior. This tag takes either ``on`` or
-``off`` as an argument and that determines whether auto-escaping is in effect
-inside the block.
+Controla o comportamento atual do auto-escape. Essa tag recebe ``on`` ou ``off`` como argumento e determina se o auto-escape terá efeito no interior do bloco.
 
-When auto-escaping is in effect, all variable content has HTML escaping applied
-to it before placing the result into the output (but after any filters have
-been applied). This is equivalent to manually applying the ``escape`` filter
-to each variable.
+Quando o auto-escape é ativado, todo conteúdo da variável tem um escape HTML aplicado à ela antes da saída do resultado (mas depois de quaisquer filtros terem sido aplicados). Isso é equivalente a aplicar manualmente o filtro ``escape`` para cada variável.
 
-The only exceptions are variables that are already marked as "safe" from
-escaping, either by the code that populated the variable, or because it has had
-the ``safe`` or ``escape`` filters applied.
+A única excessão são as variáveis que já estão marcadas como "seguras" do auto-escape, tanto pelo código que popula a variável, ou porque já está com os filtros ``safe`` ou ``escape`` aplicados.
 
 block
 -----
 
-Define a block that can be overridden by child templates. See
-Chapter 4 for more information on template inheritance.
+Define um bloco que pode ser sobrescrito por um template filho. Consulte o capítulo 4 para mais informações sobre herança de modelos.
 
 comment
 -------
 
-Ignore everything between ``{% comment %}`` and ``{% endcomment %}``
+Ignora tudo entre ``{% comment %}`` e ``{% endcomment %}``.
 
 cycle
 -----
+
 
 Cycle among the given strings or variables each time this tag is encountered.
 
@@ -281,7 +272,7 @@ the order of logic would be ambiguous. For example, this is invalid::
     {% if athlete_list and coach_list or cheerleader_list %}
 
 If you need to combine ``and`` and ``or`` to do advanced logic, just use nested
-``if`` tags. For example::
+``if`` tags. Por exemplo::
 
     {% if athlete_list %}
         {% if coach_list or cheerleader_list %}
@@ -591,10 +582,9 @@ filter, if your data is in a list of dictionaries::
 spaceless
 ---------
 
-Removes whitespace between HTML tags. This includes tab
-characters and newlines.
+Remove o espaço em branco entre as tags HTML. Isso inclui tabs e quebra de linhas.
 
-Example usage::
+Exemplo de uso::
 
     {% spaceless %}
         <p>
@@ -602,12 +592,11 @@ Example usage::
         </p>
     {% endspaceless %}
 
-This example would return this HTML::
+Esse exemplo retorna o HTML seguinte::
 
     <p><a href="foo/">Foo</a></p>
 
-Only space between *tags* is removed -- not space between tags and text. In
-this example, the space around ``Hello`` won't be stripped::
+Só os espaços entre *tags* será removido -- não se aplica aos espaços entre tags e o texto. Neste exemplo, o espaço em torno do ``Hello`` não será retirado::
 
     {% spaceless %}
         <strong>
@@ -698,7 +687,7 @@ widthratio
 For creating bar charts and such, this tag calculates the ratio of a given value
 to a maximum value, and then applies that ratio to a constant.
 
-For example::
+Por exemplo::
 
     <img src="bar.gif" height="10" width="{% widthratio this_value max_value 100 %}" />
 
@@ -712,7 +701,7 @@ with
 Caches a complex variable under a simpler name. This is useful when accessing
 an "expensive" method (e.g., one that hits the database) multiple times.
 
-For example::
+Por exemplo::
 
     {% with business.employees.count as total %}
         {{ total }} employee{{ total|pluralize }}
@@ -727,592 +716,518 @@ Built-in Filter Reference
 add
 ---
 
-Adds the argument to the value.
+Adiciona o argumento ao valor.
 
-For example::
+Por exemplo::
 
-    {{ value|add:"2" }}
+    {{ valor|add:"2" }}
 
-If ``value`` is ``4``, then the output will be ``6``.
+Se ``valor`` for ``4``, então a saída será ``6``.
 
 addslashes
 ----------
 
-Adds slashes before quotes. Useful for escaping strings in CSV, for example.
+Adiciona barras antes das aspas. Útil como caractere de escape em CSV, por exemplo.
 
 capfirst
 --------
 
-Capitalizes the first character of the value.
+Coloca em maiúsculo o primeiro caractere do valor.
 
 center
 ------
 
-Centers the value in a field of a given width.
+Centraliza o valor num campo de acordo com a largura.
 
 cut
 ---
 
-Removes all values of arg from the given string.
+Remove todos os valores de uma string de acordo com seu argumento.
 
-For example::
+Por exemplo::
 
-    {{ value|cut:" "}}
+    {{ valor|cut:" "}}
 
-If ``value`` is ``"String with spaces"``, the output will be ``"Stringwithspaces"``.
+Se ``valor`` for ``"String com espaços"``, a saída será ``"Stringcomespaços"``.
 
 date
 ----
 
-Formats a date according to the given format (same as the ``{% now %}`` tag).
+Formata a data de acordo com o formato dado (o mesmo da tag ``{% now %}``).
 
-For example::
+Por exemplo::
 
-    {{ value|date:"D d M Y" }}
+    {{ valor|date:"D d M Y" }}
 
-If ``value`` is a ``datetime`` object (e.g., the result of
-``datetime.datetime.now()``), the output will be the string
-``'Wed 09 Jan 2008'``.
+Se ``valor`` for um objeto ``datetime`` (ex., o resultado de ``datetime.datetime.now()``), a saída será uma string ``"Qui 25 Jul 2013"``.
 
-When used without a format string::
+Quando usado sem o formato::
 
-    {{ value|date }}
+    {{ valor|date }}
 
-...the formatting string defined in the ``DATE_FORMAT`` setting will be
-used.
+...a sequência de formatação definida em ``DATE_FORMAT`` será utilizada.
 
 default
 -------
 
-If value evaluates to ``False``, use given default. Otherwise, use the value.
+Se o valor for avaliado como ``False``, use o padrão determinado. Caso contrário, use o valor.
 
-For example::
+Por exemplo::
 
-    {{ value|default:"nothing" }}
+    {{ valor|default:"nada" }}
 
-If ``value`` is ``""`` (the empty string), the output will be ``nothing``.
+Se ``valor`` for ``""`` (uma string vazia), a saída será ``nada``.
 
 default_if_none
 ---------------
 
-If (and only if) value is ``None``, use given default. Otherwise, use the
-value.
+Se (e somente se) o valor for ``None``, use o padrão determinado. Caso contrário, use o valor.
 
-Note that if an empty string is given, the default value will *not* be used.
-Use the ``default`` filter if you want to fallback for empty strings.
+Note que se for dada uma string vazia, o valor padrão *não* será usado.
+Use o filtro ``default`` se você quiser uma alternativa para strings vazias.
 
-For example::
+Por exemplo::
 
-    {{ value|default_if_none:"nothing" }}
+    {{ valor|default_if_none:"nada" }}
 
-If ``value`` is ``None``, the output will be the string ``"nothing"``.
+Se ``valor`` for ``None``, a saída será a string ``"nada"``
 
 dictsort
 --------
 
-Takes a list of dictionaries and returns that list sorted by the key given in
-the argument.
+Recebe uma lista de dicionários e retorna uma lista ordenada pela chave dada no argumento.
 
-For example::
+Por exemplo::
 
-    {{ value|dictsort:"name" }}
+    {{ valor|dictsort:"nome" }}
 
-If ``value`` is::
+Se ``valor`` for::
 
     [
-        {'name': 'zed', 'age': 19},
-        {'name': 'amy', 'age': 22},
-        {'name': 'joe', 'age': 31},
+        {'nome': 'zed', 'idade': 19},
+        {'nome': 'amy', 'idade': 22},
+        {'nome': 'joe', 'idade': 31},
     ]
 
-then the output would be::
+então a saída será::
 
     [
-        {'name': 'amy', 'age': 22},
-        {'name': 'joe', 'age': 31},
-        {'name': 'zed', 'age': 19},
+        {'nome': 'amy', 'idade': 22},
+        {'nome': 'joe', 'idade': 31},
+        {'nome': 'zed', 'idade': 19},
     ]
 
 dictsortreversed
 ----------------
 
-Takes a list of dictionaries and returns that list sorted in reverse order by
-the key given in the argument. This works exactly the same as the above filter,
-but the returned value will be in reverse order.
+Recebe uma lista de dicionários e retorna uma lista ordenada de modo reverso pela chave dada no argumento. Esse filtro funciona exatamente como o filtro acima, porém, o valor retornado terá uma ordem inversa.
 
 divisibleby
 -----------
 
-Returns ``True`` if the value is divisible by the argument.
+Retorna ``True`` se o valor for divisível pelo argumento.
 
-For example::
+Por exemplo::
 
-    {{ value|divisibleby:"3" }}
+    {{ valor|divisibleby:"3" }}
 
-If ``value`` is ``21``, the output would be ``True``.
+Se ``valor`` for ``21``, a saída será ``True``.
 
 escape
 ------
 
-Escapes a string's HTML. Specifically, it makes these replacements:
+Escapa uma string HTML. Especificamente, ele faz estas substituições:
 
-* ``<`` is converted to ``&lt;``
-* ``>`` is converted to ``&gt;``
-* ``'`` (single quote) is converted to ``&#39;``
-* ``"`` (double quote) is converted to ``&quot;``
-* ``&`` is converted to ``&amp;``
+* ``<`` é convertido para ``&lt;``
+* ``>`` é convertido para ``&gt;``
+* ``'`` (aspas simples) é convertido para ``&#39;``
+* ``"`` (aspas duplas) é convertido para ``&quot;``
+* ``&`` é convertido para ``&amp;``
 
-The escaping is only applied when the string is output, so it does not matter
-where in a chained sequence of filters you put ``escape``: it will always be
-applied as though it were the last filter. If you want escaping to be applied
-immediately, use the ``force_escape`` filter.
+O escape somente é aplicado quando a string é a saída, então não importa a sequência encadeada de filtros que você colocou no ``escape``: ele sempre será aplicado como se fosse o último filtro. Se você quiser que o escape seja usado imediatamente, use o filtro ``force_escape``.
 
-Applying ``escape`` to a variable that would normally have auto-escaping
-applied to the result will only result in one round of escaping being done. So
-it is safe to use this function even in auto-escaping environments. If you want
-multiple escaping passes to be applied, use the ``force_escape`` filter.
+Aplicando o ``escape`` em uma variável que normalmente já contém o auto-escape, o resultado vai produzir um escape sendo feito. Por isso é seguro usar esta função em ambientes com auto-escape. Se você quiser múltiplos escapes para serem aplicados, use o filtro ``force_escape``.
 
 escapejs
 --------
 
-Escapes characters for use in JavaScript strings. This does *not* make the
-string safe for use in HTML, but does protect you from syntax errors when using
-templates to generate JavaScript/JSON.
+Caracteres de escape para em strings JavaScript. Este *não* o torna a string segura para o uso em HTML, mas proteje você de um erro de sintaxe quando usado em templates para gerar JavaScript/JSON.
 
 filesizeformat
 --------------
 
-Format the value like a 'human-readable' file size (i.e. ``'13 KB'``,
-``'4.1 MB'``, ``'102 bytes'``, etc).
+Formata de forma legível o valor do tamanho de um arquivo (ex., ``"13 KB"``, ``"4.1 MB"``, ``"102 bytes"``, etc)
 
-For example::
+Por exemplo::
 
-    {{ value|filesizeformat }}
+    {{ valor|filesizeformat }}
 
-If ``value`` is 123456789, the output would be ``117.7 MB``.
+Se ``valor`` for 123456789, a saída será ``117.7 MB``.
 
 first
 -----
 
-Returns the first item in a list.
+Retorna o primeiro item de uma lista.
 
-For example::
+Por exemplo::
 
-    {{ value|first }}
+    {{ valor|first }}
 
-If ``value`` is the list ``['a', 'b', 'c']``, the output will be ``'a'``.
+Se ``valor`` for a lista ``['a', 'b', 'c']``, a saída será ``'a'``.
 
 fix_ampersands
 --------------
 
-Replaces ampersands with ``&amp;`` entities.
+Substitue o E comercial (&) por ``&amp;``.
 
-For example::
+Por exemplo::
 
-    {{ value|fix_ampersands }}
+    {{ valor|fix_ampersands }}
 
-If ``value`` is ``Tom & Jerry``, the output will be ``Tom &amp; Jerry``.
+Se ``valor`` for ``Tom & Jerry``, a saída será ``Tom &amp; Jerry``.
 
 floatformat
 -----------
 
-When used without an argument, rounds a floating-point number to one decimal
-place -- but only if there's a decimal part to be displayed. For example:
+Quando usado sem um argumento, arredonda um número ponto flutuante para uma casa decimal -- mas somente se houver uma parte decimal para ser exibida. Por exemplo:
 
 ============  ===========================  ========
-``value``     Template                     Output
+``valor``     Template                     Saída
 ============  ===========================  ========
-``34.23234``  ``{{ value|floatformat }}``  ``34.2``
-``34.00000``  ``{{ value|floatformat }}``  ``34``
-``34.26000``  ``{{ value|floatformat }}``  ``34.3``
+``34.23234``  ``{{ valor|floatformat }}``  ``34.2``
+``34.00000``  ``{{ valor|floatformat }}``  ``34``
+``34.26000``  ``{{ valor|floatformat }}``  ``34.3``
 ============  ===========================  ========
 
-If used with a numeric integer argument, ``floatformat`` rounds a number to
-that many decimal places. For example:
+Se usado um número inteiro como argumento, ``floatformat`` arredonda o número de acordo com o argumento passado. Por exemplo:
 
 ============  =============================  ==========
-``value``     Template                       Output
+``valor``     Template                       Saída
 ============  =============================  ==========
-``34.23234``  ``{{ value|floatformat:3 }}``  ``34.232``
-``34.00000``  ``{{ value|floatformat:3 }}``  ``34.000``
-``34.26000``  ``{{ value|floatformat:3 }}``  ``34.260``
+``34.23234``  ``{{ valor|floatformat:3 }}``  ``34.232``
+``34.00000``  ``{{ valor|floatformat:3 }}``  ``34.000``
+``34.26000``  ``{{ valor|floatformat:3 }}``  ``34.260``
 ============  =============================  ==========
 
-If the argument passed to ``floatformat`` is negative, it will round a number
-to that many decimal places -- but only if there's a decimal part to be
-displayed. For example:
+Se o argumento passado em ``floatformat`` for negativo, ele irá arredondar o número de acordo com o argumento passado -- mas somente se houver uma parte decimal para ser exibida. Por exemplo:
 
 ============  ================================  ==========
-``value``     Template                          Output
+``valor``     Template                          Saída
 ============  ================================  ==========
-``34.23234``  ``{{ value|floatformat:"-3" }}``  ``34.232``
-``34.00000``  ``{{ value|floatformat:"-3" }}``  ``34``
-``34.26000``  ``{{ value|floatformat:"-3" }}``  ``34.260``
+``34.23234``  ``{{ valor|floatformat:"-3" }}``  ``34.232``
+``34.00000``  ``{{ valor|floatformat:"-3" }}``  ``34``
+``34.26000``  ``{{ valor|floatformat:"-3" }}``  ``34.260``
 ============  ================================  ==========
 
-Using ``floatformat`` with no argument is equivalent to using ``floatformat``
-with an argument of ``-1``.
+Usando ``floatformat`` sem argumento é o mesmo que usar ``floatformat`` com argumento ``-1``
 
 force_escape
 ------------
 
-Applies HTML escaping to a string (see the ``escape`` filter for details).
-This filter is applied *immediately* and returns a new, escaped string. This
-is useful in the rare cases where you need multiple escaping or want to apply
-other filters to the escaped results. Normally, you want to use the ``escape``
-filter.
+Aplica um escape HTML em uma string (veja o filtro ``escape`` para mais detalhes).
+Esse filtro é aplicado *imediatamente* e retorna uma nova string "escapada". Isto é útil em casos raros onde você precisa de múltiplos escapes ou precisa aplicar outros filtros para resultados "escapados". Normalmente, se usa o filtro ``escape``.
 
 get_digit
 ---------
 
-Given a whole number, returns the requested digit, where 1 is the right-most
-digit, 2 is the second-right-most digit, etc. Returns the original value for
-invalid input (if input or argument is not an integer, or if argument is less
-than 1). Otherwise, output is always an integer.
+Dado um número, retorna o dígito requisitado, onde 1 é o dígito mais à direita, 2 é o dígito mais à esquerda, e etc. Retorna o valor original de uma entrada inválida (se a entrada ou argumento não for um inteiro, ou se o argumento for menor que 1). Caso contrário, a saída sempre será um inteiro.
 
-For example::
+Por exemplo::
 
-    {{ value|get_digit:"2" }}
+    {{ valor|get_digit:"2" }}
 
-If ``value`` is ``123456789``, the output will be ``8``.
+Se ``valor`` for ``123456789``, the output will be ``8``.
 
 iriencode
 ---------
 
-Converts an IRI (Internationalized Resource Identifier) to a string that is
-suitable for including in a URL. This is necessary if you're trying to use
-strings containing non-ASCII characters in a URL.
+Converte um IRI (Internationalized Resource Identifier, ou Identificador de recursos internacionalizados) para uma string adequada para incluir em uma URL. Isto é necessário se você está tentando usar strings contendo caracteres não-ASCII em uma URL
 
-It's safe to use this filter on a string that has already gone through the
-``urlencode`` filter.
+É seguro usar esse filtro em uma string que já foi passada pelo filtro ``urlencode``.
 
 join
 ----
 
-Joins a list with a string, like Python's ``str.join(list)``
+Une uma lista com uma string, como a função em Python ``str.join(list)``
 
-For example::
+Por exemplo::
 
-    {{ value|join:" // " }}
+    {{ valor|join:" // " }}
 
-If ``value`` is the list ``['a', 'b', 'c']``, the output will be the string
-``"a // b // c"``.
+Se ``valor`` for a lista ``['a', 'b', 'c']``, a saída será a string ``"a // b // c"``.
 
 last
 ----
 
-Returns the last item in a list.
+Retorna o último item de uma lista.
 
-For example::
+Por exemplo::
 
-    {{ value|last }}
+    {{ valor|last }}
 
-If ``value`` is the list ``['a', 'b', 'c', 'd']``, the output will be the string
-``"d"``.
+Se ``valor`` for a lista ``['a', 'b', 'c', 'd']``, a saída será a string ``"d"``.
 
 length
 ------
 
-Returns the length of the value. This works for both strings and lists.
+Retorna o tamanho da variável. Isto funciona tanto para strings e listas.
 
-For example::
+Por exemplo::
 
-    {{ value|length }}
+    {{ valor|length }}
 
-If ``value`` is ``['a', 'b', 'c', 'd']``, the output will be ``4``.
+Se ``valor`` for ``['a', 'b', 'c', 'd']``, a saída será ``4``.
 
 length_is
 ---------
 
-Returns ``True`` if the value's length is the argument, or ``False`` otherwise.
+Retorna ``True`` se o valor do argumento for igual ao tamanho, ou ``False`` caso contrário
 
-For example::
+Por exemplo::
 
-    {{ value|length_is:"4" }}
+    {{ valor|length_is:"4" }}
 
-If ``value`` is ``['a', 'b', 'c', 'd']``, the output will be ``True``.
+Se ``valor`` for ``['a', 'b', 'c', 'd']``, a saída será ``True``.
 
 linebreaks
 ----------
 
-Replaces line breaks in plain text with appropriate HTML; a single
-newline becomes an HTML line break (``<br />``) and a new line
-followed by a blank line becomes a paragraph break (``</p>``).
+Substitue a quebra de linha em um texto puro com o HTML apropriado; uma nova linha torna-se uma quebra de linha no padrão HTML (``<br />``) e uma nova linha seguida por uma linha em branco torna-se uma quebra de parágrafo (``</p>``).
 
-For example::
+Por exemplo::
 
-    {{ value|linebreaks }}
+    {{ valor|linebreaks }}
 
-If ``value`` is ``Joel\nis a slug``, the output will be ``<p>Joel<br />is a
-slug</p>``.
+Se ``valor`` for ``João\né um rapaz``, a saída será ``<p>João<br />é um rapaz</p>``.
 
 linebreaksbr
 ~~~~~~~~~~~~
 
-Converts all newlines in a piece of plain text to HTML line breaks
-(``<br />``).
+Converte todas as quebras de linhas em uma parte de texto em uma quebra de linha HTML (``<br />``).
 
 linenumbers
 -----------
 
-Displays text with line numbers.
+Exibe o texto com números de linha.
 
 ljust
 -----
 
-Left-aligns the value in a field of a given width.
+Alinha à esquerda o valor em um campo de uma dada largura.
 
-**Argument:** field size
+**Argumento:** tamanho do campo
 
 lower
 -----
 
-Converts a string into all lowercase.
+Converte toda string para minúsculo.
 
-For example::
+Por exemplo::
 
-    {{ value|lower }}
+    {{ valor|lower }}
 
-If ``value`` is ``Still MAD At Yoko``, the output will be ``still mad at yoko``.
+Se ``valor`` for ``Continuo COM RAIVA da Yoko``, a saída será ``continuo com raiva da yoko``.
 
 make_list
 ---------
 
-Returns the value turned into a list. For an integer, it's a list of
-digits. For a string, it's a list of characters.
+Retorna o valor transformado em uma lista. Para um inteiro, uma lista de dígitos. Para uma string, uma lista de caracteres.
 
-For example::
+Por exemplo::
 
-    {{ value|make_list }}
+    {{ valor|make_list }}
 
-If ``value`` is the string ``"Joel"``, the output would be the list
-``[u'J', u'o', u'e', u'l']``. If ``value`` is ``123``, the output will be the
-list ``[1, 2, 3]``.
+Se ``valor`` for a string ``"João"``, ocasionará a lista ``[u'J', u'o', u'ã', u'o']``. Se ``valor`` for ``123``, a saída será a lista ``[1, 2, 3]``.
 
 phone2numeric
 -------------
 
-Converts a phone number (possibly containing letters) to its numerical
-equivalent. For example, ``'800-COLLECT'`` will be converted to
-``'800-2655328'``.
+Converte um número de telefone (possivelmente contento letras) para o seu equivalente numérico. Por exemplo, ``"0800-COLLECT"`` será convertido para ``"0800-2655328"``.
 
-The input doesn't have to be a valid phone number. This will happily convert
-any string.
+A entrada não tem que ser um telefone válido. Essa função converte qualquer string.
 
-pluralize
+pluralize (revisar)
 ---------
 
-Returns a plural suffix if the value is not 1. By default, this suffix is ``'s'``.
+Retorna um sufixo plural se o valor não for 1. Por padrão, esse sufixo é ``"s"``.
 
-Example::
+Exemplo::
 
-    You have {{ num_messages }} message{{ num_messages|pluralize }}.
+    Você tem {{ num_mensagens }} mensagen{{ num_messagens|pluralize }}.
 
-For words that require a suffix other than ``'s'``, you can provide an alternate
-suffix as a parameter to the filter.
+Para palavras que exigem um outro sufixo que ``"s"``, você pode providenciar um sufixo alternativo como um parâmetro para o filtro.
 
-Example::
+Exemplo::
 
-    You have {{ num_walruses }} walrus{{ num_walrus|pluralize:"es" }}.
+    Você tem {{ num_morsas }} mors{{ num_morsas|pluralize:"as" }}.
 
-For words that don't pluralize by simple suffix, you can specify both a
-singular and plural suffix, separated by a comma.
+Para palavras que não são pluralizadas por sufixos simples, você pode especificar o seu sufixos, singular e plural, separados por uma vírgula.
 
-Example::
+Exemplo::
+    
+    Você tem {{ num_grampeadores }} grampeado{{ num_grampeadores|pluralize:"r, res" }}.
 
-    You have {{ num_cherries }} cherr{{ num_cherries|pluralize:"y,ies" }}.
-
-pprint
+pprint (revisar)
 ------
 
-A wrapper around the Python standard library's ``pprint.pprint`` function --
-for debugging, really.
+Um invólucro em torno da biblioteca padrão em Python da função ``pprint.pprint`` -- para debug, apenas.
 
 random
 ------
 
-Returns a random item from the given list.
+Retorna um item aleatório de uma dada lista.
 
-For example::
+Por exemplo::
 
-    {{ value|random }}
+    {{ valor|random }}
 
-If ``value`` is the list ``['a', 'b', 'c', 'd']``, the output could be ``"b"``.
+Se ``valor`` for a lista ``['a', 'b', 'c', 'd']``, a saída poderá ser ``"b"``.
 
 removetags
 ----------
 
-Removes a space-separated list of [X]HTML tags from the output.
+Remove os espaços de separação de uma lista de tags [X]HTML.
 
-For example::
+Por exemplo::
 
-    {{ value|removetags:"b span"|safe }}
+    {{ valor|removetags:"b span"|safe }}
 
-If ``value`` is ``"<b>Joel</b> <button>is</button> a <span>slug</span>"`` the
-output will be ``"Joel <button>is</button> a slug"``.
+Se ``valor`` for ``"<b>João</b> <button>é</button> um <span>rapaz</span>"`` a saída será ``"João <button>é</button> um rapaz"``.
 
 rjust
 -----
 
-Right-aligns the value in a field of a given width.
+Alinha à direita o valor do campo de uma dada largura.
 
-**Argument:** field size
+**Argumento:** tamanho do campo
 
 safe
 ----
 
-Marks a string as not requiring further HTML escaping prior to output. When
-autoescaping is off, this filter has no effect.
+Marca uma string como não necessitando de um escape HTML, antes de sua saída. Quando o auto-escape não está ativado, esse filtro não tem efeito algum.
 
 safeseq
 -------
 
-Applies the ``safe`` filter to each element of a sequence.  Useful in
-conjunction with other filters that operate on sequences, such as
-``join``.  For example::
+Aplica o filtro ``safe`` para cada elemento de uma sequência. Útil em conjunto com outros filtros que operam em sequência, como ``join``.
 
-    {{ some_list|safeseq|join:", " }}
+ Por exemplo::
 
-You couldn't use the ``safe`` filter directly in this case, as it would
-first convert the variable into a string, rather than working with the
-individual elements of the sequence.
+    {{ lista|safeseq|join:", " }}
 
-slice
+Você não pode usar o filtro ``safe`` diretamente nesse caso, uma vez que primeiro converteria a variável em uma string, ao invés de trabalhar com os elementos individuais da sequência.
+
+slice (revisar)
 -----
 
-Returns a slice of the list.
+Retorna uma parte de uma lista
 
-Uses the same syntax as Python's list slicing. See
-http://diveintopython.org/native_data_types/lists.html#odbchelper.list.slice
-for an introduction.
+Usa a mesma sintaxe Python que utiliza um mecanismo para criar "fatias" de uma lista.
 
-Example::
+Exemplo::
 
-    {{ some_list|slice:":2" }}
+    {{ lista|slice:":2" }}
 
 slugify
 -------
 
-Converts to lowercase, removes non-word characters (only alphanumerics and
-underscores are kept) and converts spaces to hyphens. Also strips leading and trailing
-whitespace.
+Converte para minúsculo, remove os caracteres que não são palavras (apenas alfanuméricos e underlines são mantidos) e transforma espaços em hífens. Também remove os espaços em branco da direita e da esquerda.
 
-For example::
+Por exemplo::
 
-    {{ value|slugify }}
+    {{ valor|slugify }}
 
-If ``value`` is ``"Joel is a slug"``, the output will be ``"joel-is-a-slug"``.
+Se ``valor`` for ``"João é um rapaz"``, a saída será ``"joao-e-um-rapaz"``.
 
 stringformat
 ------------
 
-Formats the variable according to the argument, a string formatting specifier.
-This specifier uses Python string formatting syntax, with the exception that
-the leading "%" is dropped.
+Formata a variável de acordo com o argumento, um formatador de string específico.
+Este formatador utiliza a sintaxe Python de formatação de strings, com excessão do "%" que foi descartado.
 
-See http://docs.python.org/library/stdtypes.html#string-formatting-operations
-for documentation of Python string formatting.
 
-For example::
+Por exemplo::
 
-    {{ value|stringformat:"s" }}
+    {{ valor|stringformat:"s" }}
 
-If ``value`` is ``"Joel is a slug"``, the output will be ``"Joel is a slug"``.
+Se ``valor`` for ``"João é um rapaz"``, a saída será ``"João é um rapaz"``.
 
 striptags
 ---------
 
-Strips all [X]HTML tags.
+Remove todas as tags [X]HTML.
 
-For example::
+Por exemplo::
 
-    {{ value|striptags }}
+    {{ valor|striptags }}
 
-If ``value`` is ``"<b>Joel</b> <button>is</button> a <span>slug</span>"``, the
-output will be ``"Joel is a slug"``.
+Se ``valor`` for ``"<b>João</b> <button>é</button> um <span>rapaz</span>"``, a saída será ``"João é um rapaz"``.
 
 time
 ----
 
-Formats a time according to the given format (same as the `now`_ tag).
-The time filter will only accept parameters in the format string that relate
-to the time of day, not the date (for obvious reasons). If you need to
-format a date, use the `date`_ filter.
+Define o tempo de acordo com um formato dado (o mesmo que a tag `now`_).
+O filtro ``time`` só aceitará parâmetros com o formato string que relacionem com a hora do dia, e não a data (por razões óbvias). Se você quiser um formato de data, utilize o filtro ``data``_.
 
-For example::
+Por exemplo::
 
-    {{ value|time:"H:i" }}
+    {{ valor|time:"H:i" }}
 
-If ``value`` is equivalent to ``datetime.datetime.now()``, the output will be
-the string ``"01:23"``.
+Se ``valor`` for equivalente a ``datetime.datetime.now()``, a saída será a string ``"01:23"``.
 
-When used without a format string::
+Quando usado sem uma formatação string::
 
-    {{ value|time }}
+    {{ valor|time }}
 
-...the formatting string defined in the ``TIME_FORMAT`` setting will be
-used.
+...será usado o formato definido em ``TIME_FORMAT``.
 
-timesince
+timesince (revisar)
 ---------
 
-Formats a date as the time since that date (e.g., "4 days, 6 hours").
+Formata a data como tempo desde essa date (ex., "4 dias, 6 horas").
 
-Takes an optional argument that is a variable containing the date to use as
-the comparison point (without the argument, the comparison point is *now*).
-For example, if ``blog_date`` is a date instance representing midnight on 1
-June 2006, and ``comment_date`` is a date instance for 08:00 on 1 June 2006,
-then ``{{ blog_date|timesince:comment_date }}`` would return "8 hours".
+Recebe um argumento opcional que é uma variável contendo a data a ser usada como ponto de comparação (sem argumento, o ponto de comparação é *now*). Por exemplo, se ``blog_data`` é uma instância de uma data representando meia-noite de 25 de Julho de 2013, e ``comentario_data`` for uma instância de 08:00 de 25 de Julho de 2013, então ``{{ blog_data|timesince:comentario_data }}`` retornaria "8 horas".
 
 Comparing offset-naive and offset-aware datetimes will return an empty string.
 
-Minutes is the smallest unit used, and "0 minutes" will be returned for any
-date that is in the future relative to the comparison point.
+Minutos são as menores unidades usadas, "0 minutos" serão tranformados em qualquer data que seja no futuro em relação ao ponto de comparação.
 
-timeuntil
+timeuntil (revisar)
 ---------
 
-Similar to ``timesince``, except that it measures the time from now until the
-given date or datetime. For example, if today is 1 June 2006 and
-``conference_date`` is a date instance holding 29 June 2006, then
-``{{ conference_date|timeuntil }}`` will return "4 weeks".
+Similar ao ``timesince``, exceto pelo fato de que ele mete o tempo atual até uma dada data ou hora. Por exemplo, se hoje é 1 de Junho de 2013 e ``data_conferencia`` é uma instância de data marcando 26 de Junho de 2013, então ``{{ data_conferencia|timeuntil }}`` irá retornar "4 semanas".
 
-Takes an optional argument that is a variable containing the date to use as
-the comparison point (instead of *now*). If ``from_date`` contains 22 June
-2006, then ``{{ conference_date|timeuntil:from_date }}`` will return "1 week".
+Recebe um argumento opcional que é uma variável contendo uma data usada como ponto de comparação (em vez de *now*). Se ``desde_a_data`` for 22 de Junho de 2006, então ``{{ data_conferencia|timeuntil:desde_a_data }}`` irá retornar "1 semana".
 
 Comparing offset-naive and offset-aware datetimes will return an empty string.
 
-Minutes is the smallest unit used, and "0 minutes" will be returned for any
-date that is in the past relative to the comparison point.
+Minutos são as menores unidades usadas, "0 minutos" serão tranformados em qualquer data que está no passado em relação ao ponto de comparação.
+
 
 title
 -----
 
-Converts a string into titlecase.
+Converte a string em maiúscula (no formato de "Título")
 
 truncatewords
 -------------
 
-Truncates a string after a certain number of words.
+Trunca uma string depois de um certo número de palavras.
 
-**Argument:** Number of words to truncate after
+**Argumento:** Número de palavras para serem truncadas 
 
-For example::
+Por exemplo::
 
-    {{ value|truncatewords:2 }}
+    {{ valor|truncatewords:2 }}
 
-If ``value`` is ``"Joel is a slug"``, the output will be ``"Joel is ..."``.
+Se ``valor`` for ``"João é um rapaz"``, a saída será ``"João é ..."``.
 
 truncatewords_html
 ------------------
 
-Similar to ``truncatewords``, except that it is aware of HTML tags. Any tags
-that are opened in the string and not closed before the truncation point, are
-closed immediately after the truncation.
+Similar ao ``truncatewords``, exceto pelo fato de ser usada em tags HTML. Qualquer tag que for aberta na string e não fechado antes do ponto de truncagem, serão fechadas imediatamente após o truncamento.
 
-This is less efficient than ``truncatewords``, so should only be used when it
-is being passed HTML text.
+Essa função é menos eficiente que ``truncatewords``, então deve ser usada somente quando for passado um texto HTML.
 
 unordered_list
 --------------
@@ -1339,34 +1254,31 @@ The list is assumed to be in the proper format. For example, if ``var`` contains
 upper
 -----
 
-Converts a string into all uppercase.
+Converte toda uma string em maiúscula.
 
-For example::
+Por exemplo::
 
-    {{ value|upper }}
+    {{ valor|upper }}
 
-If ``value`` is ``"Joel is a slug"``, the output will be ``"JOEL IS A SLUG"``.
+Se ``valor`` for ``"João é um rapaz"``, a saída será ``"JOÃO É UM RAPAZ"``.
 
 urlencode
 ---------
 
-Escapes a value for use in a URL.
+Escapa um valor para ser usado na URL.
 
 urlize
 ------
 
-Converts URLs in plain text into clickable links.
+Converte as URLs do texto em links clicáveis.
 
-Note that if ``urlize`` is applied to text that already contains HTML markup,
-things won't work as expected. Apply this filter only to *plain* text.
+Note que se a função ``urlize`` é aplicada em um texto que já contém a marcação HTML, o filtro não funcionará como esperado. Aplique este filtro somente nos textos *simples*
 
-For example::
+Por exemplo::
 
-    {{ value|urlize }}
+    {{ valor|urlize }}
 
-If ``value`` is ``"Check out www.djangoproject.com"``, the output will be
-``"Check out <a
-href="http://www.djangoproject.com">www.djangoproject.com</a>"``.
+Se ``valor`` for ``"Saiba mais em www.djangoproject.com"``, a saída será ``"Saiba mais em <a href="http://www.djangoproject.com">www.djangoproject.com</a>"``.
 
 urlizetrunc
 -----------
@@ -1378,46 +1290,45 @@ As with urlize_, this filter should only be applied to *plain* text.
 
 **Argument:** Length to truncate URLs to
 
-For example::
+Por exemplo::
 
-    {{ value|urlizetrunc:15 }}
+    {{ valor|urlizetrunc:15 }}
 
-If ``value`` is ``"Check out www.djangoproject.com"``, the output would be
+Se ``valor`` is ``"Check out www.djangoproject.com"``, the output would be
 ``'Check out <a
 href="http://www.djangoproject.com">www.djangopr...</a>'``.
 
 wordcount
 ---------
 
-Returns the number of words.
+Retorna o número de palavras.
 
 wordwrap
 --------
 
-Wraps words at specified line length.
+Quebra palavras com um comprimento específico.
 
-**Argument:** number of characters at which to wrap the text
+**Argumento:** número de caracteres no qual o texto será quebrado
 
-For example::
+Por exemplo::
 
-    {{ value|wordwrap:5 }}
+    {{ valor|wordwrap:5 }}
 
-If ``value`` is ``Joel is a slug``, the output would be::
+Se ``valor`` for ``João é um rapaz``, a saída será::
 
-    Joel
-    is a
-    slug
+    João
+    é um
+    rapaz
 
 yesno
 -----
 
-Given a string mapping values for ``True``, ``False``, and (optionally) ``None``,
-returns one of those strings according to the value (see Table F-4).
+Dado um mapeamento de strings com valores ``True``, ``False``, e (opcionalmente) ``None``, retorna uma destas sequências de acordo com o valor (veja Tabela F-4).
 
-.. table:: Table E-4. Examples of the yesno Filter
+.. table:: Tabela E-4. Exemplos de filtro yesno
 
     ==========  ======================  ==================================
-    Value       Argument                Outputs
+    Valor       Argumento               Saída
     ==========  ======================  ==================================
     ``True``    ``"yeah,no,maybe"``     ``yeah``
     ``False``   ``"yeah,no,maybe"``     ``no``
