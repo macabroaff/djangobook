@@ -74,3 +74,6 @@ Appendix F: The django-admin Utility
 Appendix G: Request and Response Objects [@bkcherry] (https://github.com/bkcherry)
 
 License & Copyright - aberto [@londerson] (https://github.com/londerson)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Londerson/djangobook/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
