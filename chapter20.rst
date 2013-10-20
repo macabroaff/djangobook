@@ -1,131 +1,129 @@
-====================
-Chapter 20: Security
-====================
+======================
+Capítulo 20: Segurança
+======================
 
-The Internet can be a scary place.
+A Internet pode ser um lugar assustador.
 
-These days, high-profile security gaffes seem to crop up on a daily basis. We've
-seen viruses spread with amazing speed, swarms of compromised computers wielded as
-weapons, a never-ending arms race against spammers, and many, many reports of
-identify theft from hacked Web sites.
+Atualmente, gafes de segurança de alto nível parecem surgir diariamente. Temos visto
+vírus sendo espalhados em uma velocidade incrível, enxames de computadores comprometidos exercido como
+armas, a corrida armamentista incessante contra spammers, e muitos, muitos relatos de
+roubo de identidade de sites hackeados.
 
-As Web developers, we have a duty to do what we can to combat these forces
-of darkness. Every Web developer needs to treat security as a fundamental
-aspect of Web programming. Unfortunately, it turns out that implementing security is *hard*
--- attackers need to find only a single vulnerability, but defenders have to
-protect every single one.
+Como desenvolvedores Web, temos o dever de fazer o que for necessário para combater essas forças
+das trevas. Todo desenvolvedor Web precisa encarar a segurança como um aspecto fundamental
+da programação web. Infelizmente, verifica-se que implementar a segurança é *difícil*
+- Atacantes precisam achar apenas uma vulnerabilidade, mas os defensores têm que
+proteger cada uma delas.
 
-Django attempts to mitigate this difficulty. It's designed to automatically
-protect you from many of the common security mistakes that new (and even
-experienced) Web developers make. Still, it's important to understand what
-these problems are, how Django protects you, and -- most important -- the
-steps you can take to make your code even more secure.
+O Django tenta atenuar esta dificuldade. Ele foi projetado para automaticamente
+protegê-lo de muitos dos erros comuns de segurança que novos (e mesmo
+experientes) desenvolvedores Web cometem. Mesmo assim, é importante entender quais
+são esses problemas, como o Django protege você, e - mais importante - os
+passos que você pode tomar para tornar o código mais seguro.
 
-First, though, an important disclaimer: We do not intend to present a
-definitive guide to every known Web security exploit, and so we won't try to
-explain each vulnerability in a comprehensive manner. Instead, we'll give a
-short synopsis of security problems as they apply to Django.
+Primeiro, porém, um aviso importante: Não temos a intenção de apresentar um
+guia definitivo para todos os exploits de segurança Web conhecidos, e por isso não vamos tentar
+explicar cada vulnerabilidade de forma abrangente. Em vez disso, vamos dar um 
+breve resumo de como os problemas de segurança se aplicam ao Django.
 
-The Theme of Web Security
-=========================
+O Tema da Segurança Web
+=======================
 
-If you learn only one thing from this chapter, let it be this:
+Se você aprender apenas uma coisa desse capítulo, será isso:
 
-    Never -- under any circumstances -- trust data from the browser.
+Nunca -- sob quaisquer circunstância -- confie nos dados de um navegador.
 
-You *never* know who's on the other side of that HTTP connection. It might be
-one of your users, but it just as easily could be a nefarious cracker looking
-for an opening.
+Você *nunca* sabe quem está do outro lado da conexão HTTP. Seria um de seus usuários,
+mas poderia facilmente ser um cracker nefasto procurando por uma abertura.
 
-Any data of any nature that comes from the browser needs to be treated with a
-healthy dose of paranoia. This includes data that's both "in band" (i.e.,
-submitted from Web forms) and "out of band" (i.e., HTTP headers, cookies,
-and other request information). It's trivial to spoof the request metadata that
-browsers usually add automatically.
+Quaisquer dados de qualquer natureza vindo do navegador precisa ser tratado
+com uma saudável dose de paranóia. Isso inclue dados que sãp tanto "na banda" (ou seja, 
+submetido pelos formulários Web) e "fora da banda" (ou seja, cabeçalhos HTTP, cookies,
+e outras informações requisitadas). É trivial falsificar requisições metadata que
+navegadores geralmente adicionam automaticamente.
 
-Every one of the vulnerabilities discussed in this chapter stems directly from
-trusting data that comes over the wire and then failing to sanitize that data
-before using it. You should make it a general practice to continuously ask,
-"Where does this data come from?"
+Cada uma das vulnerabilidades abordadas nesse capítulo decorrem de confiar diretamente
+em dados vindos da rede e depois a falta da limpeza dos dados antes de usá-los. Você 
+deveria fazer a prática geral de se questionar continuamente, "De onde os dados vieram?"
 
 SQL Injection
 =============
 
-*SQL injection* is a common exploit in which an attacker alters Web page
-parameters (such as ``GET``/``POST`` data or URLs) to insert arbitrary SQL
-snippets that a naive Web application executes in its database directly. It's
-probably the most dangerous -- and, unfortunately, one of the most common --
-vulnerabilities out there.
+*Injeção de SQL* é um exploit comum na qual um atacante altera os parâmetros
+da página Web (tal como dados ``GET``/``POST`` ou URLs) para inserir trechos
+arbitrários de SQL que uma ingênua aplicação Web executa diratamente em seu
+banco de dados. É provavelmente a mais perigosa -- e, infelizmente, a mais
+comum -- vulnerabilidade lá fora.
 
-This vulnerability most commonly crops up when constructing SQL "by hand" from
-user input. For example, imagine writing a function to gather a list of
-contact information from a contact search page. To prevent spammers from reading
-every single e-mail in our system, we'll force the user to type in someone's
-username before providing her e-mail address::
+Essa vulnerabilidade geralmente surge ao construir o SQL "na mão" pela entrada do
+usuário. Por exemplo, imagine escrever uma função para reunir uma lista de informações
+de contato de uma página de busca de contatos. Para prevenir spammers de ler cada
+um dos e-mails de seu sistema, nós forçamos o usário a digitar o nome do usuário de 
+alguém antes de fornecer seu endereço de email::
 
     def user_contacts(request):
         user = request.GET['username']
         sql = "SELECT * FROM user_contacts WHERE username = '%s';" % username
-        # execute the SQL here...
+        # executa o SQL aqui...
 
-.. note::
+.. nota::
 
-    In this example, and all similar "don't do this" examples that follow,
-    we've deliberately left out most of the code needed to make the functions
-    actually work. We don't want this code to work if someone accidentally
-    takes it out of context.
+    Nesse exemplo, e em todos os exemplos "não faça isso" similadres a seguir,
+    nós deliberadamente deixamos de fora a maioria do código necessário para
+    fazer as funções realmente funcionarem. Nós não queremos que o código funcione,
+    se alguém acidentalmente levá-lo fora do contexto.
 
-Though at first this doesn't look dangerous, it really is.
+Embora a princípio isso não pareça perigoso, ele realmente é.
 
-First, our attempt at protecting our entire e-mail list will fail with a
-cleverly constructed query. Think about what happens if an attacker types
-``"' OR 'a'='a"`` into the query box. In that case, the query that the string
-interpolation will construct will be::
+Primeiramente, a nossa tentativa de proteger nossa lista inteira de e-mail falhará 
+com uma query habilmente construída. Pense sobre o que acontece se o atacante digitar
+``"' OR 'a'='a"`` na caixa de consulta. Nesse caso, a query que a interpolação da string
+irá construir será::
 
     SELECT * FROM user_contacts WHERE username = '' OR 'a' = 'a';
 
-Because we allowed unsecured SQL into the string, the attacker's added ``OR``
-clause ensures that every single row is returned.
+Por permitimos um SQL inseguro na string, o atancante adicionou a cláusula ``OR``
+garantindo que cara linha seja retornada.
 
-However, that's the *least* scary attack. Imagine what will happen if the
-attacker submits ``"'; DELETE FROM user_contacts WHERE 'a' = 'a"``. We'll end
-up with this complete query::
+No entanto, esse é o ataque *menos* assustador. Imagine o que acontece se cada
+atacante enviar ``"'; DELETE FROM user_contacts WHERE 'a' = 'a"``. Vamos acabar
+com essa query completa::
 
     SELECT * FROM user_contacts WHERE username = ''; DELETE FROM user_contacts WHERE 'a' = 'a';
 
-Yikes! Our entire contact list would be deleted instantly.
+Caramba! Nossa lista de contatos inteira será deletada imediatamente.
 
-The Solution
-------------
+A Solução
+---------
 
-Although this problem is insidious and sometimes hard to spot, the solution is
-simple: *never* trust user-submitted data, and *always* escape it when passing
-it into SQL.
+Embora esse problema é insidioso e as vezes difícil de detectar, a solução
+é simples: *nunca* confie nos dados submitidos pelo usuário, e *sempre* escape 
+ao passar para o SQL.
 
-The Django database API does this for you. It automatically escapes all
-special SQL parameters, according to the quoting conventions of the database
-server you're using (e.g., PostgreSQL or MySQL).
+O banco de dados do Django API faz isso para você. Ele automaticamente escapa
+todos os parâmetros especiais SQL, de acordo com convenções de citação do
+servidor do banco de dados que você está usando (e.x., PostgreSQL ou MySQL).
 
-For example, in this API call::
+Por exemplo, nessa chamada API::
 
     foo.get_list(bar__exact="' OR 1=1")
 
-Django will escape the input accordingly, resulting in a statement like this::
+O Django irá escapar a entrada nesse sentido, resultando em uma declaração como esta::
 
     SELECT * FROM foos WHERE bar = '\' OR 1=1'
 
-Completely harmless.
+Completamente inofensivo.    
 
-This applies to the entire Django database API, with a couple of exceptions:
+Isso se aplica a todos os bancos de dados do Django API, com algumas excessões:
 
-* The ``where`` argument to the ``extra()`` method. (See Appendix C.)
-  That parameter accepts raw SQL by design.
+* O método ``where`` argumenta para o ``extra()``. (Olhe o Apêndice C.)
+  Esse parâmetro aceita SQL puro por design.
 
-* Queries done "by hand" using the lower-level database API. (See Chapter 10.)
+* Queries feitas "na mão" usando o banco de dados de baixo nível da API. (Veja Capítulo 10.)
 
-In each of these cases, it's easy to keep yourself protected. In each case,
-avoid string interpolation in favor of passing in *bind parameters*. That is,
-the example we started this section with should be written as follows::
+Em cada um dos casos, é fácil manter-se protegido. Em cada caso, evite a interpolação 
+de string para favorecer a passagem de *bind parameters*. Ou seja, o exemplo que iniciou
+esse seção deve ser escrita seguinte forma::
 
     from django.db import connection
 
@@ -136,24 +134,24 @@ the example we started this section with should be written as follows::
         cursor.execute(sql, [user])
         # ... do something with the results
 
-The low-level ``execute`` method takes a SQL string with ``%s`` placeholders
-and automatically escapes and inserts parameters from the list passed as the
-second argument. You should *always* construct custom SQL this way.
-
-Unfortunately, you can't use bind parameters everywhere in SQL; they're not
-allowed as identifiers (i.e., table or column names). Thus, if you need to,
-say, dynamically construct a list of tables from a ``POST`` variable, you'll
-need to escape that name in your code. Django provides a function,
-``django.db.connection.ops.quote_name``, which will escape the identifier
-according to the current database's quoting scheme.
+O método baixo-nível ` execute`` pega a string SQL com o espaço reservado ``%s`` 
+e automaticamente escapa e insere parâmetros da lista passada como segundo argumento.
+Você deve *sempre* construir SQL personalizados dessa forma.
+        
+Infelizmente, você não pode usar parâmetros de vinculação em todos os lugares no SQL;
+eles não são permitidos como identificadores (ou seja, tabelas ou nomes de colunas).
+Assim, se você precisar, dizer, construir dinamicamente uma lista de tabelas de uma
+variável ``POST``, você precisa escapar o nome no seu código. O Django fornece uma função,
+``django.db.connection.ops.quote_name``, que vai escapar o identificador de acordo
+com o esquema de citação atual do banco de dados.
 
 Cross-Site Scripting (XSS)
 ==========================
 
-*Cross-site scripting* (XSS), is found in Web applications that fail to
-escape user-submitted content properly before rendering it into HTML. This
-allows an attacker to insert arbitrary HTML into your Web page, usually in the
-form of ``<script>`` tags.
+*Cross-site scripting* (XSS), é encontrado em aplicações Web que falham ao
+escapar conteúdos submetidos corretamente pelo usuário antes de renderizar no
+HTML. Isso permite ao atacante inserir HTML arbitrário na sua página Web, 
+geralmente na forma da tag ``<script>``.
 
 Attackers often use XSS attacks to steal cookie and session information, or to trick
 users into giving private information to the wrong person (aka *phishing*).
