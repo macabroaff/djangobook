@@ -153,12 +153,13 @@ escapar conteúdos submetidos corretamente pelo usuário antes de renderizar no
 HTML. Isso permite ao atacante inserir HTML arbitrário na sua página Web, 
 geralmente na forma da tag ``<script>``.
 
-Attackers often use XSS attacks to steal cookie and session information, or to trick
-users into giving private information to the wrong person (aka *phishing*).
+Atacantes costumam usar ataques XSS para roubar cookies e informações de sessão, ou
+para enganar usuários ao dar informações privadas para a pessoa errada (conhecido como 
+*pishing*).
 
-This type of attack can take a number of different forms and has almost
-infinite permutations, so we'll just look at a typical example. Consider this
-extremely simple "Hello, World" view::
+Esse tipo de ataque pode tomar diferentes formas e possui geralmente infinitas permutações,
+então nós vamos procurar um exemplo típico. Considere essa view "Hello, Word" extremamente 
+simples::
 
     from django.http import HttpResponse
 
@@ -166,47 +167,46 @@ extremely simple "Hello, World" view::
         name = request.GET.get('name', 'world')
         return HttpResponse('<h1>Hello, %s!</h1>' % name)
 
-This view simply reads a name from a ``GET`` parameter and passes that name
-into the generated HTML. So, if we accessed
-``http://example.com/hello/?name=Jacob``, the page would contain this::
+Essa view simplesmente lê o nome do parâmetro ``GET`` e passa esse nome para o 
+HTML gerado. Então, se nós acessarmos ``http://example.com/hello/?name=Jacob``,
+a página iria conter isso::
 
     <h1>Hello, Jacob!</h1>
 
-But wait -- what happens if we access
-``http://example.com/hello/?name=<i>Jacob</i>``? Then we get this::
+Mas espere -- o que acontece se acessarmos     
+``http://example.com/hello/?name=<i>Jacob</i>``? Então nós temos isso::
 
     <h1>Hello, <i>Jacob</i>!</h1>
 
-Of course, an attacker wouldn't use something as benign as ``<i>`` tags; he
-could include a whole set of HTML that hijacked your page with arbitrary
-content. This type of attack has been used to trick users into entering data
-into what looks like their bank's Web site, but in fact is an XSS-hijacked form
-that submits their back account information to an attacker.
+É claro, um atacante não iria usar algo começando com a tag ``<i>``; ele
+poderia incluir um conjunto de HTML para dar um hijack em sua página com conteúdo
+arbitrário. Esse tipo de ataque tem sido usado para induzir usuários a inserir
+dados no que parece seu site bancário, mas na verdade é uma forma de XSS-hijacked
+que envia as informações de conta de volta ao atacante.
 
-The problem gets worse if you store this data in the database and later display it
-it on your site. For example, MySpace was once found to be vulnerable to an XSS
-attack of this nature. A user inserted JavaScript into his profile that automatically
-added him as your friend when you visited his profile page. Within a few days, he had
-millions of friends.
+O problema fica ainda pior se você armazenar os dados no banco de dados e depois
+exibi-lo em seu site. Por exemplo, o MySpace já foi encontrado vulnerável a ataques
+XSS dessa natureza. Um usuário inseriu um JavaScript no seu perfil que automaticamente
+adicionou ele aos seus amigos quando você visitou o seu perfil. Dentro de alguns dias,
+ele teve milhões de amigos.
 
-Now, this may sound relatively benign, but keep in mind that this attacker
-managed to get *his* code -- not MySpace's -- running on *your* computer. This
-violates the assumed trust that all the code on MySpace is actually written
-by MySpace.
+Agora, isso pode parecer relativamente benígno, mas tenha em mente que esse atacante
+conseguiu o *seu* código -- não o do MySpace -- executando em *seu* computador. Isso
+viola a confiança assumida que todo código do MySpace é escrito pelo MySpace.
 
-MySpace was extremely lucky that this malicious code didn't automatically
-delete viewers' accounts, change their passwords, flood the site with spam, or
-any of the other nightmare scenarios this vulnerability unleashes.
+O MySpace fo extremamente sortudo por esse código malicioso não ter deletado automaticamente
+as contas dos visitantes, mudado suas senhas, inundado o site com spam, ou qualquer
+outro tipo de cenários de pesadelos que essa vulnerabilidade desencadeia.
 
-The Solution
-------------
+A Solução
+---------
 
-The solution is simple: *always* escape *any* content that might have come
-from a user before inserting it into HTML.
+A solução é simples: *sempre* escape *qualquer* conteúdo que poderia ter vindo
+de um usuário antes de inseri-lo no HTML.
 
-To guard against this, Django's template system automatically escapes all
-variable values. Let's see what happens if we rewrite our example using the
-template system::
+Para se proteger, o sistema de template do Django automaticamente escapa todos os
+valores de variáveis. Vamos ver o que acontece se reescrevemos nosso exemplo usando
+o sistema de template::
 
     # views.py
 
@@ -220,173 +220,173 @@ template system::
 
     <h1>Hello, {{ name }}!</h1>
 
-With this in place, a request to ``http://example.com/hello/name=<i>Jacob</i>``
-will result in the following page::
+Com isso no lugar, um pedido para ``http://example.com/hello/name=<i>Jacob</i>``
+irá resultar na seguinte página::
 
     <h1>Hello, &lt;i&gt;Jacob&lt;/i&gt;!</h1>
 
-We covered Django's auto-escaping back in Chapter 4, along with ways to turn
-it off. But even if you're using this feature, you should *still* get in the
-habit of asking yourself, at all times, "Where does this data come from?" No
-automatic solution will ever protect your site from XSS attacks 100% of the
-time.
+Nós cobrimos o auto-escape do Django, anteriormente no Capítulo 4, juntamente 
+com maneiras de transformá-lo. Mas, mesmo se você estiver usando esse
+recurso, você deveria *ainda* pegar o hábito de se perguntar, sempre, 
+"De onde os dados vêm?" Nenhuma solução automática irá previnir o seu site
+de ataques XSS 100% do tempo.
 
 Cross-Site Request Forgery
 ==========================
 
-Cross-site request forgery (CSRF) happens when a malicious Web site tricks users
-into unknowingly loading a URL from a site at which they're already authenticated --
-hence taking advantage of their authenticated status.
+Cross-site request forgery (CSRF) acontece quando um Web site malicioso engana
+o usuário para saber o carregamento da URL de um site na qual eles já estão 
+autenticados -- portanto, aproveitando o estado de autenticação.
 
-Django has built-in tools to protect from this kind of attack. Both the attack
-itself and those tools are covered in great detail in `Chapter 16`_.
+O Django possui ferramentas prontas para projeter desse tipo de ataque. Tanto os
+os ataques como as ferramentas são cobertas detalhadamente no `Capítulo 16`_.
 
 Session Forging/Hijacking
 =========================
 
-This isn't a specific attack, but rather a general class of attacks on a
-user's session data. It can take a number of different forms:
+Esse não é um ataque específico, mas sim uma classe geral de ataques aos
+dados da sessão do usuário. Ele pode tomar uma série de diferentes formas:
 
-* A *man-in-the-middle* attack, where an attacker snoops on session data
-  as it travels over the wire (or wireless) network.
+* O ataque *man-in-the-middle*, onde o atacante se infiltra nos dados da sessão
+  à medida que viaja através da rede (ou wireless). 
 
-* *Session forging*, where an attacker uses a session ID
-  (perhaps obtained through a man-in-the-middle attack) to pretend to be
-  another user.
+* *Session forging*, onde o atacante usa o ID de sessão
+  (obtido talvez através do ataque man-in-the-middle) para fingir ser outro usuário.
 
-  An example of these first two would be an attacker in a coffee shop using
-  the shop's wireless network to capture a session cookie. She could then use that
-  cookie to impersonate the original user.
+  Um exemplo desses dois primeiros seria um atacante em uma loja de café usando
+  a rede wireless do café para capturar sessão de cookie. Ela pode então usar esse
+  cookie para representar o usuário original.
+  
+* Um ataque *cookie-forging*, onde um atacante substitui o dado supostamente somente-leitura 
+  armazenado no cookie. O `Capítulo 14`_ explica detalhadamente como esse cookie funciona,
+  e um dos pontos relevantes, e que é trivial para navegadores e usuários maliciosos
+  alterarem os cookies sem o seu conhecimento.
 
-* A *cookie-forging* attack, where an attacker overrides the supposedly
-  read-only data stored in a cookie. `Chapter 14`_ explains in detail how
-  cookies work, and one of the salient points is that it's trivial for
-  browsers and malicious users to change cookies without your knowledge.
+  Há uma longa história de Web sites que armazenam cookie como 
+  ``IsLoggedIn=1`` or even ``LoggedInAsUser=jacob``. É muito simples
+  de explorar esses tipos de cookies.
+  
+  Em um nível mais sutil, porém, nunca é uma boa idéia confiar em qualquer coisa
+  armazenada nos cookies. Você nunca sabe quem está interferindo neles.
 
-  There's a long history of Web sites that have stored a cookie like
-  ``IsLoggedIn=1`` or even ``LoggedInAsUser=jacob``. It's dead simple to
-  exploit these types of cookies.
+* *Session fixation*, onde um atacante induz o usuário em sua configuração ou
+   zerando a sessão do ID do usuário.
+  
+  Por exemplo, o PHP permite que os identificadores de sessão sejam
+  passados na URL (e.x.,   
+  ``http://example.com/?PHPSESSID=fa90197ca25f6ab40bb1374c510d7a32``). Um
+  atancate que induz o usuário a clicar em um link com uma sessão ID
+  codificada fará com que o usuário pegue aquela sessão.  
+  
+  Fixação de sessão tem sido usado em ataques phishing para induzir usuário a
+  colocarem informações pessoais na conta que o atacante possui. Ele pode depois
+  logar-se na conta e recuperar os dados.
+  
+* *Session poisoning*, onde o atacante injeta dados potencialmente perigosos
+  na sessão do usuário -- geralmente através de um formulário da Web que o 
+  usuário submete para definir os dados da sessão.
 
-  On a more subtle level, though, it's never a good idea to trust anything
-  stored in cookies. You never know who's been poking at them.
+  Um exemplo regular é um site que armazena uma simples preferência do usuário
+  (como a cor de fundo da página) em um cookie. Um atacante pode induzir o 
+  usuário a clicar em um link para enviar a "cor" que, na verdade, contêm
+  um ataque XSS. Se a cor não estiver escapada, o usuário pode novamente 
+  injetar o código malicioso no ambiente do usuário.
 
-* *Session fixation*, where an attacker tricks a user into setting or
-  reseting the user's session ID.
+A Solução  
+---------
 
-  For example, PHP allows session identifiers to be passed in the URL
-  (e.g.,
-  ``http://example.com/?PHPSESSID=fa90197ca25f6ab40bb1374c510d7a32``). An
-  attacker who tricks a user into clicking a link with a hard-coded
-  session ID will cause the user to pick up that session.
+Há uma série de princípios gerais que podem protegê-lo desses ataques:
 
-  Session fixation has been used in phishing attacks to trick users into entering
-  personal information into an account the attacker owns. He can
-  later log into that account and retrieve the data.
+* Nunca permita que as informações da sessão sejam contidas na URL.
 
-* *Session poisoning*, where an attacker injects potentially dangerous
-  data into a user's session -- usually through a Web form that the user
-  submits to set session data.
+  A sessão do framework Django (veja `Capítulo 14`_) simplesmente não
+  permite que sessões sejam contidas na URL.
+  
+* Não armazene dados nos cookies diretamente. Ao invés disso, armazene
+  a sessão ID que mapeia os dados da sessão armazenando no backend.
 
-  A canonical example is a site that stores a simple user preference (like
-  a page's background color) in a cookie. An attacker could trick a user
-  into clicking a link to submit a "color" that actually contains an
-  XSS attack. If that color isn't escaped, the user could again
-  inject malicious code into the user's environment.
+  Se você usar a sessão built-in do Django (e.x., ``request.session``),
+  isso é feito automaticamente para você. O único cookie que a sessão do 
+  framework usa é a sessão única ID; todos os dados da sessão são armazenadas
+  no banco de dados.
 
-The Solution
-------------
+* Lembre-se de escapar os dados da sessão se você for exibi-lo no template.
+  Veja a sessão anterior XSS, e lembre-se que isso se aplica a qualquer 
+  conteúdo de usuário criado assim como qualquer dado do navegador. Você
+  deveria tratar as informações da sessão como um usuário sendo criado.
 
-There are a number of general principles that can protect you from these attacks:
+* Impedir atacantes de vasculhar as sessões de ID sempre que possível.
 
-* Never allow session information to be contained in the URL.
+  Embora seja quase impossível detectar se alguém sequestrou uma sessão ID,
+  o Django não tem uma proteção built-in contra o ataque de sessão brute-force.
+  As sessões ID são armazenas como hashes (no lugar de números sequênciais), 
+  na qual previne ataques brute-force, e o usuário vai sempre pegar uma nova
+  sessão de ID se ele tentar um usuário não existente, prevenindo a fixação de 
+  sessão.
 
-  Django's session framework (see `Chapter 14`_) simply doesn't allow
-  sessions to be contained in the URL.
-
-* Don't store data in cookies directly. Instead, store a session ID
-  that maps to session data stored on the backend.
-
-  If you use Django's built-in session framework (i.e.,
-  ``request.session``), this is handled automatically for you. The only
-  cookie that the session framework uses is a single session ID; all the
-  session data is stored in the database.
-
-* Remember to escape session data if you display it in the template. See
-  the earlier XSS section, and remember that it applies to any user-created
-  content as well as any data from the browser. You should treat session
-  information as being user created.
-
-* Prevent attackers from spoofing session IDs whenever possible.
-
-  Although it's nearly impossible to detect someone who's hijacked a
-  session ID, Django does have built-in protection against a brute-force
-  session attack. Session IDs are stored as hashes (instead of sequential
-  numbers), which prevents a brute-force attack, and a user will always get
-  a new session ID if she tries a nonexistent one, which prevents session
-  fixation.
-
-Notice that none of those principles and tools prevents man-in-the-middle
-attacks. These types of attacks are nearly impossible to detect. If your site
-allows logged-in users to see any sort of sensitive data, you should *always*
-serve that site over HTTPS. Additionally, if you have an SSL-enabled site,
-you should set the ``SESSION_COOKIE_SECURE`` setting to ``True``; this will
-make Django only send session cookies over HTTPS.
+Observe que nenhum desses princípios e ferramentas previne ataques man-in-the-middle.
+Esses tipos de ataques são quase impossíveis de detectar. Se o seu site permitir
+usuários registrados para ver qualquer tipo de dados sensíveis, você deveria
+*sempre* servir o site através de HTTPS. Além disso, se você tem um site com SSL,
+você definir a configuração ``SESSION_COOKIE_SECURE`` setting para ``True``; isso 
+irá fazer com que o Django envie sessão de cookies apenas via HTTPS.
 
 E-mail Header Injection
 =======================
 
-SQL injection's less well-known sibling, *e-mail header injection*, hijacks
-Web forms that send e-mail. An attacker can use this technique to send spam via
-your mail server. Any form that constructs e-mail headers from Web form data is
-vulnerable to this kind of attack.
+É o irmão menos conhecido do SQL Injection, *e-mail header injection*, que
+sequestra formulários Web que enviam e-mails. Um atacante pode usar essa
+técnica para enviar spam pelo seu servidor de email. Qualquer formulário que
+constrói cabeçalhos de e-mail a partir de dados de formulários Web é 
+vulnerável a esse tipo de ataque.
 
-Let's look at the canonical contact form found on many sites. Usually this
-sends a message to a hard-coded e-mail address and, hence, doesn't appear
-vulnerable to spam abuse at first glance.
+Vamos olhar para o formulário de contato regular encontrado em vários sites.
+Normalmente ele envia mensagens para um endereço de email codificado, portanto,
+não aparece vulnerável à abusos de spam à primeira vista.
 
-However, most of these forms also allow the user to type in his own subject
-for the e-mail (along with a "from" address, body, and sometimes a few other
-fields). This subject field is used to construct the "subject" header of the
-e-mail message.
+No entando, a maioria dessas formas também permitem que o usuário digite
+seu próprio assunto de e-email (junto com um endereço "De", corpo, e por
+vezes outros campos). O campo assunto é usado para construir o cabeçalho
+"assunto" da mensagem de e-mail.
 
-If that header is unescaped when building the e-mail message, an attacker could
-submit something like ``"hello\ncc:spamvictim@example.com"`` (where ``"\n``" is
-a newline character). That would make the constructed e-mail headers turn into::
+Se esse cabeçalho é escapado na construção da mensagem de e-mail, o invasor pode 
+apresentar alguma coisa como ``"hello\ncc:spamvictim@example.com"`` (where ``"\n``"
+que é um caractere para uma nova linha). Isso faria com que cabeçalhos construídos
+de e-mail se transformassem em:
 
     To: hardcoded@example.com
     Subject: hello
     cc: spamvictim@example.com
 
-Like SQL injection, if we trust the subject line given by the user, we'll
-allow him to construct a malicious set of headers, and he can use our
-contact form to send spam.
+Assim como o SQL injection, se nós confiarmos na linha de assunto dada pelo usuário,
+nós autorizamos ele a construir configurações maliciosas de cabeçalhos, e ele pode
+usar seu próprio formulário de contato para enviar spam.
 
-The Solution
-------------
+A Solução
+---------
 
-We can prevent this attack in the same way we prevent SQL injection: always
-escape or validate user-submitted content.
+Podemos evitar esse ataque da mesma maneira que podemos prevenir a injeção de SQL:
+sempre escapando ou validando conteúdos enviados pelo usuário.
 
-Django's built-in mail functions (in ``django.core.mail``) simply do not allow
-newlines in any fields used to construct headers (the from and to addresses,
-plus the subject). If you try to use ``django.core.mail.send_mail`` with a
-subject that contains newlines, Django will raise a ``BadHeaderError``
-exception.
+As funções padrões de email do Django (no ``django.core.mail``) simplesmente não permitem
+novas linhas nos campos usados para construir cabeçalhos (os endereços de e para,
+mais o assunto). Se você tentar usar ``django.core.mail.send_mail`` com um assunto
+que possua novas linhas, o Django irá lançar uma excessão ``BadHeaderError``.
 
-If you do not use Django's built-in mail functions to send e-mail, you'll need
-to make sure that newlines in headers either cause an error or are stripped.
-You may want to examine the ``SafeMIMEText`` class in ``django.core.mail`` to
-see how Django does this.
+Se você não usar as funções padrões de email do Django para enviar e-mails, você precisa
+certificar-se de que novas linhas no cabeçalho causam erros ou são retiradas. Você
+pode querer examinar a classe ``SafeMIMEText`` no ``django.core.mail`` para ver como
+o Django faz isso.
 
 Directory Traversal
 ===================
 
-*Directory traversal* is another injection-style attack, wherein a malicious
-user tricks filesystem code into reading and/or writing files that the Web
-server shouldn't have access to.
+*Directory traversal* é um outro ataque do estilo injeção, onde um usuário malicioso
+troca código dos arquivos do sistema em arquivos de leitura e/ou escrita que o servidor
+Web não consegue ter acesso.
 
-An example might be a view that reads files from the disk without carefully
-sanitizing the file name::
+Um exemplo pode ser a view que lê arquivos do disco sem tomar o cuidado de 
+tratar o nome do arquivo::
 
     def dump_file(request):
         filename = request.GET["filename"]
@@ -395,39 +395,37 @@ sanitizing the file name::
 
         # ...
 
-Though it looks like that view restricts file access to files beneath
-``BASE_PATH`` (by using ``os.path.join``), if the attacker passes in a
-``filename`` containing ``..`` (that's two periods, a shorthand for
-"the parent directory"), she can access files "above" ``BASE_PATH``. It's only
-a matter of time before she can discover the correct number of dots to
-successfully access, say, ``../../../../../etc/passwd``.
+Embora pareça que a a view restringe o acesso de arquivo para arquivos abaixo
+``BASE_PATH`` (usando ``os.path.join``), se o atacante passar em um 
+``filename`` contendo ``..`` (que são dois períodos, um atalho para o
+"o diretório pai"), ele pode acessar arquivos "acima" ``BASE_PATH``. É apenas
+uma questão de tempo antes que ele possa descobrir o número correto de pontos
+para acessar com êxito, por exemplo, ``../../../../../etc/passwd``.
 
-Anything that reads files without proper escaping is vulnerable to this
-problem. Views that *write* files are just as vulnerable, but the consequences
-are doubly dire.
+Tudo o que lê arquivos sem escapar é vulnerável a este problema. Views que *escrevem*
+arquivos são tão vulneráveis, mas as conseqüências são duplamente terríveis.
 
-Another permutation of this problem lies in code that dynamically loads
-modules based on the URL or other request information. A well-publicized
-example came from the world of Ruby on Rails.  Prior to mid-2006,
-Rails used URLs like ``http://example.com/person/poke/1`` directly to
-load modules and call methods. The result was that a
-carefully constructed URL could automatically load arbitrary code,
-including a database reset script!
+Outra permutação deste problema está no código que carrega dinamicamente
+módulos com base na URL ou outras informações requisitadas. Um exemplo bem divulgado
+veio do mundo do Ruby on Rails. Antes de meados de 2006, o Rails usava URLs como
+``http://example.com/person/poke/1`` diretamente para carregar módulos e chamar
+métodos. O resultado foi que uma URL cuidadosamente construída poderia automaticamente
+carregar códigos arbitrários, incluindo um script para resetar o banco de dados!
 
-The Solution
-------------
+A Solução
+---------
 
-If your code ever needs to read or write files based on user input, you need
-to sanitize the requested path very carefully to ensure that an attacker isn't
-able to escape from the base directory you're restricting access to.
+Se o seu código precisa estar sempre lendo ou escrevendo arquivos com base na entrada o usuário,
+você precisa tratar o caminho requisitado com muito cuidado para garantir que o 
+atacante não seja capaz de escapar do diretório base que você está restringindo o acesso.
 
-.. note::
+.. nota::
 
-    Needless to say, you should *never* write code that can read from any
-    area of the disk!
+    É desnecessário dizer, que você *nunca* deve escrever códigos que possam ler 
+    a partir de qualquer área do disco!   
 
-A good example of how to do this escaping lies in Django's built-in static
-content-serving view (in ``django.views.static``). Here's the relevant code::
+Um bom exemplo de como fazer isso escapando encontra-se na view padrão do Django 
+static content-serving (no ``django.views.static``). Aqui está um código relevante::
 
     import os
     import posixpath
@@ -449,70 +447,71 @@ content-serving view (in ``django.views.static``). Here's the relevant code::
 
         newpath = os.path.join(newpath, part).replace('\\', '/')
 
-Django doesn't read files (unless you use the ``static.serve``
-function, but that's protected with the code just shown), so this
-vulnerability doesn't affect the core code much.
+O Django não lê arquivos (a menos que você use a função ``static.serve``,
+mas ele é protegido com o código mostrado apenas), então essa 
+vulnerabilidade não afeta muito o núcleo do código.
 
-In addition, the use of the URLconf abstraction means that Django will *never*
-load code you've not explicitly told it to load. There's no way to create a
-URL that causes Django to load something not mentioned in a URLconf.
+Além disso, o uso da abstração URLconf significa que o Django *nunca* carrega
+o código que você não tenha dito explicitamente para ser carregado. Não há
+nenhuma maneira de criar uma URL que faça com que o Django carregue alguma coisa
+não mencionada no URLconf.
 
-Exposed Error Messages
-======================
+Mensagens de Erro Expostos
+==========================
 
-During development, being able to see tracebacks and errors live in your
-browser is extremely useful. Django has "pretty" and informative debug
-messages specifically to make debugging easier.
+Durante o desenvolvimento, ser capaz de ver tracebacks e erros em seu
+navegador é extremamente útil. O Django possui "muitas" e informativas
+mensagens debug especificas para tornar o debugging mais fácil.
 
-However, if these errors get displayed once the site goes live, they can
-reveal aspects of your code or configuration that could aid an attacker.
+No entanto, se esses erros são exibidos uma vez que o site esteja no ar, eles podem
+revelar aspectos do seu código e configurações que podem ajudar um atacante.
 
-Furthermore, errors and tracebacks aren't at all useful to end users. Django's
-philosophy is that site visitors should never see application-related error
-messages. If your code raises an unhandled exception, a site visitor should
-not see the full traceback -- or *any* hint of code snippets or Python
-(programmer-oriented) error messages. Instead, the visitor should see a
-friendly "This page is unavailable" message.
+Além disso, os erros e tracebacks não são úteis para os usuários finais. A filosofia
+do Django é que os visitantes do site nunca deveriam ver as mensagens de erro relacionadas
+às aplicações. Se o seu código gera uma excessão não tratada, o visitante do site deveria
+não ver o traceback completo -- ou *qualquer* dica de trechos de código ou mensagens de
+erro (orientado ao programador) do Python. Em vez disso, o visitante deve ver uma
+amigável mensagem "Essa página está indisponível".
 
-Naturally, of course, developers need to see tracebacks to debug problems in
-their code. So the framework should hide all error messages from the public,
-but it should display them to the trusted site developers.
+Naturalmente, é claro, desenvolvedores precisam ver tracebacks para depurar problemas 
+em seus códigos. Então o framework deveria esconder todas as mensagens de erro do público,
+mas ele deveria mostrar eles para desenvolvedores confiáveis do site.
 
-The Solution
-------------
+A Solução
+---------
 
-As we covered in Chapter 12, Django's ``DEBUG`` setting controls the display of
-these error messages. Make sure to set this to ``False`` when you're ready to
-deploy.
 
-Users deploying under Apache and mod_python (also see Chapter 12) should also
-make sure they have ``PythonDebug Off`` in their Apache conf files; this will
-suppress any errors that occur before Django has had a chance to load.
+Como nós vimos no Capítulo 12, a configuração do Django ``DEBUG`` controla
+a exibição dessas mensagens de erro. Certifique-se de configurar isso para
+``False`` quando você estiver pronto para implantar.
 
-A Final Word on Security
-========================
+Usuários implantados sob Apache e mod_python (ver também Capítulo 12) também deveriam
+garantir que possuem o ``PythonDebug Off`` em seus arquivos de conf do Apache;
+isso irá suprimir os erros que ocorrem antes do Django ter tido a chance de carregar.
 
-We hope all this talk of security problems isn't too intimidating. It's true
-that the Web can be a wild world, but with a little bit of foresight,
-you can have a secure Web site.
+Uma Palavra Final sobre Segurança
+=================================
 
-Keep in mind that Web security is a constantly changing field; if you're
-reading the dead-tree version of this book, be sure to check more up to date
-security resources for any new vulnerabilities that have been discovered. In
-fact, it's always a good idea to spend some time each week or month
-researching and keeping current on the state of Web application security. It's
-a small investment to make, but the protection you'll get for your site and
-your users is priceless.
+Esperamos que toda essa conversa sobre problemas de segurança não seja tão intimidante.
+É verdade que a Web pode ser um mundo selvagem, mas com um pouco de prevenção,
+você pode ter um Web site mais seguro.
 
-What's Next?
-============
+Tenha em mente que a segurança Web é um campo em constante mudança; se você está
+lendo essa versão dead-tree desse livro, não deixe de conferir dados mais atualizados
+de segurança para qualquer nova vulnerabilidade que for descoberta. De fato, 
+é sempre uma boa idéia gastar algum tempo por semana ou mês pesquisando e manter-se 
+atualizado sobre o estado da segurança das aplicações Web. É um pequeno investimento
+a fazer, mas a proteção que você terá para o seu site e usuários é impagável.
 
-You've reached the end of our regularly scheduled program. The following
-appendixes all contain reference material that you might need as you work on
-your Django projects.
+Qual é o Próximo?
+=================
 
-We wish you the best of luck in running your Django site, whether it's a little
-toy for you and a few friends, or the next Google.
+Você chegou ao final do nosso programa regularmente agendado. A seguir os
+apêndices contêm material de referência que você precisar, para seu trabalho
+em seus projetos Django.
 
-.. _Chapter 14: ../chapter14/
-.. _Chapter 16: ../chapter16/
+Desejamos-lhe uma boa sorte ao executar seu site Django, se isso for um pequeno
+brinquedo para você e alguns amigos, ou o próximo Google.
+
+.. _Capítulo 14: ../chapter14/
+.. _Capítulo 16: ../chapter16/
