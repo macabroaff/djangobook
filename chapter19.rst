@@ -172,7 +172,7 @@ Use a função ``django.utils.translation.ugettext_lazy()`` para traduzir string
 preguiçosamente (lazy evaluation) -- quando o valor é acessado, ao invés
 do momento em que ``ugettext_lazy()`` é chamada.
 
-Por exemplo, para traduzir um modelo de ``texto_de_ajuda``, faça o seguinte::
+Por exemplo, para traduzir um modelo de ``help_text``, faça o seguinte::
 
     from django.utils.translation import ugettext_lazy
 
@@ -189,6 +189,13 @@ tentar usar isso no lugar de uma bytestring (um objeto ``str``), ocorrerá um
 comportamento inesperado, pois um objeto ``ugettext_lazy()`` não sabe como se
 converter para um bytestring. Também não é possível usar uma string unicode dentro
 de uma bytestring, então isso é consistente como comportamente de Python. Por exemplo::
+
+The result of a ``ugettext_lazy()`` call can be used wherever you would use a
+unicode string (an object with type ``unicode``) in Python. If you try to use
+it where a bytestring (a ``str`` object) is expected, things will not work as
+expected, since a ``ugettext_lazy()`` object doesn't know how to convert
+itself to a bytestring.  You can't use a unicode string inside a bytestring,
+either, so this is consistent with normal Python behavior. For example::
     
     # Isto está certo: por um proxy unicode em uma string unicode
     u"Olá %s" % ugettext_lazy("pessoas")
@@ -201,139 +208,141 @@ Uma saída desta forma ``"olá <django.utils.functional...>"``,
 indica que você tentou inserir o resultado de ``ugettext_lazy()``
 em um bytestring. Isso é um bug no seu código.
 
-Se ``ugettext_lazy`` parece muito verborrágico, é possível usar um nome-atalho,
-como ``_`` (underline), como em::
 
-    from django.utils.translation import ugettext_lazy as _
-
-    class Minha_coisa(models.Model):
-        nome = models.CharField(texto_de_ajuda=_('Este é um texto de ajuda'))
-        
-Sempre use traduções preguiçosa em modelos de Django. Nomes de campos e nomes
-de tabelas devem ser marcadas para trandução; caso contrário, eles não serão
-traduzidos na interface do administrador. Isto significa escrever explicitamente
-``nome_verboso`` e ``nome_verboso_no_plural`` nas opções da classe``Meta``,
-ao invés de contar com a determinação padrão de Django de ``nome_verboso``
-e ``nome_verboso_no_plural``, que olha o nome da classe do modelo::
+If you don't like the verbose name ``ugettext_lazy``, you can just alias it as
+``_`` (underscore), like so::
 
     from django.utils.translation import ugettext_lazy as _
 
     class MyThing(models.Model):
-        nome = models.CharField(_('nome'), texto_de_ajuda=_('Este é um texto de ajuda'))
-        class Meta:
-            nome_verboso = _('minha coisa')
-            nome_verboso_no_plural = _('minhas coisas')
+        name = models.CharField(help_text=_('This is the help text'))
 
-Pluralização
+Always use lazy translations in Django models. Field names and table names
+should be marked for translation (otherwise, they won't be translated in the
+admin interface). This means writing explicit ``verbose_name`` and
+``verbose_name_plural`` options in the ``Meta`` class, though, rather than
+relying on Django's default determination of ``verbose_name`` and
+``verbose_name_plural`` by looking at the model's class name::
+
+    from django.utils.translation import ugettext_lazy as _
+
+    class MyThing(models.Model):
+        name = models.CharField(_('name'), help_text=_('This is the help text'))
+        class Meta:
+            verbose_name = _('my thing')
+            verbose_name_plural = _('mythings')
+
+Pluralization
 ~~~~~~~~~~~~~
 
-Use a função ``django.utils.translation.ungettext()`` para especificar mensagens
-pluralizadas. Por exemplo::
+Use the function ``django.utils.translation.ungettext()`` to specify pluralized
+messages. Example::
 
     from django.utils.translation import ungettext
 
-    def hello_world(request, contador):
-        pagina = ungettext('Há apenas %(contador)d objeto',
-            'Existem %(contador)d objetos', contador) % {
-                'contador': contador,
+    def hello_world(request, count):
+        page = ungettext('there is %(count)d object',
+            'there are %(count)d objects', count) % {
+                'count': count,
             }
-        return HttpResponse(pagina)
+        return HttpResponse(page)
 
-``ungettext`` recebe três argumentos: a string de tradução no singular, a string
-de tradução no plural e o número de objetos (que é passada para as linguas de tradução
-como a variável ``contador``).
+``ungettext`` takes three arguments: the singular translation string, the plural
+translation string and the number of objects (which is passed to the
+translation languages as the ``count`` variable).
 
-
-Em templates
+In Template Code
 ----------------
 
-Tradução de templates Djanho usam duas tags de template e um sintaxe ligeiramente
-diferente da usada em código Python. Para dar ao template acesso a essas tags, ponha
-``{% load i18n %}`` no topo do template.
+Translation in Django templates uses two template tags and a slightly different
+syntax than in Python code. To give your template access to these tags, put
+``{% load i18n %}`` toward the top of your template.
 
-A tag de template ``{% trans %}`` traduz tanto strings constantes (dentro de 
-aspas simples ou duplas) e conteúdo de variáveis::
+The ``{% trans %}`` template tag translates either a constant string
+(enclosed in single or double quotes) or variable content::
 
-    <title>{% trans "Isto é um título." %}</title>
-    <title>{% trans minhaVariavel %}</title>
+    <title>{% trans "This is the title." %}</title>
+    <title>{% trans myvar %}</title>
 
-Se a opção ``noop`` está presente, o lookup de variavéis ainda atua, porém
-a tradução é pulada. Isso é útil quando estiver "apagando" conteúdo que exigirá
-tradução no futuro::
+If the ``noop`` option is present, variable lookup still takes place but the
+translation is skipped. This is useful when "stubbing out" content that will
+require translation in the future::
 
-    <title>{% trans "minhaVariavel" noop %}</title>
-    
-Não é possível misturar uma varivável de template dentro de uma string, como em
-``{% trans %}``. Se strings exigirem variáveis (espaços reservados), use 
+    <title>{% trans "myvar" noop %}</title>
+
+It's not possible to mix a template variable inside a string within ``{% trans
+%}``. If your translations require strings with variables (placeholders), use
 ``{% blocktrans %}``::
 
-    {% blocktrans %}Esta string terá {{ valor }} dentro.{% endblocktrans %}
-    
-Para traduzir uma expressão de template -- digamos, usando filtros de template --
-você precisará ligar a expressão à uma variável local para usá-la dentro do
-bloco de tradução
+    {% blocktrans %}This string will have {{ value }} inside.{% endblocktrans %}
 
-    {% blocktrans with valor|filter as minhavariavel %}
-    Isto terá {{ minhavariavel }} dentro.
+To translate a template expression -- say, using template filters -- you need
+to bind the expression to a local variable for use within the translation
+block::
+
+    {% blocktrans with value|filter as myvar %}
+    This will have {{ myvar }} inside.
     {% endblocktrans %}
 
-Se for necessário ligar mais de uma expressão dentro de uma tag ``blocktrans``,
-separe os pedações com ``and``::
+If you need to bind more than one expression inside a ``blocktrans`` tag,
+separate the pieces with ``and``::
 
-    {% blocktrans with livro|titulo as livro_t and autor|titulo as autor_t %}
-    Isto é {{ livro_t }} by {{ autor_t }}
+    {% blocktrans with book|title as book_t and author|title as author_t %}
+    This is {{ book_t }} by {{ author_t }}
     {% endblocktrans %}
-    
-Para pluralizar, especifique tanto as formas singular e plural com a
-tag ``{% plural %}``, a qual aparece dentro de ``{% blocktrans %}`` e
-``{% endblocktrans %}``. Por exemplo::
 
-    {% blocktrans count lista|tamanho as contador %}
-    Há apenas um {{ none }} objeto.
+To pluralize, specify both the singular and plural forms with the
+``{% plural %}`` tag, which appears within ``{% blocktrans %}`` and
+``{% endblocktrans %}``. Example::
+
+    {% blocktrans count list|length as counter %}
+    There is only one {{ name }} object.
     {% plural %}
-    Hão {{ contador }} {{ nome }} objetos.
+    There are {{ counter }} {{ name }} objects.
     {% endblocktrans %}
 
-Internamente, todos os blocos e traduções inline usam a chamada apropriada
-de ``ugettext`` / ``ungettext``.
+Internally, all block and inline translations use the appropriate
+``ugettext`` / ``ungettext`` call.
 
-Cada ``RequestContext`` tem acesso a três variáveis para traduções específicas:
+Each ``RequestContext`` has access to three translation-specific variables:
 
-* ``LANGUAGES`` é uma lista de tuplas nas quais o primeiro elemento é o código
-  da linguagem e o segundo é o nome da linguagem (traduzido para a lingua local).
+* ``LANGUAGES`` is a list of tuples in which the first element is the
+  language code and the second is the language name (translated into the
+  currently active locale).
 
-* ``LANGUAGE_CODE`` é a linguagem preferencial do usuário, em formato string.
-  Exemplo: ``pt-br``. (Veja "Como Django descobre a linguagem preferencial", abaixo.)
-  
-* ``LANGUAGE_BIDI`` é a direção local. Se é True, a linguagem que vai
-  da direita para esquerda, e.g.:: Hebreu, Árabe. Se é False, é 
-  uma linguagem que vai  da esquerda para direita, e.g.:: Inglês, Alemão,
-  Francês etc.
-  
-Se a extensão ``RequestContext`` não for usada, esses valores podem ser obtidos
-com três tags::
+* ``LANGUAGE_CODE`` is the current user's preferred language, as a string.
+  Example: ``en-us``. (See "How Django discovers language preference,"
+  below.)
 
-    {% get_linguagem_local as LANGUAGE_CODE %}
-    {% get_linguagens_disponiveis as LANGUAGES %}
-    {% get_linguagem_local_bidi as LANGUAGE_BIDI %}
-    
-Essas tags também requerem uma ``{% load i18n %}``.
+* ``LANGUAGE_BIDI`` is the current locale's direction. If True, it's a
+  right-to-left language, e.g.: Hebrew, Arabic. If False it's a
+  left-to-right language, e.g.: English, French, German etc.
 
-Ganchos de tradução também estão disponíves dentro de qualquer tag de bloco
-de template que aceite strings constantes. Nestes casos, apenas use a sintaxe 
-``_()`` para especificar uma string de tradução::
+If you don't use the ``RequestContext`` extension, you can get those values with
+three tags::
 
-    {% alguma_tag_especial _("Pagina não encontrada") valor|yesno:_("yes,no") %}
+    {% get_current_language as LANGUAGE_CODE %}
+    {% get_available_languages as LANGUAGES %}
+    {% get_current_language_bidi as LANGUAGE_BIDI %}
 
-Nesse caso, tanto a tag quanto o filtro verão a string já traduzida, então
-eles não precisam estar conscientes de traduções.
+These tags also require a ``{% load i18n %}``.
 
-.. nota::
-    Nesse exemplo, a infra-estrutura de tradução passará a string ``"yes,no"``,
-    não as strings ``yes`` e ``no`` individualmente. A string traduzida precisará
-    conter a vírgula para que o filtro que analisa o código saiba como dividir os
-    argumento. Por exemplo, um tradutor alemão precisará traduzir a string
-    ``"yes,no"`` como ``"ja,nein"`` (deixando a vírgula intacta).
+Translation hooks are also available within any template block tag that accepts
+constant strings. In those cases, just use ``_()`` syntax to specify a
+translation string::
+
+    {% some_special_tag _("Page not found") value|yesno:_("yes,no") %}
+
+In this case, both the tag and the filter will see the already-translated
+string, so they don't need to be aware of translations.
+
+.. note::
+    In this example, the translation infrastructure will be passed the string
+    ``"yes,no"``, not the individual strings ``"yes"`` and ``"no"``. The
+    translated string will need to contain the comma so that the filter
+    parsing code knows how to split up the arguments. For example, a German
+    translator might translate the string ``"yes,no"`` as ``"ja,nein"``
+    (keeping the comma intact).
 
 Working With Lazy Translation Objects
 -------------------------------------
