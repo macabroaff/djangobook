@@ -343,7 +343,7 @@ and utility functions is a common operation. When you're working with these
 objects elsewhere in your code, you should ensure that you don't accidentally
 convert them to strings, because they should be converted as late as possible
 (so that the correct locale is in effect). This necessitates the use of a
-couple of helper functions.
+couple of helper functions. 
 
 Joining Strings: string_concat()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
