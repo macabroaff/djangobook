@@ -355,7 +355,7 @@ que o contexto local seja usado). Para tanto, deve-se usar algumas funções aux
 Concatenando strings: string_concat()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As concatenações padrão de Python (``''.join([...])`) não funcionaram em listas que contém
+As concatenações padrão de Python (``''.join([...])``) não funcionaram em listas que contém
 objetos de tradução preguiçosa. No lugar delas, deve-se usar y, que cria
 um objeto preguiçoso que concatena seu conteúdo *e* o converte em strings
 apenas quando o resultado é incluído em uma string. Por exemplo::
@@ -444,7 +444,9 @@ O código da linaugem, neste caso, está em formato de localidade. Por exemplo,
 O script deverá ser executado de um dos locais abaixo:
 
 *A pasta raíz do projeto Django
-*A pasta raíz da aplicação Djanho
+
+*A pasta raíz da aplicação Django
+
 *A pasta raíz ``django`` (Não a pasta do checkout de Subversion, mas 
 a pasta ligada via ``$PYTHONPATH`` ou localizada em algum local no caminho).
 Isto só é relecante quando cria-se uma tradução para Django em si.
