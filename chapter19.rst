@@ -343,114 +343,111 @@ eles não precisam estar conscientes de traduções.
     argumento. Por exemplo, um tradutor alemão precisará traduzir a string
     ``"yes,no"`` como ``"ja,nein"`` (deixando a vírgula intacta).
 
-Working With Lazy Translation Objects
+Trabalhando com tradução preguiçosa de objetos
 -------------------------------------
 
-Using ``ugettext_lazy()`` and ``ungettext_lazy()`` to mark strings in models
-and utility functions is a common operation. When you're working with these
-objects elsewhere in your code, you should ensure that you don't accidentally
-convert them to strings, because they should be converted as late as possible
-(so that the correct locale is in effect). This necessitates the use of a
-couple of helper functions.
+Usar ``ugettext_lazy()`` e ``ungettext_lazy()`` para marcar strings em modelos e 
+funções utilitárias é uma operação comum. Quando trabalha-se com esses objetos
+em outros pontos do código, deve-se garantir que eles não sejam convertidos em
+strings, pois eles devem ser convertidos os mais tardiamente possível (de modo 
+que o contexto local seja usado). Para tanto, deve-se usar algumas funções auxiliares.
 
-Joining Strings: string_concat()
+Concatenando strings: string_concat()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Standard Python string joins (``''.join([...])``) will not work on lists
-containing lazy translation objects. Instead, you can use
-``django.utils.translation.string_concat()``, which creates a lazy object that
-concatenates its contents *and* converts them to strings only when the result
-is included in a string. For example::
+As concatenações padrão de Python (``''.join([...])`) não funcionaram em listas que contém
+objetos de tradução preguiçosa. No lugar delas, deve-se usar y, que cria
+um objeto preguiçoso que concatena seu conteúdo *e* o converte em strings
+apenas quando o resultado é incluído em uma string. Por exemplo::
 
     from django.utils.translation import string_concat
     # ...
-    name = ugettext_lazy(u'John Lennon')
-    instrument = ugettext_lazy(u'guitar')
-    result = string_concat([name, ': ', instrument])
+    nome = ugettext_lazy(u'John Lennon')
+    instrumento = ugettext_lazy(u'guitarra')
+    resultado = string_concat([nome, ': ', instrumento])
+    
+Aqui, as traduções preguiçosa em ``resultado`` irão apenas ser convertidas
+em string quando ``resultado`` é usado em uma string (geralmente durante a
+renderização de um template).
 
-In this case, the lazy translations in ``result`` will only be converted to
-strings when ``result`` itself is used in a string (usually at template
-rendering time).
-
-The allow_lazy() Decorator
+O decorador allow_lazy()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Django offers many utility functions (particularly in ``django.utils``) that
-take a string as their first argument and do something to that string. These
-functions are used by template filters as well as directly in other code.
+Django oferece muita funções utilitárias (em geral no módulo ``django.utils``)
+que recebem uma string como primeiro argumento e fazem algo com esta string. 
+Estas funções são usadas tanto por filtros de template, como de forma direta, em outras
+partes do código.
 
-If you write your own similar functions and deal with translations, you'll
-face the problem of what to do when the first argument is a lazy translation
-object. You don't want to convert it to a string immediately, because you might
-be using this function outside of a view (and hence the current thread's locale
-setting will not be correct).
+Se você escrever suas próprias funções, similares a estas, e lidar com traduções,
+pode surgir um problema quando o primeiro argumento é um objeto de tradução preguiçosa.
+Em geral, este objeto não será convertido em uma string imediatamente, pois pode ser
+que esta funções esteja seja usada fora de uma view (em, portanto, a configuração
+de localidade da thread corrente não estará correta).
 
-For cases like this, use the ``django.utils.functional.allow_lazy()``
-decorator. It modifies the function so that *if* it's called with a lazy
-translation as the first argument, the function evaluation is delayed until it
-needs to be converted to a string.
+Nestes casos, deve-se usar o decorador ``django.utils.functional.allow_lazy()``. 
+Ele modifica a funções de tal modo que*se* chamada com um objeto de tradução 
+preguiçosa como primeiro argumento, a avaliação será postergada até que haja 
+a necessidade de converter para uma string.
 
-For example::
+Por exemplo::
 
     from django.utils.functional import allow_lazy
 
-    def fancy_utility_function(s, ...):
-        # Do some conversion on string 's'
+    def funcao_utilitaria(s, ...):
+        # Faz alguma conversão sobre a string 'x'
         # ...
-    fancy_utility_function = allow_lazy(fancy_utility_function, unicode)
+    funcao_utilitaria = allow_lazy(funcao_utilitaria, unicode)
+    
+O decorador ``allow_lazy()`` recebe, além da função, um certo número de 
+argumentos extras (``*args``)que especificam o(s) tipo(s) de retorno da
+função original. É suficiente incluir ``unicode`` aqui e garantir que a
+função retorna apenas strings Unicode.
 
-The ``allow_lazy()`` decorator takes, in addition to the function to decorate,
-a number of extra arguments (``*args``) specifying the type(s) that the
-original function can return. Usually, it's enough to include ``unicode`` here
-and ensure that your function returns only Unicode strings.
+Usar este decorador indica que a função escrita assume como input uma string simples,
+porém, adiciona-se o suporte a objetos de tradução preguiçosa ao final.
 
-Using this decorator means you can write your function and assume that the
-input is a proper string, then add support for lazy translation objects at the
-end.
-
-2. How to Create Language Files
+2. Como criar arquivos de linguagem
 ===============================
 
-Once you've tagged your strings for later translation, you need to write (or
-obtain) the language translations themselves. Here's how that works.
+Após marcar as strings para posterior tradução, deve-se escrever (ou obter)
+as traduções em si. Segue como isto funciona.
 
-.. admonition:: Locale restrictions
+.. admonition:: Restrições de localidade
 
-    Django does not support localizing your application into a locale for
-    which Django itself has not been translated. In this case, it will ignore
-    your translation files. If you were to try this and Django supported it,
-    you would inevitably see a mixture of translated strings (from your
-    application) and English strings (from Django itself). If you want to
-    support a locale for your application that is not already part of
-    Django, you'll need to make at least a minimal translation of the Django
-    core.
+    Django não consegue localizar uma aplicação em uma localidade para a qual
+    o Django em si não tenha sido traduzida. Neste caso, os arquivos de tradução
+    serão ignorados. Ao tentar-se fazer isto, inevitavelmente, haverá uma 
+    mistura de strings traduzidas (vindas da aplicação) e strings em inglês
+    (do Django em si). Para adicionar suporta a uma localidade ainda sem 
+    tradução, é necessário traduzir uma parte mínima do core do Django.
 
-Message Files
+Arquivos de mensagem
 -------------
 
-The first step is to create a *message file* for a new language. A message
-file is a plain-text file, representing a single language, that contains all
-available translation strings and how they should be represented in the given
-language. Message files have a ``.po`` file extension.
+O primeiro passo é criar um *arquivo de mensagem* para uma nova linguagem.
+Um arquivo de mensagem é um arquivo-texto, representando uma única linguage,
+que contém todas as strings traduzidas disponíveis e como elas devem ser
+representadas em uma dada linguagem. Arquivos de mensagem tem uma extensão
+``.po``.
 
-Django comes with a tool, ``django-admin.py makemessages``, that automates the
-creation and upkeep of these files. To create or update a message file, run
-this command::
+Django vem com uma ferramente, ``django-admin.py makemessages``, 
+que automatiza a criação e manutenção desses arquivos. Para criar ou atualizar
+um arquivo de mensagem, execute o seguinte comando::
 
-    django-admin.py makemessages -l de
+    django-admin.py makemessages -l pt_BR
 
-...where ``de`` is the language code for the message file you want to create.
-The language code, in this case, is in locale format. For example, it's
-``pt_BR`` for Brazilian Portuguese and ``de_AT`` for Austrian German.
+...onde ``pt_BR`` é o código da linguagem do arquivo de mensagem a cria-se.
+O código da linaugem, neste caso, está em formato de localidade. Por exemplo,
+``de`` é para alemão e ``ru`` para russo.
 
-The script should be run from one of three places:
 
-* The root directory of your Django project.
-* The root directory of your Django app.
-* The root ``django`` directory (not a Subversion checkout, but the one
-  that is linked-to via ``$PYTHONPATH`` or is located somewhere on that
-  path). This is only relevant when you are creating a translation for
-  Django itself.
+O script deverá ser executado de um dos locais abaixo:
+
+*A pasta raíz do projeto Django
+*A pasta raíz da aplicação Djanho
+*A pasta raíz ``django`` (Não a pasta do checkout de Subversion, mas 
+a pasta ligada via ``$PYTHONPATH`` ou localizada em algum local no caminho).
+Isto só é relecante quando cria-se uma tradução para Django em si.
 
 This script runs over your project source tree or your application source tree and
 pulls out all strings marked for translation. It creates (or updates) a message
