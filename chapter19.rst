@@ -451,76 +451,73 @@ O script deverá ser executado de um dos locais abaixo:
 a pasta ligada via ``$PYTHONPATH`` ou localizada em algum local no caminho).
 Isto só é relecante quando cria-se uma tradução para Django em si.
 
-This script runs over your project source tree or your application source tree and
-pulls out all strings marked for translation. It creates (or updates) a message
-file in the directory ``locale/LANG/LC_MESSAGES``. In the ``de`` example, the
-file will be ``locale/de/LC_MESSAGES/django.po``.
+Esse script percorre a árvore do projeto, ou da aplicação, e extrai todas as s
+trings marcadas para tradução. Ele cria (ou atualiza) um arquivo de mensagem no 
+diretório ``locale/LANG/LC_MESSAGES``. No exemplo ``de``, o arquivo 
+será ``locale/de/LC_MESSAGES/django.po``
 
-By default ``django-admin.py makemessages`` examines every file that has the
-``.html`` file extension. In case you want to override that default, use the
-``--extension`` or ``-e`` option to specify the file extensions to examine::
+Por default, x examina todos os arquivo que possuem extensão ``.html``.
+Nesse caso, para sobrescrever esse comportamento, deve-se usar as opções 
+x ou ``-e`` para especificar as extensões a serem examinadas::
 
     django-admin.py makemessages -l de -e txt
-
-Separate multiple extensions with commas and/or use ``-e`` or ``--extension``
-multiple times::
+    
+Separe multiplas extensões com vírgulas e/ou use ``-e`` ou ``--extension``
+várias vezes::
 
     django-admin.py makemessages -l de -e html,txt -e xml
 
-When creating JavaScript translation catalogs (which we'll cover later in this
-chapter,) you need to use the special 'djangojs' domain, **not** ``-e js``.
+Quando forem usados catálogos de tradução de JavaScript (os quais vamos abordar
+mais tarde neste capítulo), deve-se usar o domínio especial 'djangojs', **não**
+``-e js``.
 
-.. admonition:: No gettext?
+.. admonition:: Nenhum gettext?
 
-    If you don't have the ``gettext`` utilities installed, ``django-admin.py
-    makemessages`` will create empty files. If that's the case, either install
-    the ``gettext`` utilities or just copy the English message file
-    (``locale/en/LC_MESSAGES/django.po``) if available and use it as a starting
-    point; it's just an empty translation file.
+    Se as utilidades de ``gettext`` não estiverem instaladas, ``django-admin.pt
+    makemessages`` irá criar arquivos vazios. Nesse caso, deve-se instalar as utilidades
+    ou apenas copiar o arquivo de mensagem de Inglês (``locale/en/LC_MESSAGES/django.po``)
+    ,se ele estiver disponível, e usá-lo como um ponto inicial; ele é apenas um arquivo
+    de tradução vazio.
 
-.. admonition:: Working on Windows?
+.. admonition:: Trabalhando no Windows?
 
-   If you're using Windows and need to install the GNU gettext utilities so
-   ``django-admin makemessages`` works, see the "gettext on Windows" section
-   below for more information.
+   Quando estiver trabalhando no Windows, deve-se instalar as utilidades
+   gettext do GNU, para ``django-admin makemessages`` funcionar, veja a seção
+   "gettext on Windows" abaixo para mais informações.
+   
+O formato dos arquivos ``.po`` é simples. Cada ``.po`` contém uma pequena quantidade
+de metadata, como as informações de contato do administrador da tradução, mas
+o grosso do arquivo é uma lista de *mensagens* -- simplesmente um mapeamento
+entre as strings de tradução e a tradução em si, para determinada língua.
 
-The format of ``.po`` files is straightforward. Each ``.po`` file contains a
-small bit of metadata, such as the translation maintainer's contact
-information, but the bulk of the file is a list of *messages* -- simple
-mappings between translation strings and the actual translated text for the
-particular language.
+Por exemplo, se a aplicação Django contém uma string de tradução para o texto
+``"Bem-vindo ao meu site."``, como::
 
-For example, if your Django app contained a translation string for the text
-``"Welcome to my site."``, like so::
-
-    _("Welcome to my site.")
-
-...then ``django-admin.py makemessages`` will have created a ``.po`` file
-containing the following snippet -- a message::
-
-    #: path/to/python/module.py:23
-    msgid "Welcome to my site."
+    _("Bem-vindo ao meu site.")
+    
+...então x irá criar um arquivo ``.po`` contendo o seguinte fragmento --
+uma mensagem::
     msgstr ""
+    
+Uma rápida explicação:
 
-A quick explanation:
+* ``msgid`` é uma string de tradução, que aparece no código. Não mude isso.
+* ``msgstr`` é onde deve-se colocar a tradução em si. Inicialmente, ela está
+  vazia, então, deve-se mudar isto. Certifique-se que as aspas continuam
+  na tradução.
+* Por conveniência, cada mensagem inclue, na forma de um comentário acima
+  de ``msgid``, o nome do arquivo e o número da linha a partir do qual a string 
+  de tradução foi adquirida.
+  
+Mensagens longas são um caso especial. Aqui, a primeira string após ``msgstr``
+(ou ``msgid``) é vazia. Então, o conteúdo em si irá ser escrito sobre as próximas
+linhas como uma string por linha. Essas strings são concatenas diretamente.
+Não esqueça dos espaços dentro das strings; caso contrário, eles irão aparecer 
+todos juntos, sem espaço em branco!
 
-* ``msgid`` is the translation string, which appears in the source. Don't
-  change it.
-* ``msgstr`` is where you put the language-specific translation. It starts
-  out empty, so it's your responsibility to change it. Make sure you keep
-  the quotes around your translation.
-* As a convenience, each message includes, in the form of a comment line
-  prefixed with ``#`` and located above the ``msgid`` line, the filename and
-  line number from which the translation string was gleaned.
 
-Long messages are a special case. There, the first string directly after the
-``msgstr`` (or ``msgid``) is an empty string. Then the content itself will be
-written over the next few lines as one string per line. Those strings are
-directly concatenated. Don't forget trailing spaces within the strings;
-otherwise, they'll be tacked together without whitespace!
-
-To reexamine all source code and templates for new translation strings and
-update all message files for *all* languages, run this::
+Para reexaminar todo código-fonte e templates para novas strings de tradução
+e atualizar todos os arquivos de mensagem para *todas* as línguas, execute::
 
     django-admin.py makemessages -a
 
