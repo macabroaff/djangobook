@@ -495,8 +495,11 @@ Por exemplo, se a aplicação Django contém uma string de tradução para o tex
 
     _("Bem-vindo ao meu site.")
     
-...então x irá criar um arquivo ``.po`` contendo o seguinte fragmento --
+...então ``django-admin.py makemessages`` irá criar um arquivo ``.po`` contendo o seguinte fragmento --
 uma mensagem::
+
+    #: path/to/python/module.py:23
+    msgid "Bem-vindo ao meu site.."
     msgstr ""
     
 Uma rápida explicação:
