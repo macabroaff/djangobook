@@ -524,7 +524,7 @@ e atualizar todos os arquivos de mensagem para *todas* as línguas, execute::
 
     django-admin.py makemessages -a
 
-Compilando arquivo de mensagem
+Compilando arquivos de mensagem
 -----------------------
 
 Após a criação de um arquivo de mensagem -- e a cada alteração deles -- é necessário
