@@ -524,54 +524,54 @@ e atualizar todos os arquivos de mensagem para *todas* as línguas, execute::
 
     django-admin.py makemessages -a
 
-Compiling Message Files
+Compilando arquivo de mensagem
 -----------------------
 
-After you create your message file -- and each time you make changes to it --
-you'll need to compile it into a more efficient form, for use by ``gettext``.
-Do this with the ``django-admin.py compilemessages`` utility.
+Após a criação de um arquivo de mensagem -- e a cada alteração deles -- é necessário
+compilá-lo em um forma mais eficiente, para o uso de ``gettext``. Isso é feito usando-se
+a utilidade ``django-admin.py compilemessages``.
 
-This tool runs over all available ``.po`` files and creates ``.mo`` files, which
-are binary files optimized for use by ``gettext``. In the same directory from
-which you ran ``django-admin.py makemessages``, run ``django-admin.py
-compilemessages`` like this::
+Essa ferramenta percorre todos os arquivos ``.po`` disponível e cria arquivos
+``.mo``, que são arquivos binários otimizados para o uso de ``gettext``. No mesmo
+diretório onde `django-admin.py makemessages`` foi executado, `
+deve-se executar `django-admin.py compilemessages``, como abaixo::
 
    django-admin.py compilemessages
 
-That's it. Your translations are ready for use.
+Pronto. As traduções estão prontas para uso.
 
-3. How Django Discovers Language Preference
+3. Como descobrir as preferências de língua de Django
 ===========================================
 
-Once you've prepared your translations -- or, if you just want to use the
-translations that come with Django -- you'll just need to activate translation
-for your app.
+Com as traduções preparadas -- ou, se forem ser usadas apenas as traduções
+que vem com Django -- deve-se ativar a tradução para a aplicação.
 
-Behind the scenes, Django has a very flexible model of deciding which language
-should be used -- installation-wide, for a particular user, or both.
+Por baixo dos panos, Django possue um modelo muito flexível para decidir
+qual língua deve ser usada -- ou instalada, para um usuário em particular,
+ou ambas.
 
-To set an installation-wide language preference, set ``LANGUAGE_CODE``.
-Django uses this language as the default translation -- the final attempt if no
-other translator finds a translation.
+Para definir uma preferência linguística, deve-se alterar ``LANGUAGE_CODE``.
+Django usa esta língua como tradução default -- a última alternativa se 
+nenhum outro tradutor encontrar uma tradução.
 
-If all you want to do is run Django with your native language, and a language
-file is available for your language, all you need to do is set
-``LANGUAGE_CODE``.
+Se você quiser apenas que Django execute usando tua língua nativa, e um
+arquivo de língua está disponível para essa linguagem, basta alterar ``LANGUAGE_CODE``.
 
-If you want to let each individual user specify which language he or she
-prefers, use ``LocaleMiddleware``. ``LocaleMiddleware`` enables language
-selection based on data from the request. It customizes content for each user.
+Se a língua deve ser definida pelas preferências de cada usuário, deve-se usar
+``LocaleMiddleware``. Isso habilita a seleção de língua baseada nos dados da
+requisição. Isso customiza o conteúdo para cada usuário.
 
-To use ``LocaleMiddleware``, add ``'django.middleware.locale.LocaleMiddleware'``
-to your ``MIDDLEWARE_CLASSES`` setting. Because middleware order matters, you
-should follow these guidelines:
+Para usar ``LocaleMiddleware``, deve-se adicionar x na configuração 
+``MIDDLEWARE_CLASSES``. Como a ordem do middleware é relevante, deve-se seguir
+as recomendações:
 
-* Make sure it's one of the first middlewares installed.
-* It should come after ``SessionMiddleware``, because ``LocaleMiddleware``
-  makes use of session data.
-* If you use ``CacheMiddleware``, put ``LocaleMiddleware`` after it.
+* Certifique-se que este é o primeiro middleware instalado.
+* Ele deve vir após ``SessionMiddleware``, pois ``LocaleMiddleware`` faz uso
+  dos dados de seção.
+* Se usar ``CacheMiddleware``, deve-se por ``LocaleMiddleware`` após isso.
 
-For example, your ``MIDDLEWARE_CLASSES`` might look like this::
+Por exemplo, ``MIDDLEWARE_CLASSES`` deve ser semelhante a::
+
 
     MIDDLEWARE_CLASSES = (
        'django.contrib.sessions.middleware.SessionMiddleware',
@@ -579,58 +579,51 @@ For example, your ``MIDDLEWARE_CLASSES`` might look like this::
        'django.middleware.common.CommonMiddleware',
     )
 
-(For more on middleware, see Chapter 17.)
+(Para mais sobre middlewares, veja o Capítulo 17.)
 
-``LocaleMiddleware`` tries to determine the user's language preference by
-following this algorithm:
+``LocaleMiddleware`` tenta determinar a preferência de língua do usuário
+através do seguinte algoritmo:
 
-* First, it looks for a ``django_language`` key in the current user's
-  session.
+* Primeiramente, procura-se chave ``django_language`` na atual seção.
 
-* Failing that, it looks for a cookie.
+* Caso falhe, procura-se um cookie.
 
-* Failing that, it looks at the ``Accept-Language`` HTTP header. This
-  header is sent by your browser and tells the server which language(s) you
-  prefer, in order by priority. Django tries each language in the header
-  until it finds one with available translations.
+* Caso falhe, procura-se o cabeçalho HTTP ``Accept-Language``. 
+  Este cabeçalho é enviado para o browser e diz ao servidor qual é a 
+  linguagem preferencial, em ordem de prioridade. Django tenta cada língua
+  no cabeçalho até encontrar uma para qual as traduções estejam disponíveis.
 
-* Failing that, it uses the global ``LANGUAGE_CODE`` setting.
+* Caso falhe, usa-se a configuração glocal ``LANGUAGE_CODE``.  
 
-Notes:
+Notas:
 
-* In each of these places, the language preference is expected to be in the
-  standard language format, as a string. For example, Brazilian Portuguese
-  is ``pt-br``.
-
-* If a base language is available but the sublanguage specified is not,
-  Django uses the base language. For example, if a user specifies ``de-at``
-  (Austrian German) but Django only has ``de`` available, Django uses
-  ``de``.
-
-* Only languages listed in the ``LANGUAGES`` setting can be selected.
-  If you want to restrict the language selection to a subset of provided
-  languages (because your application doesn't provide all those languages),
-  set ``LANGUAGES`` to a list of languages. For example::
-
+* Em cada espaço, a preferência linguística é esperada no formato padrão
+  de línguas, como uma string. Por exemplo, para Portugês brasileiro, ``pt-br``.
+  
+* Se uma linguagem base está disponível, mas a "sub-língua" não, Django
+  usa a linguagem base. Por exemplo, se a preferência for por ``de-at``
+  (Alemão austríaco), mas Django apenas possuir ``de``, Django usará ``de``.
+  
+* Apenas línguas listadas em ``LANGUAGES`` podem ser selecionadas.
+  Se deseja-se restringir a seleção de línguas para um sub-conjunto das línguas
+  disponíveis (pois a aplicação não suporta todas essas línguas), deve-se alterar
+  ``LANGUAGES`` para uma lista de línguas. Por exemplo::
+  
       LANGUAGES = (
         ('de', _('German')),
         ('en', _('English')),
       )
-
-  This example restricts languages that are available for automatic
-  selection to German and English (and any sublanguage, like ``de-ch`` or
-  ``en-us``).
-
-* If you define a custom ``LANGUAGES`` setting, as explained in the
-  previous bullet, it's OK to mark the languages as translation strings
-  -- but use a "dummy" ``ugettext()`` function, not the one in
-  ``django.utils.translation``. You should *never* import
-  ``django.utils.translation`` from within your settings file, because that
-  module in itself depends on the settings, and that would cause a circular
-  import.
-
-  The solution is to use a "dummy" ``ugettext()`` function. Here's a sample
-  settings file::
+      
+  Esse exemplo restringe para alemão e inglês as línguas disponíveis 
+  para seleção automática (ou qualquer sub-língua, como ``de-ch`` ou ``en-us``).
+  
+* A configuração ``LANGUAGES`` for customizada, como explicado, é correto marcar
+  as línguagens como strings de tradução -- mas use uma função "falsa" ``ugettext()``,
+  não a função de x. *Nunca* deve-se importar x para dentro do arquivo de configuração,
+  pois esse módulo em si depende das configuração, e isso criaria um import circular.
+  
+  A solução é usar uma função ``ugettext()`` falsa. Segue uma amostra do
+  arquivo de configurações::
 
       ugettext = lambda s: s
 
@@ -639,81 +632,83 @@ Notes:
           ('en', ugettext('English')),
       )
 
-  With this arrangement, ``django-admin.py makemessages`` will still find
-  and mark these strings for translation, but the translation won't happen
-  at runtime -- so you'll have to remember to wrap the languages in the
-  *real* ``ugettext()`` in any code that uses ``LANGUAGES`` at runtime.
+  Com essa disposição, x ainda encontrará e marcará essas strings para tradução,
+  mas a tradução não acontecerá em tempo de execução -- então, deve-se lembrar 
+  de cobrir as línguas no ``ugettext()`` *real* em qualquer código que 
+  usar ``LANGUAGE`` em tempo de execução.
+  
+* ``LocaleMiddleware`` pode apenas selecionar línguas para as quais há uma
+  tradução base suportada pelo Django. Se deseja-se adicionar línguas à
+  árvore de código de Django, deve-se prover, ao menos, traduções básicas
+  para essa linguagem. Por exemplo, Django usa identificadores de mensagens
+  técnicas para traduzir datas e horas -- então, deve-se prover ao menos essas
+  traduções para que o sistema funcione corretamente.
+  
+  Um bom ponto de começo é copiar o arquivo ``.po`` em inglês e traduzir
+  ao menos as mensagens técnicas -- talvez as mensagens de validação, também.
+  
+  Identificadores de mensagens técnicas são facilmente reconhecíveis;
+  estão todo em maiúsculo. Essas mensagens são traduzidas de forma
+  especial; deve-se informar a correta variante local no valor em inglês
+  provido. Por exemplo, com ``DATETIME_FORMAT`` (ou ``DATE_FORMAT`` ou 
+  ``TIME_FORMAT``), informaria-se o formato da string que deve ser usada
+  na linguagem. Esse formato é idêntico para o formato de strings usados 
+  pela tag de template ``now``.
 
-* The ``LocaleMiddleware`` can only select languages for which there is a
-  Django-provided base translation. If you want to provide translations
-  for your application that aren't already in the set of translations
-  in Django's source tree, you'll want to provide at least basic
-  translations for that language. For example, Django uses technical
-  message IDs to translate date formats and time formats -- so you will
-  need at least those translations for the system to work correctly.
-
-  A good starting point is to copy the English ``.po`` file and to
-  translate at least the technical messages -- maybe the validation
-  messages, too.
-
-  Technical message IDs are easily recognized; they're all upper case. You
-  don't translate the message ID as with other messages, you provide the
-  correct local variant on the provided English value. For example, with
-  ``DATETIME_FORMAT`` (or ``DATE_FORMAT`` or ``TIME_FORMAT``), this would
-  be the format string that you want to use in your language. The format
-  is identical to the format strings used by the ``now`` template tag.
-
-Once ``LocaleMiddleware`` determines the user's preference, it makes this
-preference available as ``request.LANGUAGE_CODE`` for each
-``HttpRequest``. Feel free to read this value in your view
-code. Here's a simple example::
+Já que ``LocaleMiddleware`` determina as preferências do usuário, isso torna
+disponível como ``request.LANGUAGE_CODE`` para cada ``HttpResquest``. Esteja
+libre para ler este valor nas views. Segue um exemplo::
 
     def hello_world(request):
         if request.LANGUAGE_CODE == 'de-at':
-            return HttpResponse("You prefer to read Austrian German.")
+            return HttpResponse("Você prefere ler alemão austríaco.")
         else:
-            return HttpResponse("You prefer to read another language.")
+            return HttpResponse("Você prefere ler outra língua.")
+            
+Vale nota que, com traduções estáticas (sem middleware), a linguagem fica em
+``settings.LANGUAGE_CODE``, enquanto que com tradução dinâmicas (middleware), 
+elas ficam em ``request.LANGUAGE_CODE``.
 
-Note that, with static (middleware-less) translation, the language is in
-``settings.LANGUAGE_CODE``, while with dynamic (middleware) translation, it's
-in ``request.LANGUAGE_CODE``.
 
-Using Translations in Your Own Projects
+Usando traduções em seus próprios projetos
 =======================================
 
-Django looks for translations by following this algorithm:
+Django procura por traduções seguindo o algoritmo:
 
-* First, it looks for a ``locale`` directory in the application directory
-  of the view that's being called. If it finds a translation for the
-  selected language, the translation will be installed.
-* Next, it looks for a ``locale`` directory in the project directory. If it
-  finds a translation, the translation will be installed.
-* Finally, it checks the Django-provided base translation in
+* Primeiramente, procura-se por um diretório ``locale`` no diretório da aplicação
+  da view que está sendo chamada. Se uma tradução for encontrada para a linguagem
+  selecionada, a tradução é instalada.
+
+* Em seguida, procura-se por ``locale`` no diretório do projeto. Se encontrar
+  uma tradução, ela é instalada.
+  
+* Por fim, checa-se as traduções de base providas por Django, em ``django/conf/locale``.
   ``django/conf/locale``.
+  
+Deste modo, pode-se escrever aplicações que incluem suas próprias traduções,
+e pode-se sobreescrever traduções de base no path do projeto. Ou pode-se apenas
+construir um grande projeto com diversas aplicações e por todas elas em um grande
+arquivo de mensagem. A escolha fica com o desenvolvedor.
 
-This way, you can write applications that include their own translations, and
-you can override base translations in your project path. Or, you can just build
-a big project out of several apps and put all translations into one big project
-message file. The choice is yours.
+Todos os repositório de arquivos de mensagem são estruturados da mesma
+forma. Assim eles são:
 
-All message file repositories are structured the same way. They are:
+* ``$APPPATH/locale/<lingua>/LC_MESSAGES/django.(po|mo)``
+* ``$PROJECTPATH/locale/<lingua>/LC_MESSAGES/django.(po|mo)``
+* Todos os caminhos listadas em ``LOCALE_PATHS`` no arquivo de configurações
+  são procurados em ordem por ``<lingua>/LC_MESSAGES/django.(po|mo)``
+* ``$PYTHONPATH/django/conf/locale/<lingua>/LC_MESSAGES/django.(po|mo)``
 
-* ``$APPPATH/locale/<language>/LC_MESSAGES/django.(po|mo)``
-* ``$PROJECTPATH/locale/<language>/LC_MESSAGES/django.(po|mo)``
-* All paths listed in ``LOCALE_PATHS`` in your settings file are
-  searched in that order for ``<language>/LC_MESSAGES/django.(po|mo)``
-* ``$PYTHONPATH/django/conf/locale/<language>/LC_MESSAGES/django.(po|mo)``
+Para criar arquivos de mensagem, deve-se usar a mesma ferramenta 
+``django-admin.py makemessages`` como em arquivo de mensagem de Django.
+Deve-se apenas estar no local correto -- no diretório onde o ``conf/locale``
+(no caso de árvore de código) ou o ``locale/`` (no caso de mensagens de aplicação
+ou de projeto) estão localizados. Usa-se o mesmo para produzir os arquivos binários
+``django.mo`` para serem usados por ``gettext``.
 
-To create message files, you use the same ``django-admin.py makemessages``
-tool as with the Django message files. You only need to be in the right place
--- in the directory where either the ``conf/locale`` (in case of the source
-tree) or the ``locale/`` (in case of app messages or project messages)
-directory are located. And you use the same ``django-admin.py compilemessages``
-to produce the binary ``django.mo`` files that are used by ``gettext``.
+Podem também executar ``django-admin.py compilemessages --settings=path.to.settings`` 
+para compilar todos os diretório na configuração ``LOCALE_PATHS``.
 
-You can also run ``django-admin.py compilemessages --settings=path.to.settings``
-to make the compiler process all the directories in your ``LOCALE_PATHS``
-setting.
 
 Application message files are a bit complicated to discover -- they need the
 ``LocaleMiddleware``. If you don't use the middleware, only the Django message
