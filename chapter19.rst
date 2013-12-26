@@ -709,53 +709,54 @@ ou de projeto) estão localizados. Usa-se o mesmo para produzir os arquivos bin�
 Podem também executar ``django-admin.py compilemessages --settings=path.to.settings`` 
 para compilar todos os diretório na configuração ``LOCALE_PATHS``.
 
+Arquivos de mensagem de aplicação são um pouco mais complicados de descobrir -- 
+eles precisam do ``LocaleMiddleware``. Sem o uso do middleware, apenas os arquivos
+de mensagem de Django e de projeto serão processados.
 
-Application message files are a bit complicated to discover -- they need the
-``LocaleMiddleware``. If you don't use the middleware, only the Django message
-files and project message files will be processed.
+Para terminar, deve-se pensar na estruturação dos arquivos de tradução.
+Se a aplicação precisa ser entregue a outros usuários e será usada em outros
+projetos, deve-se usar tradução específicas para cada aplicação. Mas, ao usar
+esse tipo de tradução juntamente com tradução de projeto pode causar problemas
+estranho com ``makemessages``: ``makemessages`` irá percorrer todos os diretórios
+abaixo do caminho corrente e pode por identificados de mensagem dentro do arquivo
+de mensagem do projeto que já está nos arquivos de mensagem da aplicação.
 
-Finally, you should give some thought to the structure of your translation
-files. If your applications need to be delivered to other users and will
-be used in other projects, you might want to use app-specific translations.
-But using app-specific translations and project translations could produce
-weird problems with ``makemessages``: ``makemessages`` will traverse all
-directories below the current path and so might put message IDs into the
-project message file that are already in application message files.
 
-The easiest way out is to store applications that are not part of the project
-(and so carry their own translations) outside the project tree. That way,
-``django-admin.py makemessages`` on the project level will only translate
-strings that are connected to your explicit project and not strings that are
-distributed independently.
+A saída mais simples é guardar aplicações que não são parte do projeto (e que,
+portanto, possuem suas próprias traduções) fora da árvore do projeto. Assim,
+``django-admin.py makemessages`` no nível do projeto irá traduzir apenas as
+strings que estão conectadas com o projeto explicitamente e não strings que 
+estão distribuídas independentemente.
 
-The ``set_language`` Redirect View
-==================================
+A  view de redirecionamento ``set_language`` 
+============================================
 
-As a convenience, Django comes with a view, ``django.views.i18n.set_language``,
-that sets a user's language preference and redirects back to the previous page.
+Por conveniência, Django vem com uma view, ``django.views.i18n.set_language``,
+que configura uma linguagem preferencial do usuário e o rediriciona de volta
+para a página anterior.
 
-Activate this view by adding the following line to your URLconf::
+Esta view é atividade com a adição da seguinte linha em URLconf::
 
     (r'^i18n/', include('django.conf.urls.i18n')),
 
-(Note that this example makes the view available at ``/i18n/setlang/``.)
+(Note que esse exemplo torna a view disponível em ``/i18n/setlang/``.) 
 
-The view expects to be called via the ``POST`` method, with a ``language``
-parameter set in request. If session support is enabled, the view
-saves the language choice in the user's session. Otherwise, it saves the
-language choice in a cookie that is by default named ``django_language``.
-(The name can be changed through the ``LANGUAGE_COOKIE_NAME`` setting.)
+A view espera ser chamada via um método ``POST``, com um pârametro ``language``,
+na requisição. Se o suporte de sessão estiver ativado, a view salva a escolha
+de linaugem da seção do usuário. Do contrário, ela salva a linguagem escolhida
+em um cookie que é, por padrão, nomeado ``django_language``. (O nome pode ser 
+alterado através da configuração ``LANGUAGE_COOKIE_NAME``.)
 
-After setting the language choice, Django redirects the user, following this
-algorithm:
+Após a configuração da linguagem de escolha, Django redireciona o usuário,
+seguindo o seguite algoritmo:
 
-* Django looks for a ``next`` parameter in the ``POST`` data.
-* If that doesn't exist, or is empty, Django tries the URL in the
-  ``Referrer`` header.
-* If that's empty -- say, if a user's browser suppresses that header --
-  then the user will be redirected to ``/`` (the site root) as a fallback.
+* Django procura por um parâmetro ``next`` na requisição ``POST``.
+* Se não existir, ou estiver vazio, Djanho tenta a URL no cabeçalho
+  ``Referrer``.
+* Se estiver vazio -- caso o browser do usuário tenha suprimido o cabeçalho, e.g. --
+  então o usuário serão redirecionado para ``\`` (raíz do site).
 
-Here's example HTML template code::
+Segue um exemplo de template HTML::
 
     <form action="/i18n/setlang/" method="post">
     <input name="next" type="hidden" value="/next/page/" />
@@ -767,33 +768,33 @@ Here's example HTML template code::
     <input type="submit" value="Go" />
     </form>
 
-Translations and JavaScript
+Traduções e Javascript
 ===========================
 
-Adding translations to JavaScript poses some problems:
+Adicionar traduções para Javascript traz alguns problemas:
 
-* JavaScript code doesn't have access to a ``gettext`` implementation.
+* Código Javascript não tem acesso a implementação de ``gettext``.
 
-* JavaScript code doesn't have access to .po or .mo files; they need to be
-  delivered by the server.
+* Código Javascript nã tem acesso aos arquivos .po e .mo; eles precisam
+  ser entregue pelo servidor. 
+  
+* Catálogos de tradução para Javascript precisa ser mantidos no menor
+  tamanho possível.
 
-* The translation catalogs for JavaScript should be kept as small as
-  possible.
+Django fornece uma solução integrada para esses problemas: Ele passa as 
+tradução para Javascript, de modo que possa-se chamar ``gettext``, etc., 
+a partir do código Javascript.
 
-Django provides an integrated solution for these problems: It passes the
-translations into JavaScript, so you can call ``gettext``, etc., from within
-JavaScript.
-
-The ``javascript_catalog`` View
+A view ``javascript_catalog``
 -------------------------------
 
-The main solution to these problems is the ``javascript_catalog`` view, which
-sends out a JavaScript code library with functions that mimic the ``gettext``
-interface, plus an array of translation strings. Those translation strings are
-taken from the application, project or Django core, according to what you
-specify in either the info_dict or the URL.
+A principal solução para esses problemas é a view ``javascript_catalog``, que
+envia uma biblioteca Javascript com funções que simulam a interface de ``gettext``
+, além de um array de strings de tradução. Essas strings são tomadas da aplicação,
+do projeto ou de Django, de acordo com que a especificação contida 
+em info_dict ou na URL.
 
-You hook it up like this::
+O Javascript deve ser semelhante a isto::
 
     js_info_dict = {
         'packages': ('your.app.package',),
@@ -802,31 +803,32 @@ You hook it up like this::
     urlpatterns = patterns('',
         (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     )
+    
+Cada string em ``packages`` deve estar na sintaxe dotted-package de Python
+(o mesmo formato das strings em ``INSTALLED_APPS``) e deve referenciar
+um pacote contendo um diretório ``locale``. Se forem especificados múltiplos
+pacotes, todos os catálogos deve ser fundidos em apenas um catálogo. Isso
+é útil quando tem-se Javascript que usa strings de diferentes aplicações.
 
-Each string in ``packages`` should be in Python dotted-package syntax (the
-same format as the strings in ``INSTALLED_APPS``) and should refer to a package
-that contains a ``locale`` directory. If you specify multiple packages, all
-those catalogs are merged into one catalog. This is useful if you have
-JavaScript that uses strings from different applications.
-
-You can make the view dynamic by putting the packages into the URL pattern::
+Pode-se fazer a view dinâmica pondo os pacotes em um padrão de URL::
 
     urlpatterns = patterns('',
         (r'^jsi18n/(?P<packages>\S+)/$', 'django.views.i18n.javascript_catalog'),
     )
+    
+Com isto, especifica-se os pacotes como uma lista de nomes de pacotes delimitados
+por '+' na URL. Isso é especialmente útil quando o código para diferentes aplicações
+e de alta frequência de alterações e quando não se quiser usar um grande arquivo
+de catálogo. Como medida de segurança, esses valores somente podem estar em 
+``django.conf`` ou em qualquer pacotes da configuração ``INSTALLED_APPS`.
 
-With this, you specify the packages as a list of package names delimited by '+'
-signs in the URL. This is especially useful if your pages use code from
-different apps and this changes often and you don't want to pull in one big
-catalog file. As a security measure, these values can only be either
-``django.conf`` or any package from the ``INSTALLED_APPS`` setting.
-
-Using the JavaScript Translation Catalog
+Usando o catálogo de tradução Javascript
 ----------------------------------------
 
-To use the catalog, just pull in the dynamically generated script like this::
+Para usar o catálogo, apenas coloca-se ele no script gerado dinamicamente assim::
 
     <script type="text/javascript" src="/path/to/jsi18n/"></script>
+
 
 This is how the admin fetches the translation catalog from the server. When the
 catalog is loaded, your JavaScript code can use the standard ``gettext``
