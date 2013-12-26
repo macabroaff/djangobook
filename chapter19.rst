@@ -771,19 +771,19 @@ Segue um exemplo de template HTML::
 Traduções e Javascript
 ===========================
 
-Adicionar traduções para Javascript traz alguns problemas:
+Adicionar traduções para JavaScript traz alguns problemas:
 
-* Código Javascript não tem acesso a implementação de ``gettext``.
+* Código JavaScript não tem acesso a implementação de ``gettext``.
 
-* Código Javascript nã tem acesso aos arquivos .po e .mo; eles precisam
+* Código JavaScript não tem acesso aos arquivos .po e .mo; eles precisam
   ser entregue pelo servidor. 
   
-* Catálogos de tradução para Javascript precisa ser mantidos no menor
+* Catálogos de tradução para JavaScript precisa ser mantidos no menor
   tamanho possível.
 
 Django fornece uma solução integrada para esses problemas: Ele passa as 
-tradução para Javascript, de modo que possa-se chamar ``gettext``, etc., 
-a partir do código Javascript.
+tradução para JavaScript, de modo que possa-se chamar ``gettext``, etc., 
+a partir do código JavaScript.
 
 A view ``javascript_catalog``
 -------------------------------
@@ -794,7 +794,7 @@ envia uma biblioteca Javascript com funções que simulam a interface de ``gette
 do projeto ou de Django, de acordo com que a especificação contida 
 em info_dict ou na URL.
 
-O Javascript deve ser semelhante a isto::
+O JavaScript deve ser semelhante a isto::
 
     js_info_dict = {
         'packages': ('your.app.package',),
@@ -822,128 +822,127 @@ e de alta frequência de alterações e quando não se quiser usar um grande arq
 de catálogo. Como medida de segurança, esses valores somente podem estar em 
 ``django.conf`` ou em qualquer pacotes da configuração ``INSTALLED_APPS`.
 
-Usando o catálogo de tradução Javascript
+Usando o catálogo de tradução JavaScript
 ----------------------------------------
 
 Para usar o catálogo, apenas coloca-se ele no script gerado dinamicamente assim::
 
     <script type="text/javascript" src="/path/to/jsi18n/"></script>
 
+É assim que o administrador busca o catálogo de tradução do servidor. Quando este
+catálogo é carregado, o código Javascript pode ser usar a interface de ``gettext`` 
+padrão para acessá-lo::
 
-This is how the admin fetches the translation catalog from the server. When the
-catalog is loaded, your JavaScript code can use the standard ``gettext``
-interface to access it::
-
-    document.write(gettext('this is to be translated'));
-
-There is also an ``ngettext`` interface::
+    document.write(gettext('isto será traduzido'));
+    
+Também é possível usar a interface de ``ngettext``::
 
     var object_cnt = 1 // or 0, or 2, or 3, ...
-    s = ngettext('literal for the singular case',
-            'literal for the plural case', object_cnt);
+    s = ngettext('literal para o caso singular',
+            'literal para o caso plural', object_cnt);
 
-and even a string interpolation function::
+e até uma função de interpolação de strings::
 
-    function interpolate(fmt, obj, named);
+A sintaxe de interpolação vem de Python, de modo que ``interpolate`` suporta
+tanto interpolação posicionais como de nome:
 
-The interpolation syntax is borrowed from Python, so the ``interpolate``
-function supports both positional and named interpolation:
-
-* Positional interpolation: ``obj`` contains a JavaScript Array object
-  whose elements values are then sequentially interpolated in their
-  corresponding ``fmt`` placeholders in the same order they appear.
-  For example::
-
-    fmts = ngettext('There is %s object. Remaining: %s',
-            'There are %s objects. Remaining: %s', 11);
+* Interpolação posicional: ``obj`` contém um objeto array de JavaScript
+  o qual os elementos são então, sequencialmente, interpolado em seus espaços
+  reservados ``fmt`` correspondentes na mesma ordem em que aparecem.
+  Por exemplo::
+  
+    fmts = ngettext('Existe %s objeto. Restando: %s',
+            'Existem %s objetos. Restando: %s', 11);
     s = interpolate(fmts, [11, 20]);
-    // s is 'There are 11 objects. Remaining: 20'
+    // s is 'Existem 11 objetos. Restando: 20'
 
-* Named interpolation: This mode is selected by passing the optional
-  boolean ``named`` parameter as true. ``obj`` contains a JavaScript
-  object or associative array. For example::
-
+* Interpolação de nome: Esse modo é selecionado quando se passa um
+  booleano opcional, chamado ``named``, como true. ``obj`` contém um
+  objeto JavaScript ou um array associativo. Por exemplo::
+  
     d = {
         count: 10
         total: 50
     };
 
-    fmts = ngettext('Total: %(total)s, there is %(count)s object',
-    'there are %(count)s of a total of %(total)s objects', d.count);
+    fmts = ngettext('Total: %(total)s, existe %(count)s object',
+    'Existe %(count)s de um total de %(total)s objetos', d.count);
     s = interpolate(fmts, d, true);
 
-You shouldn't go over the top with string interpolation, though: this is still
-JavaScript, so the code has to make repeated regular-expression substitutions.
-This isn't as fast as string interpolation in Python, so keep it to those
-cases where you really need it (for example, in conjunction with ``ngettext``
-to produce proper pluralizations).
+Não deve-se ir sobre o topo com uma string de inteporlação: Isso ainda
+é JavaScript, portanto, o código deve fazer substituições repetidas de 
+expressões regulares. Isso não é tão rápido quando interpolação de Python,
+então deve-se reservar esses casos para quando for realmente necessário (por
+exemplos, um conjução com ``ngettext`` para produzir plularizações propriamente).
 
-Creating JavaScript Translation Catalogs
+Criando catálogos de tradução JavaScript
 ----------------------------------------
 
-You create and update the translation catalogs the same way as the other
+Cria-se e atualiza-se catálogos de tradução de uma maneira ou de outra.
 
-Django translation catalogs -- with the django-admin.py makemessages tool. The
-only difference is you need to provide a ``-d djangojs`` parameter, like this::
+Catálogos de tradução de Django -- com a ferramenta django-admin.py makemessages.
+A única diferença é a necessidade de prover um parâmetro ``-d djangojs``, desse jeito::
 
     django-admin.py makemessages -d djangojs -l de
+    
+Isso criaria ou atualizaria o catálogos de tradução de alemão para JavaScript.
+Após atualizar os catálogos de tradução, apenas roda-se ``django-admin.py compilemessages`` 
+do mesmo modo como é feito com catálogos normais de Django.
 
-This would create or update the translation catalog for JavaScript for German.
-After updating translation catalogs, just run ``django-admin.py compilemessages``
-the same way as you do with normal Django translation catalogs.
 
-Notes for Users Familiar with ``gettext``
+Notas para usuários familiares com ``gettext``
 =========================================
 
-If you know ``gettext``, you might note these specialties in the way Django
-does translation:
+Se você conheçe ``gettext``, deve-se notar que esses detalhes no modo de
+tradução de Django:
 
-* The string domain is ``django`` or ``djangojs``. This string domain is
-  used to differentiate between different programs that store their data
-  in a common message-file library (usually ``/usr/share/locale/``). The
-  ``django`` domain is used for python and template translation strings
-  and is loaded into the global translation catalogs. The ``djangojs``
-  domain is only used for JavaScript translation catalogs to make sure
-  that those are as small as possible.
-* Django doesn't use ``xgettext`` alone. It uses Python wrappers around
-  ``xgettext`` and ``msgfmt``. This is mostly for convenience.
-
-``gettext`` on Windows
+* O domínio de string é ``django`` ou ``djangojs``. Esse domínio é
+  usado para diferenciar diferentes programas que armazenam dados em
+  uma biblioteca comum de arquivos de mensagem (normalmente ``/usr/share/locale/``).
+  O domínio ``django`` é usado por strings de tradução de python e templates e é
+  carregado nos catálogos de tradução global. O domínio ``djangojs`` somente é
+  usado por catálogos de tradução JavaScript para garantir que eles fiquem o
+  menor possível.
+* Django não usa ``xgettext`` isoladamente. Ele usa wrappers de Python 
+  em torno de ``xgettext`` e ``msgfmt``. Isso é feito principalmente por conveniência.
+  
+``gettext`` no Windows
 ======================
 
-This is only needed for people who either want to extract message IDs or compile
-message files (``.po``). Translation work itself just involves editing existing
-files of this type, but if you want to create your own message files, or want to
-test or compile a changed message file, you will need the ``gettext`` utilities:
+Isso é só é necessário para pessoal que querem extrair identificadores de mensagens
+ou compilar arquivos de mensagem (``.po``). O trabalho de tradução por si só envolve
+apenas edição de arquivos deste tipo, mas, caso queira-se criar arquivos de mensagem
+próprios, ou testar ou compilar em arquivo alterado, será necessário as utilidades de
+``gettext``:
 
-* Download the following zip files from
+* Baixe os seguintes arquivos de
   http://sourceforge.net/projects/gettext
 
   * ``gettext-runtime-X.bin.woe32.zip``
   * ``gettext-tools-X.bin.woe32.zip``
   * ``libiconv-X.bin.woe32.zip``
 
-* Extract the 3 files in the same folder (i.e. ``C:\Program
+* Extraia os 3 arquivos no mesmo diretório (i.e.` `C:\Program
   Files\gettext-utils``)
 
-* Update the system PATH:
+* Atualize o PATH do sistema:
 
-  * ``Control Panel > System > Advanced > Environment Variables``
-  * In the ``System variables`` list, click ``Path``, click ``Edit``
-  * Add ``;C:\Program Files\gettext-utils\bin`` at the end of the
-    ``Variable value`` field
+  * ``Painel de controle > Sistema > Avançado > Variáveis de Ambiente``
+  * Na lista ``System variables``, cliquem em ``Path``, e clique em ``Edit``
+  * Adicione ``;C:\Program Files\gettext-utils\bin`` ao final do campo
+    ``valor de variável``
+    
+Pode-se também usar os binário de ``gettext`` obtidos em outros lugares, desde
+que o comando ``xgettext --version`` funcione corretamente. Alguma versão 0.14.4
+de binários não suportam esse comando. Não tente usar utilidades de tradução
+de Django com um pacote ``gettext`` se o comando ``xgettext --version`` produzir
+uma janela de popup que dizendo "xgettext.exe has generated errors and 
+will be closed by Windows".
 
-You may also use ``gettext`` binaries you have obtained elsewhere, so long as
-the ``xgettext --version`` command works properly. Some version 0.14.4 binaries
-have been found to not support this command. Do not attempt to use Django
-translation utilities with a ``gettext`` package if the command ``xgettext
---version`` entered at a Windows command prompt causes a popup window saying
-"xgettext.exe has generated errors and will be closed by Windows".
-
-What's Next?
+O que vem a seguir?
 ============
 
-The `final chapter`_ focuses on security -- how you can help secure your sites and
-your users from malicious attackers.
+O `capítulo final`_ foca em segurança -- como pode-se proteger sites e usuários
+de ataques maliciosos.
 
-.. _final chapter: ../chapter20/
+.. _capítulo final: ../chapter20/
