@@ -6,9 +6,9 @@ Django foi originalmente desenvolvido na região central dos Estados Unidos --
 mais precisamente, em Lawrence, Kansas, sendo menos do que 64km do centro
 geográfico do continente norte americano. Como a maioria dos projetos de código aberto,
 a comunidade também cresceu e incluiu pessoas de todo o globo. Como a comunidade do Django 
-esta cada vez mais diversificada, a "internacionalização" e a "localização" 
+está cada vez mais diversificada, a "internacionalização" e a "localização" 
 se tornou cada vez mais relevante. Como muitos desenvolvedores tem um conhecimento
-impreciso desses termos, nós iremos defini-los rapidamente.
+impreciso desses termos, nós iremos definí-los rapidamente.
 
 
 *Internacionalização* refere-se ao processo de produzir programas com uso potencial
@@ -43,7 +43,7 @@ execução, de acordo com as preferências linguísticas do usuário.
 
 Essencialmente, Django faz duas coisas:
 
-* Ele permite desenvolvedores e autores de templates espeficar quais
+* Ele permite desenvolvedores e autores de templates especificar quais
   partes de suas aplicações devem ser traduzidas.
 
 * Ele usa estas informações para traduzir aplicações web para determinados
@@ -93,7 +93,7 @@ No código Python
 Tradução padrão
 ~~~~~~~~~~~~~~~~~~~~
 
-Especifica uma string de traução usando a função ``ugettext()``. 
+Especifica uma string de tradução usando a função ``ugettext()``. 
 Uma convenção existente é importar esta função usando o encurtador, 
 ``_``, para diminuir digitação.
 
@@ -130,12 +130,12 @@ Tradução trabalha sobre variáveis. Segue outro exemplo idêntico::
         return HttpResponse(output)
         
 
-(O embargo de usar variáveis or valores computados, como nos últimos dois
+(O embargo de usar variáveis ou valores computados, como nos últimos dois
 exemplos, é que o utilitário de detecção de strings de tradução do Django, 
 ``django-admin.py makemessages``, não será capz de encontrar essas strings.
 Mais informações sobre ``makemessages`` mais a frente.)
 
-As strings passadas para ``_()`` ou ``ugettext()`` pode pegar parâmetros,
+As strings passadas para ``_()`` ou ``ugettext()`` podem receber parâmetros,
 especificados com o padrão sintático de interpolação nome-string.
 Exemplo::
 
@@ -146,7 +146,7 @@ Exemplo::
 Esta técnica permite que as traduções reordenem parâmetros do texto.
 Por exemplo, em uma tradução inglesa poderia ser ``"Today is November 26."``
 enquanto uma espanhola seria ``"Hoy es 26 de Noviembre."`` -- com os parâmetros
-(mes e dia) com posições trocadas.
+(mês e dia) com posições trocadas.
 
 Por esta razão, pode-se usar a interpolação nome-string (e.g., ``%(day)s``)
 ao invés da interpolação posicional (e.g., ``%s`` ou ``%d``) onde houver
@@ -157,7 +157,7 @@ Marcando strings como no-op
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use a função ``django.utils.translation.ugettext_noop()`` para marcar uma string
-como string de tradução sem traduzí-la. A string é posteriormente traduzido de uma
+como string de tradução sem traduzí-la. A string é posteriormente traduzida de uma
 variável.
 
 Use isso se você tiver strings constantes que devem ser armazenadas na 
@@ -180,7 +180,7 @@ Por exemplo, para traduzir um modelo de ``help_text``, faça o seguinte::
         name = models.CharField(help_text=ugettext_lazy('Este é um texto de ajuda'))
         
 Neste exemplo, ``ugettext_lazy()`` guarda uma referência preguiçosa para a string--
-não a tradução em si. A tradução serpa feita quando a string for usada em um contexto
+não a tradução em si. A tradução será  feita quando a string for usada em um contexto
 de string, como na rederização de um template no site do admin de Django.
 
 O resultado de uma chamada a ``ugettext_lazy()`` pode ser usada onde você
@@ -188,14 +188,7 @@ usaria uma string unicode (um objeto do tipo ``unicode``) em Python. Se você
 tentar usar isso no lugar de uma bytestring (um objeto ``str``), ocorrerá um
 comportamento inesperado, pois um objeto ``ugettext_lazy()`` não sabe como se
 converter para um bytestring. Também não é possível usar uma string unicode dentro
-de uma bytestring, então isso é consistente como comportamente de Python. Por exemplo::
-
-The result of a ``ugettext_lazy()`` call can be used wherever you would use a
-unicode string (an object with type ``unicode``) in Python. If you try to use
-it where a bytestring (a ``str`` object) is expected, things will not work as
-expected, since a ``ugettext_lazy()`` object doesn't know how to convert
-itself to a bytestring.  You can't use a unicode string inside a bytestring,
-either, so this is consistent with normal Python behavior. For example::
+de uma bytestring, então isso é consistente como comportamento de Python. Por exemplo::
     
     # Isto está certo: por um proxy unicode em uma string unicode
     u"Olá %s" % ugettext_lazy("pessoas")
@@ -214,11 +207,11 @@ como ``_`` (underline), como em::
 
     from django.utils.translation import ugettext_lazy as _
 
-    class Minha_coisa(models.Model):
+    class MyThing(models.Model):
         nome = models.CharField(texto_de_ajuda=_('Este é um texto de ajuda'))
         
 Sempre use traduções preguiçosa em modelos de Django. Nomes de campos e nomes
-de tabelas devem ser marcadas para trandução; caso contrário, eles não serão
+de tabelas devem ser marcadas para tradução; caso contrário, eles não serão
 traduzidos na interface do administrador. Isto significa escrever explicitamente
 ``nome_verboso`` e ``nome_verboso_no_plural`` nas opções da classe``Meta``,
 ao invés de contar com a determinação padrão de Django de ``nome_verboso``
@@ -248,15 +241,15 @@ pluralizadas. Por exemplo::
         return HttpResponse(pagina)
 
 ``ungettext`` recebe três argumentos: a string de tradução no singular, a string
-de tradução no plural e o número de objetos (que é passada para as linguas de tradução
+de tradução no plural e o número de objetos (que é passado para as linguas de tradução
 como a variável ``contador``).
 
 
 Em templates
 ----------------
 
-Tradução de templates Djanho usam duas tags de template e um sintaxe ligeiramente
-diferente da usada em código Python. Para dar ao template acesso a essas tags, ponha
+Tradução de templates Django usam duas tags de template e um sintaxe ligeiramente
+diferente da usada em código Python. Para dar ao template acesso à essas tags, ponha
 ``{% load i18n %}`` no topo do template.
 
 A tag de template ``{% trans %}`` traduz tanto strings constantes (dentro de 
@@ -279,11 +272,9 @@ Não é possível misturar uma varivável de template dentro de uma string, como
     
 Para traduzir uma expressão de template -- digamos, usando filtros de template --
 você precisará ligar a expressão à uma variável local para usá-la dentro do
-bloco de tradução
+bloco de tradução.
 
-    {% blocktrans with valor|filter as minhavariavel %}
-    Isto terá {{ minhavariavel }} dentro.
-    {% endblocktrans %}
+    {% blocktrans with valor|filter as minhavariavel %}Isto terá {{ minhavariavel }} dentro.{% endblocktrans %}
 
 Se for necessário ligar mais de uma expressão dentro de uma tag ``blocktrans``,
 separe os pedações com ``and``::
@@ -297,9 +288,9 @@ tag ``{% plural %}``, a qual aparece dentro de ``{% blocktrans %}`` e
 ``{% endblocktrans %}``. Por exemplo::
 
     {% blocktrans count lista|tamanho as contador %}
-    Há apenas um {{ none }} objeto.
+    Existe apenas um {{ none }} objeto.
     {% plural %}
-    Hão {{ contador }} {{ nome }} objetos.
+    Existem {{ contador }} {{ nome }} objetos.
     {% endblocktrans %}
 
 Internamente, todos os blocos e traduções inline usam a chamada apropriada
@@ -308,7 +299,7 @@ de ``ugettext`` / ``ungettext``.
 Cada ``RequestContext`` tem acesso a três variáveis para traduções específicas:
 
 * ``LANGUAGES`` é uma lista de tuplas nas quais o primeiro elemento é o código
-  da linguagem e o segundo é o nome da linguagem (traduzido para a lingua local).
+  da linguagem e o segundo é o nome da linguagem (traduzido para a língua local).
 
 * ``LANGUAGE_CODE`` é a linguagem preferencial do usuário, em formato string.
   Exemplo: ``pt-br``. (Veja "Como Django descobre a linguagem preferencial", abaixo.)
@@ -355,8 +346,8 @@ que o contexto local seja usado). Para tanto, deve-se usar algumas funções aux
 Concatenando strings: string_concat()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As concatenações padrão de Python (``''.join([...])``) não funcionaram em listas que contém
-objetos de tradução preguiçosa. No lugar delas, deve-se usar y, que cria
+As concatenações padrão de Python (``''.join([...])``) não funcionarão em listas que contém
+objetos de tradução preguiçosa. No lugar delas, deve-se usar ``django.utils.translation.string_concat()``, que cria
 um objeto preguiçoso que concatena seu conteúdo *e* o converte em strings
 apenas quando o resultado é incluído em uma string. Por exemplo::
 
@@ -366,7 +357,7 @@ apenas quando o resultado é incluído em uma string. Por exemplo::
     instrumento = ugettext_lazy(u'guitarra')
     resultado = string_concat([nome, ': ', instrumento])
     
-Aqui, as traduções preguiçosa em ``resultado`` irão apenas ser convertidas
+Aqui, as traduções preguiçosas em ``resultado`` irão apenas ser convertidas
 em string quando ``resultado`` é usado em uma string (geralmente durante a
 renderização de um template).
 
@@ -381,11 +372,11 @@ partes do código.
 Se você escrever suas próprias funções, similares a estas, e lidar com traduções,
 pode surgir um problema quando o primeiro argumento é um objeto de tradução preguiçosa.
 Em geral, este objeto não será convertido em uma string imediatamente, pois pode ser
-que esta funções esteja seja usada fora de uma view (em, portanto, a configuração
+que esta função esteja seja usada fora de uma view (e, portanto, a configuração
 de localidade da thread corrente não estará correta).
 
 Nestes casos, deve-se usar o decorador ``django.utils.functional.allow_lazy()``. 
-Ele modifica a funções de tal modo que*se* chamada com um objeto de tradução 
+Ele modifica a funções de tal modo que *se* chamada com um objeto de tradução 
 preguiçosa como primeiro argumento, a avaliação será postergada até que haja 
 a necessidade de converter para uma string.
 
@@ -399,7 +390,7 @@ Por exemplo::
     funcao_utilitaria = allow_lazy(funcao_utilitaria, unicode)
     
 O decorador ``allow_lazy()`` recebe, além da função, um certo número de 
-argumentos extras (``*args``)que especificam o(s) tipo(s) de retorno da
+argumentos extras (``*args``) que especificam o(s) tipo(s) de retorno da
 função original. É suficiente incluir ``unicode`` aqui e garantir que a
 função retorna apenas strings Unicode.
 
@@ -415,50 +406,47 @@ as traduções em si. Segue como isto funciona.
 .. admonition:: Restrições de localidade
 
     Django não consegue localizar uma aplicação em uma localidade para a qual
-    o Django em si não tenha sido traduzida. Neste caso, os arquivos de tradução
+    o Django em si não tenha sido traduzido. Neste caso, os arquivos de tradução
     serão ignorados. Ao tentar-se fazer isto, inevitavelmente, haverá uma 
     mistura de strings traduzidas (vindas da aplicação) e strings em inglês
-    (do Django em si). Para adicionar suporta a uma localidade ainda sem 
-    tradução, é necessário traduzir uma parte mínima do core do Django.
+    (do Django em si). Para adicionar suporte a uma localidade ainda sem 
+    tradução, é necessário traduzir uma parte mínima do núcleo do Django.
 
 Arquivos de mensagem
 -------------
 
 O primeiro passo é criar um *arquivo de mensagem* para uma nova linguagem.
-Um arquivo de mensagem é um arquivo-texto, representando uma única linguage,
+Um arquivo de mensagem é um arquivo-texto, representando uma única linguagem,
 que contém todas as strings traduzidas disponíveis e como elas devem ser
 representadas em uma dada linguagem. Arquivos de mensagem tem uma extensão
 ``.po``.
 
-Django vem com uma ferramente, ``django-admin.py makemessages``, 
+Django vem com uma ferramenta, ``django-admin.py makemessages``, 
 que automatiza a criação e manutenção desses arquivos. Para criar ou atualizar
 um arquivo de mensagem, execute o seguinte comando::
 
     django-admin.py makemessages -l pt_BR
 
-...onde ``pt_BR`` é o código da linguagem do arquivo de mensagem a cria-se.
-O código da linaugem, neste caso, está em formato de localidade. Por exemplo,
+...onde ``pt_BR`` é o código da linguagem do arquivo de mensagem a criar-se.
+O código da linguagem, neste caso, está em formato de localidade. Por exemplo,
 ``de`` é para alemão e ``ru`` para russo.
 
 
 O script deverá ser executado de um dos locais abaixo:
 
-*A pasta raíz do projeto Django
+* A pasta raíz do projeto Django.
 
-*A pasta raíz da aplicação Django
+* A pasta raíz da aplicação Django.
 
-*A pasta raíz ``django`` (Não a pasta do checkout de Subversion, mas 
-a pasta ligada via ``$PYTHONPATH`` ou localizada em algum local no caminho).
-Isto só é relecante quando cria-se uma tradução para Django em si.
+* A pasta raíz ``django`` (Não a pasta do checkout de Subversion, mas a pasta ligada via ``$PYTHONPATH`` ou localizada em algum local no caminho). Isto só é relecante quando cria-se uma tradução para Django em si.
 
 Esse script percorre a árvore do projeto, ou da aplicação, e extrai todas as s
 trings marcadas para tradução. Ele cria (ou atualiza) um arquivo de mensagem no 
-diretório ``locale/LANG/LC_MESSAGES``. No exemplo ``de``, o arquivo 
-será ``locale/de/LC_MESSAGES/django.po``
+diretório ``locale/LANG/LC_MESSAGES``. No exemplo ``de``, o arquivo será ``locale/de/LC_MESSAGES/django.po``
 
-Por default, x examina todos os arquivo que possuem extensão ``.html``.
+Por default, ``django-admin.py makemessages`` examina todos os arquivo que possuem extensão ``.html``.
 Nesse caso, para sobrescrever esse comportamento, deve-se usar as opções 
-x ou ``-e`` para especificar as extensões a serem examinadas::
+``--extension`` ou ``-e`` para especificar as extensões a serem examinadas::
 
     django-admin.py makemessages -l de -e txt
     
@@ -482,7 +470,7 @@ mais tarde neste capítulo), deve-se usar o domínio especial 'djangojs', **não
 .. admonition:: Trabalhando no Windows?
 
    Quando estiver trabalhando no Windows, deve-se instalar as utilidades
-   gettext do GNU, para ``django-admin makemessages`` funcionar, veja a seção
+   gettext do GNU para ``django-admin makemessages`` funcionar, veja a seção
    "gettext on Windows" abaixo para mais informações.
    
 O formato dos arquivos ``.po`` é simples. Cada ``.po`` contém uma pequena quantidade
@@ -528,13 +516,13 @@ Compilando arquivos de mensagem
 -----------------------
 
 Após a criação de um arquivo de mensagem -- e a cada alteração deles -- é necessário
-compilá-lo em um forma mais eficiente, para o uso de ``gettext``. Isso é feito usando-se
+compilá-lo em uma forma mais eficiente, para o uso de ``gettext``. Isso é feito usando-se
 a utilidade ``django-admin.py compilemessages``.
 
-Essa ferramenta percorre todos os arquivos ``.po`` disponível e cria arquivos
+Essa ferramenta percorre todos os arquivos ``.po`` disponíveis e cria arquivos
 ``.mo``, que são arquivos binários otimizados para o uso de ``gettext``. No mesmo
-diretório onde `django-admin.py makemessages`` foi executado, `
-deve-se executar `django-admin.py compilemessages``, como abaixo::
+diretório onde ``django-admin.py makemessages`` foi executado, `
+deve-se executar ``django-admin.py compilemessages``, como abaixo::
 
    django-admin.py compilemessages
 
