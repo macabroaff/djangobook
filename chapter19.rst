@@ -539,7 +539,7 @@ qual língua deve ser usada -- ou instalada, para um usuário em particular,
 ou ambas.
 
 Para definir uma preferência linguística, deve-se alterar ``LANGUAGE_CODE``.
-Django usa esta língua como tradução default -- a última alternativa se 
+Django usa esta língua como tradução padrão -- a última alternativa se 
 nenhum outro tradutor encontrar uma tradução.
 
 Se você quiser apenas que Django execute usando tua língua nativa, e um
@@ -549,7 +549,7 @@ Se a língua deve ser definida pelas preferências de cada usuário, deve-se usa
 ``LocaleMiddleware``. Isso habilita a seleção de língua baseada nos dados da
 requisição. Isso customiza o conteúdo para cada usuário.
 
-Para usar ``LocaleMiddleware``, deve-se adicionar x na configuração 
+Para usar ``LocaleMiddleware``, deve-se adicionar ``'django.middleware.locale.LocaleMiddleware'`` na configuração 
 ``MIDDLEWARE_CLASSES``. Como a ordem do middleware é relevante, deve-se seguir
 as recomendações:
 
@@ -581,7 +581,7 @@ através do seguinte algoritmo:
   linguagem preferencial, em ordem de prioridade. Django tenta cada língua
   no cabeçalho até encontrar uma para qual as traduções estejam disponíveis.
 
-* Caso falhe, usa-se a configuração glocal ``LANGUAGE_CODE``.  
+* Caso falhe, usa-se a configuração global ``LANGUAGE_CODE``.  
 
 Notas:
 
@@ -605,10 +605,11 @@ Notas:
   Esse exemplo restringe para alemão e inglês as línguas disponíveis 
   para seleção automática (ou qualquer sub-língua, como ``de-ch`` ou ``en-us``).
   
-* A configuração ``LANGUAGES`` for customizada, como explicado, é correto marcar
+* Se a configuração ``LANGUAGES`` for customizada, como explicado, é correto marcar
   as línguagens como strings de tradução -- mas use uma função "falsa" ``ugettext()``,
-  não a função de x. *Nunca* deve-se importar x para dentro do arquivo de configuração,
-  pois esse módulo em si depende das configuração, e isso criaria um import circular.
+  não a função de ``django.utils.translation``. *Nunca* deve-se importar ``django.utils.translation`` para 
+  dentro do arquivo de configuração, pois esse módulo em si depende das configuração, 
+  e isso criaria um import circular.
   
   A solução é usar uma função ``ugettext()`` falsa. Segue uma amostra do
   arquivo de configurações::
@@ -620,7 +621,7 @@ Notas:
           ('en', ugettext('English')),
       )
 
-  Com essa disposição, x ainda encontrará e marcará essas strings para tradução,
+  Com essa disposição, ``django-admin.py makemessages`` ainda encontrará e marcará essas strings para tradução,
   mas a tradução não acontecerá em tempo de execução -- então, deve-se lembrar 
   de cobrir as línguas no ``ugettext()`` *real* em qualquer código que 
   usar ``LANGUAGE`` em tempo de execução.
@@ -636,16 +637,16 @@ Notas:
   ao menos as mensagens técnicas -- talvez as mensagens de validação, também.
   
   Identificadores de mensagens técnicas são facilmente reconhecíveis;
-  estão todo em maiúsculo. Essas mensagens são traduzidas de forma
+  estão todos em maiúsculo. Essas mensagens são traduzidas de forma
   especial; deve-se informar a correta variante local no valor em inglês
   provido. Por exemplo, com ``DATETIME_FORMAT`` (ou ``DATE_FORMAT`` ou 
   ``TIME_FORMAT``), informaria-se o formato da string que deve ser usada
   na linguagem. Esse formato é idêntico para o formato de strings usados 
   pela tag de template ``now``.
 
-Já que ``LocaleMiddleware`` determina as preferências do usuário, isso torna
-disponível como ``request.LANGUAGE_CODE`` para cada ``HttpResquest``. Esteja
-libre para ler este valor nas views. Segue um exemplo::
+Quando ``LocaleMiddleware`` determina as preferências do usuário, elas tornam-se
+disponíveis como ``request.LANGUAGE_CODE`` para cada ``HttpResquest``. Esteja
+livre para ler este valor nas views. Segue um exemplo::
 
     def hello_world(request):
         if request.LANGUAGE_CODE == 'de-at':
@@ -678,24 +679,24 @@ e pode-se sobreescrever traduções de base no path do projeto. Ou pode-se apena
 construir um grande projeto com diversas aplicações e por todas elas em um grande
 arquivo de mensagem. A escolha fica com o desenvolvedor.
 
-Todos os repositório de arquivos de mensagem são estruturados da mesma
+Todos os repositórios de arquivos de mensagem são estruturados da mesma
 forma. Assim eles são:
 
 * ``$APPPATH/locale/<lingua>/LC_MESSAGES/django.(po|mo)``
 * ``$PROJECTPATH/locale/<lingua>/LC_MESSAGES/django.(po|mo)``
-* Todos os caminhos listadas em ``LOCALE_PATHS`` no arquivo de configurações
+* Todos os caminhos listados em ``LOCALE_PATHS`` no arquivo de configurações
   são procurados em ordem por ``<lingua>/LC_MESSAGES/django.(po|mo)``
 * ``$PYTHONPATH/django/conf/locale/<lingua>/LC_MESSAGES/django.(po|mo)``
 
 Para criar arquivos de mensagem, deve-se usar a mesma ferramenta 
-``django-admin.py makemessages`` como em arquivo de mensagem de Django.
+``django-admin.py makemessages`` como em arquivos de mensagem de Django.
 Deve-se apenas estar no local correto -- no diretório onde o ``conf/locale``
 (no caso de árvore de código) ou o ``locale/`` (no caso de mensagens de aplicação
 ou de projeto) estão localizados. Usa-se o mesmo para produzir os arquivos binários
 ``django.mo`` para serem usados por ``gettext``.
 
 Podem também executar ``django-admin.py compilemessages --settings=path.to.settings`` 
-para compilar todos os diretório na configuração ``LOCALE_PATHS``.
+para compilar todos os diretórios na configuração ``LOCALE_PATHS``.
 
 Arquivos de mensagem de aplicação são um pouco mais complicados de descobrir -- 
 eles precisam do ``LocaleMiddleware``. Sem o uso do middleware, apenas os arquivos
@@ -705,8 +706,8 @@ Para terminar, deve-se pensar na estruturação dos arquivos de tradução.
 Se a aplicação precisa ser entregue a outros usuários e será usada em outros
 projetos, deve-se usar tradução específicas para cada aplicação. Mas, ao usar
 esse tipo de tradução juntamente com tradução de projeto pode causar problemas
-estranho com ``makemessages``: ``makemessages`` irá percorrer todos os diretórios
-abaixo do caminho corrente e pode por identificados de mensagem dentro do arquivo
+estranhos com ``makemessages``: ``makemessages`` irá percorrer todos os diretórios
+abaixo do caminho corrente, então pode por identificadores de mensagem dentro do arquivo
 de mensagem do projeto que já está nos arquivos de mensagem da aplicação.
 
 
@@ -720,10 +721,10 @@ A  view de redirecionamento ``set_language``
 ============================================
 
 Por conveniência, Django vem com uma view, ``django.views.i18n.set_language``,
-que configura uma linguagem preferencial do usuário e o rediriciona de volta
+que configura uma linguagem preferencial do usuário e o redirecciona de volta
 para a página anterior.
 
-Esta view é atividade com a adição da seguinte linha em URLconf::
+Ative esta view com a adição da seguinte linha em URLconf::
 
     (r'^i18n/', include('django.conf.urls.i18n')),
 
@@ -731,7 +732,7 @@ Esta view é atividade com a adição da seguinte linha em URLconf::
 
 A view espera ser chamada via um método ``POST``, com um pârametro ``language``,
 na requisição. Se o suporte de sessão estiver ativado, a view salva a escolha
-de linaugem da seção do usuário. Do contrário, ela salva a linguagem escolhida
+de linguagem da seção do usuário. Do contrário, ela salva a linguagem escolhida
 em um cookie que é, por padrão, nomeado ``django_language``. (O nome pode ser 
 alterado através da configuração ``LANGUAGE_COOKIE_NAME``.)
 
@@ -739,10 +740,10 @@ Após a configuração da linguagem de escolha, Django redireciona o usuário,
 seguindo o seguite algoritmo:
 
 * Django procura por um parâmetro ``next`` na requisição ``POST``.
-* Se não existir, ou estiver vazio, Djanho tenta a URL no cabeçalho
+* Se não existir, ou estiver vazio, Django tenta a URL no cabeçalho
   ``Referrer``.
 * Se estiver vazio -- caso o browser do usuário tenha suprimido o cabeçalho, e.g. --
-  então o usuário serão redirecionado para ``\`` (raíz do site).
+  então o usuário será redirecionado para ``\`` (raíz do site).
 
 Segue um exemplo de template HTML::
 
@@ -764,9 +765,9 @@ Adicionar traduções para JavaScript traz alguns problemas:
 * Código JavaScript não tem acesso a implementação de ``gettext``.
 
 * Código JavaScript não tem acesso aos arquivos .po e .mo; eles precisam
-  ser entregue pelo servidor. 
+  ser entregues pelo servidor. 
   
-* Catálogos de tradução para JavaScript precisa ser mantidos no menor
+* Catálogos de tradução para JavaScript precisam ser mantidos no menor
   tamanho possível.
 
 Django fornece uma solução integrada para esses problemas: Ele passa as 
@@ -777,8 +778,8 @@ A view ``javascript_catalog``
 -------------------------------
 
 A principal solução para esses problemas é a view ``javascript_catalog``, que
-envia uma biblioteca Javascript com funções que simulam a interface de ``gettext``
-, além de um array de strings de tradução. Essas strings são tomadas da aplicação,
+envia uma biblioteca Javascript com funções que simulam a interface de ``gettext``,
+além de um array de strings de tradução. Essas strings são tomadas da aplicação,
 do projeto ou de Django, de acordo com que a especificação contida 
 em info_dict ou na URL.
 
@@ -795,7 +796,7 @@ O JavaScript deve ser semelhante a isto::
 Cada string em ``packages`` deve estar na sintaxe dotted-package de Python
 (o mesmo formato das strings em ``INSTALLED_APPS``) e deve referenciar
 um pacote contendo um diretório ``locale``. Se forem especificados múltiplos
-pacotes, todos os catálogos deve ser fundidos em apenas um catálogo. Isso
+pacotes, todos os catálogos devem ser fundidos em apenas um catálogo. Isso
 é útil quando tem-se Javascript que usa strings de diferentes aplicações.
 
 Pode-se fazer a view dinâmica pondo os pacotes em um padrão de URL::
@@ -835,14 +836,14 @@ A sintaxe de interpolação vem de Python, de modo que ``interpolate`` suporta
 tanto interpolação posicionais como de nome:
 
 * Interpolação posicional: ``obj`` contém um objeto array de JavaScript
-  o qual os elementos são então, sequencialmente, interpolado em seus espaços
+  o qual os elementos são então, sequencialmente, interpolados em seus espaços
   reservados ``fmt`` correspondentes na mesma ordem em que aparecem.
   Por exemplo::
   
     fmts = ngettext('Existe %s objeto. Restando: %s',
             'Existem %s objetos. Restando: %s', 11);
     s = interpolate(fmts, [11, 20]);
-    // s is 'Existem 11 objetos. Restando: 20'
+    // s é 'Existem 11 objetos. Restando: 20'
 
 * Interpolação de nome: Esse modo é selecionado quando se passa um
   booleano opcional, chamado ``named``, como true. ``obj`` contém um
@@ -897,10 +898,10 @@ tradução de Django:
 ``gettext`` no Windows
 ======================
 
-Isso é só é necessário para pessoal que querem extrair identificadores de mensagens
+Isso é só é necessário quem quer extrair identificadores de mensagens
 ou compilar arquivos de mensagem (``.po``). O trabalho de tradução por si só envolve
 apenas edição de arquivos deste tipo, mas, caso queira-se criar arquivos de mensagem
-próprios, ou testar ou compilar em arquivo alterado, será necessário as utilidades de
+próprios, ou testar ou compilar um arquivo alterado, será necessário as utilidades de
 ``gettext``:
 
 * Baixe os seguintes arquivos de
@@ -910,17 +911,16 @@ próprios, ou testar ou compilar em arquivo alterado, será necessário as utili
   * ``gettext-tools-X.bin.woe32.zip``
   * ``libiconv-X.bin.woe32.zip``
 
-* Extraia os 3 arquivos no mesmo diretório (i.e.` `C:\Program
-  Files\gettext-utils``)
+* Extraia os 3 arquivos no mesmo diretório (i.e.` `C:\Program Files\gettext-utils``)
 
 * Atualize o PATH do sistema:
 
-  * ``Painel de controle > Sistema > Avançado > Variáveis de Ambiente``
-  * Na lista ``System variables``, cliquem em ``Path``, e clique em ``Edit``
+  * ``Control Panel > System > Advanced > Environment Variables``
+  * Na lista ``System variables``, clique em ``Path``, e clique em ``Edit``
   * Adicione ``;C:\Program Files\gettext-utils\bin`` ao final do campo
-    ``valor de variável``
+    ``Variable value``
     
-Pode-se também usar os binário de ``gettext`` obtidos em outros lugares, desde
+Pode-se também usar os binários de ``gettext`` obtidos em outros lugares, desde
 que o comando ``xgettext --version`` funcione corretamente. Alguma versão 0.14.4
 de binários não suportam esse comando. Não tente usar utilidades de tradução
 de Django com um pacote ``gettext`` se o comando ``xgettext --version`` produzir
