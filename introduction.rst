@@ -8,14 +8,14 @@ O "redesign" envolvia refazer cada página, uma de cada vez.
 Com o crescimento dos websites tornou-se algo mais ambicioso, rapidamente tornou-se óbvio que aquela situação era tediosa,
 improdutiva, e extremamente insustentável. Um grupo de empreendedores hackers do NCSA(Centro nacional para aplicações de 
 supercomputadores, onde Mosaic, o primeiro web browser gráfico foi desenvolvido) resolveram esse problema permitindo que
-o web server renderizar dinamicamente o HTML. Eles chamaram esse protocolo de Commom Gateway Interface, ou CGI, e isso mudou
+o web server renderizasse dinamicamente o HTML. Eles chamaram esse protocolo de Commom Gateway Interface, ou CGI, e isso mudou
 a web para sempre.
 
 É difícil agora imaginar a revelação que o CGI deve ter sido: Ao invés de tratar as páginas HTML como simples arquivos em 
 disco, CGI permite pensar em suas páginas como recursos gerados dinamicamente sob demanda. O desenvolvimento do CGI inaugurou
 a primeira geração das páginas dinâmicas.
 
-Entretanto, CGI tinha seus problemas: Scripts CGI precisam ter um monte de códigos "verbosos", tornando a reutilização 
+Entretanto, CGI tinha seus problemas: Scripts CGI precivam ter um monte de códigos "verbosos", tornando a reutilização 
 problemática, podendo ser difícil para programadores de primeira viagem escreverem e entenderem.
 
 PHP arrumou muitos desses problemas, e assim conquistou o mundo - Hoje de longe é a ferramenta mais popular usada para criar 
@@ -23,11 +23,11 @@ páginas dinâmicas, e diversas outras linguagens similares e ambientes(ASP, JSP
 A maior inovação do PHP é a sua facilidade de utilização: código PHP é simplesmente incrementada dentro do HTML; Sua curva
 de aprendizado para quem já conhece HTML é extremamente simples.
 
-But PHP has its own problems; its very ease of use encourages sloppy, repetitive, ill-conceived code. 
-Worse, PHP does little to protect programmers from security vulnerabilities, and thus many PHP developers found themselves 
-learning about security only once it was too late. #bullshit in nowadays
+Mas PHP tinha seus próprios problemas; É muito fácil enconrajar desleixo, repetição e mal concebido código. Pior, PHP não incentiva
+a programadores se preocuparem sobre as vunerabilidades de segurança, e por causa disso muitos programadores PHP se encontraram
+aprendendo sobre segurança apenas quando já era tarde. 
 
-Estes e outras frustrações permitiram diretamente que o desenvolvimento da safra da "terceira geração" de frameworks web.
+Estas e outras frustrações permitiram diretamente o desenvolvimento da safra da "terceira geração" de frameworks web.
 Esses frameworks - Django e Ruby on Rails aparentemente são os mais populares hoje em dia - reconhecendo a importância da 
 web nesses últimos tempos. Com essa explosão do desenvolvimento web veio também outra incrível ambição: Desenvolvedores web
 esperam ser produtivos e criarem mais e mais todos os dias.
