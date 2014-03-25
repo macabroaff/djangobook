@@ -2,61 +2,45 @@
 Introdução
 ============
 
-No início, os desenvolvedores web escreviam todas as páginas na mão. Atualizar um
-website significava editar código HTML; Um "redesenho" envolvendo cada uma das páginas, 
-uma de cada vez.
+Nos primeiros dias, desenvolvedores web escreviam cada página na mão. Atualizar um website significava editar o HTML; 
+O "redesign" envolvia refazer cada página, uma de cada vez.
 
-Como os websites cresceram e se tornaram mais ambiciosos, o que rapidamente se tornou
-óbvio é que esta situação era tediosa, custosa, e insuportável. Um grupo de 
-hackers empreendedores da NCSA (the National Center for Supercomputing
-Applications, lugar aonde o Mosaic, conhecido como o primeiro web browser gráfico,
-foi desenvolvido) resolveram este problema ao permitir que um servidor web criasse 
-programas externos que poderiam gerar html dinâmicamente. Eles chamaram esse protocolo
-de Common Gateway Interface, ou CGI, e isso mudou a Web para sempre.
+Com o crescimento dos websites tornou-se algo mais ambicioso, rapidamente tornou-se óbvio que aquela situação era tediosa,
+improdutiva, e extremamente insustentável. Um grupo de empreendedores hackers do NCSA(Centro nacional para aplicações de 
+supercomputadores, onde Mosaic, o primeiro web browser gráfico foi desenvolvido) resolveram esse problema permitindo que
+o web server renderizar dinamicamente o HTML. Eles chamaram esse protocolo de Commom Gateway Interface, ou CGI, e isso mudou
+a web para sempre.
 
-É difícil de imaginar agora como deve ter sido a revelação do CGI, que em vez de tratar
-páginas HTML como simpes arquivos no disco, permitia que você pensasse em suas páginas
-como recursos gerados automáticamente sob demanda. O desenvolvimento do CGI inalgurou 
-a primeira geração de sites dinâmicos.
+É difícil agora imaginar a revelação que o CGI deve ter sido: Ao invés de tratar as páginas HTML como simples arquivos em 
+disco, CGI permite pensar em suas páginas como recursos gerados dinamicamente sob demanda. O desenvolvimento do CGI inaugurou
+a primeira geração das páginas dinâmicas.
 
-Contudo, o CGI tem os seus problemas: scripts CGI precisam ter um monte de códigos
-repetitivos, tornando os códigos reusáveis difíceis, dificultando para os desenvolvedores
-escrever e entênde-los.
+Entretanto, CGI tinha seus problemas: Scripts CGI precisam ter um monte de códigos "verbosos", tornando a reutilização 
+problemática, podendo ser difícil para programadores de primeira viagem escreverem e entenderem.
 
-PHP resolveu muito desses problemas, e isso surpreendeu o mundo-- pois é agora 
-de longe a ferramente mais popular para a criação de sites dinâmicos, e dezenas de
-ambientes e linguagens similares(ASP, JSP, etc), seguem o PHP de perto. A maior 
-inovação do PHP é que ele é fácil de usar, o código pode ser fácilmente incorporado em
-um texto HTML, e a curva de aprendizado para alguém que já conhece HTML é extremamente
-baixa.
+PHP arrumou muitos desses problemas, e assim conquistou o mundo - Hoje de longe é a ferramenta mais popular usada para criar 
+páginas dinâmicas, e diversas outras linguagens similares e ambientes(ASP, JSP, etc.) seguiram o design do PHP de perto.
+A maior inovação do PHP é a sua facilidade de utilização: código PHP é simplesmente incrementada dentro do HTML; Sua curva
+de aprendizado para quem já conhece HTML é extremamente simples.
 
-Mas o PHP tem os seus próprios problemas, a sua fácil ultilização incentiva o desleixo,
-repetição, e códigos mal concebidos. E o pior é que o PHP faz pouco para proteger os 
-desenvolvedores de vulnerabilidades de segurança. Sendo assim muitos desenvolvedores PHP
-encontran-se aprendendo sobre segurança somente quando já é tarde demais.
+But PHP has its own problems; its very ease of use encourages sloppy, repetitive, ill-conceived code. 
+Worse, PHP does little to protect programmers from security vulnerabilities, and thus many PHP developers found themselves 
+learning about security only once it was too late. #bullshit in nowadays
 
-These and similar frustrations led directly to the development of the current
-crop of "third-generation" Web development frameworks. These frameworks --
-Django and Ruby on Rails appear to be the most popular these days -- recognize
-that the Web's importance has escalated of late. With this new explosion of Web
-development comes yet another increase in ambition; Web developers are expected
-to do more and more every day.
+Estes e outras frustrações permitiram diretamente que o desenvolvimento da safra da "terceira geração" de frameworks web.
+Esses frameworks - Django e Ruby on Rails aparentemente são os mais populares hoje em dia - reconhecendo a importância da 
+web nesses últimos tempos. Com essa explosão do desenvolvimento web veio também outra incrível ambição: Desenvolvedores web
+esperam ser produtivos e criarem mais e mais todos os dias.
 
-Django was invented to meet these new ambitions. Django lets you build deep,
-dynamic, interesting sites in an extremely short time. Django is designed to let
-you focus on the fun, interesting parts of your job while easing the pain of the
-repetitive bits. In doing so, it provides high-level abstractions of common Web
-development patterns, shortcuts for frequent programming tasks, and clear
-conventions on how to solve problems. At the same time, Django tries to stay out
-of your way, letting you work outside the scope of the framework as needed. We
-wrote this book because we firmly believe that Django makes Web development
-better. It's designed to quickly get you moving on your own Django projects, and
-then ultimately teach you everything you need to know to successfully design,
-develop, and deploy a site that you'll be proud of.
+Django foi inventado para alcançar essas ambições. Django permite criar profundamente, dinamicamente, interessantes sites
+em muito pouco tempo. Django foi modelado para que você se foque na diversão, nas partes interessantes do seu trabalho, eliminando
+processos dolorosos repetitivos. Ao usá-lo, ele permite em alto nível abstrações de bons padrões em desenvolvimento web, 
+atalhos para frequentes tarefas, e tendo convenções claras de como resolver problemas. E também Django tenta permanecer fora do
+seu caminho, permitindo você fazer seu trabalho fora do escopo que o framework necessita. Nós escrevemos esse livro porque acreditamos
+firmemente que Django faz o desenvolvimento web ser melhor. Ele é orientado para rapidamente criar seus próprios projetos Django,
+e de uma vez ensinar tudo o que você precisa saber para criar, desenvolver e colocar no ar um site que você tenha orgulho.
 
-We're extremely interested in your feedback. The online version of this book
-will let you comment on any part of the book, and discuss it with other readers.
-We'll do our best to read all the comments posted there, and to respond to as
-many as possible. If you prefer email, please drop us a line at
-feedback@djangobook.com. Either way, we'd love to hear from you! We're glad
-you're here, and we hope you find Django as exciting, fun, and useful as we do.
+Nós estamos extremamente interessados em seu feedback. Esse livro é open source e todos são bem vindos para melhorá-lo. 
+Se você prefere mandar sugestões, por favor nos mande um e-mail em feedback@djangobook.com. De qualquer forma adoraríamos
+ouvir o que você tem a dizer. Estamos felizes que você esteja aqui, e esperamos que você ache o Django excitante, divertido e
+útil como para nós é.
