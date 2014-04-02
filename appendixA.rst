@@ -2,7 +2,7 @@
 Apêndice A: Referência da Definição de Modelos
 ======================================
 
-Capítulo 5 explica o básico da definição dos modelos, e usaremos durante todo o resto do livro. Exite, contudo, uma enorme gama de opções de modelo disponíveis não abrangidas em outros lugares. Esse apêndice explica cada opção de definição de modelo possível.
+Capítulo 5 explica o básico da definição dos modelos, e usaremos durante todo o resto do livro. Existe, contudo, uma enorme gama de opções de modelo disponíveis não abrangidas em outros lugares. Esse apêndice explica cada opção de definição de modelo possível.
 
 Note que embora essa API seja considerada estável, os desenvolvedores do Django consistentemente adicionam novos atalhos e conveniências para a definição dos modelos. É uma boa ideia sempre verificar a última documentação online em
 http://docs.djangoproject.com/.
@@ -28,14 +28,12 @@ A parte mais importante do modelo -- e a única parte necessária dos modelos --
            class Example(models.Model):
                foo__bar = models.IntegerField() # 'foo__bar' tem dois underlines!
 
-    These limitations can be worked around, though, because your field name
-    doesn't necessarily have to match your database column name. See
-    "db_column", below.
-
-    SQL reserved words, such as ``join``, ``where``, or ``select``, *are* allowed
-    as model field names, because Django escapes all database table names and
-    column names in every underlying SQL query. It uses the quoting syntax of your
-    particular database engine.
+    Essas limitações podem ser contornadas, no entando, por causa do seu campo de nome não precisa necessáriamente
+    combinar com o nome da sua coluna no banco de dados. Veja "db_column", adiante.
+    
+    SQL tem palavras reservadas, tais como ``join``, ``where``, ou ``select``, *são* permitidas como modelos de campos de nome,
+    porque o Django foge em todas as tabelas do banco de dados e nomes de colunas em cada subjacente busca SQL. 
+    É usado a sintaxe citada sobre o motor de banco de dados particular. 
 
 Each field in your model should be an instance of the appropriate ``Field``
 class. Django uses the field class types to determine a few things:
