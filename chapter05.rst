@@ -19,10 +19,10 @@ de produtos é essencialmente uma query na base de dados de produtos da Amazon
 formatada em HTML e quando você posta um comentário como cliente, ele é inserido 
 no banco de dados de comentários.
 
-Django é bastante propício para fazer web sites dirigidos a base de dados, por que 
-ele vem com ferramentas fáceis, porém poderosas para realizaçõ deconsultas em banco 
-de dados usando Python. Esse capítulo explica essa funcionalidade: camada de base 
-de dados do Django.
+Django é bastante propício para fazer web sites dirigidos a base de dados, pois 
+vem com ferramentas descomplicadas, porém poderosas para realizaçõa de consultas em 
+banco de dados usando Python. Esse capítulo explica essa funcionalidade: camada de 
+base de dados do Django.
 
 (Note: While it's not strictly necessary to know basic relational database
 theory and SQL in order to use Django's database layer, it's highly
