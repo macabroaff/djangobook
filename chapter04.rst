@@ -131,8 +131,7 @@ em *qualquer lugar*, não somente nas views do Django).
 Aqui está a maneira mais básica que você pode usar o sistema de templates do
 Django em código Python:
 
-1. Crie um objeto ``Template`` fornecendo  *******the raw template code*******
-   como uma string.
+1. Crie um objeto ``Template`` fornecendo o *raw template code* como uma string.
 
 2. Chame o método ``render()`` do objeto ``Template`` com um determinado
    conjunto de váriaveis (o *contexto*). Isto retorna  o template completamente
