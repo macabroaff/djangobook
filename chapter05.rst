@@ -24,11 +24,11 @@ vem com ferramentas descomplicadas, porém poderosas para realizaçõa de consul
 banco de dados usando Python. Esse capítulo explica essa funcionalidade: camada de 
 base de dados do Django.
 
-(Note: While it's not strictly necessary to know basic relational database
-theory and SQL in order to use Django's database layer, it's highly
-recommended. An introduction to those concepts is beyond the scope of this
-book, but keep reading even if you're a database newbie. You'll probably be
-able to follow along and grasp concepts based on the context.)
+(Nota: Embora não seja estritamente necessário conhecer a teoria básica de banco de 
+dados relacionais e SQL, a fim de usar a camada de dados do Django, é altamente 
+recomendado. Uma introdução a esses conceitos escapa o escopo desse livro, mas
+continue lendo mesmo se você seja um novato em base de dados. Você provavelmente 
+será capaz de acompanhar e compreender os conceitos com base no contexto.)
 
 The "Dumb" Way to Do Database Queries in Views
 ==============================================
