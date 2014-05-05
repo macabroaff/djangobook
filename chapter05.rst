@@ -30,17 +30,18 @@ recomendado. Uma introdução a esses conceitos escapa o escopo desse livro, mas
 continue lendo mesmo se você seja um novato em base de dados. Você provavelmente 
 será capaz de acompanhar e compreender os conceitos com base no contexto.)
 
-The "Dumb" Way to Do Database Queries in Views
-==============================================
+A forma "Burra" para fazer consultas de banco de dados em views
+==================================================================
 
-Just as Chapter 3 detailed a "dumb" way to produce output within a
-view (by hard-coding the text directly within the view), there's a "dumb" way to
-retrieve data from a database in a view. It's simple: just use any existing
-Python library to execute an SQL query and do something with the results.
+Assim como no Capítulo 3 detalhamos a maneira "burra" de produzir 
+saídas dentro da view (com código fixo e texto diretamente dentro da view), a uma 
+maneira "burra" de recuperrar dados do banco de dados em um view. É simples: basta 
+usar qualquer biblioteca Python existente para executar uma consulta SQL e fazer 
+algo com o resultado.
 
-In this example view, we use the ``MySQLdb`` library (available via
-http://www.djangoproject.com/r/python-mysql/) to connect to a MySQL database,
-retrieve some records, and feed them to a template for display as a Web page::
+Neste exemplo de view, usaremos a biblioteca ``MySQLdb`` (disponível em 
+http://www.djangoproject.com/r/python-mysql/) para conectar a um base de dados 
+MySQL, recuperar alguns registros e alimentá-los a um template para exibir como um página Web::
 
     from django.shortcuts import render
     import MySQLdb
