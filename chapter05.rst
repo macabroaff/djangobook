@@ -56,15 +56,14 @@ MySQL, recuperar alguns registros e alimentá-los a um template para exibir como
 
 .. SL Tested ok
 
-This approach works, but some problems should jump out at you immediately:
+Essa abordagem funciona, mas alguns problemas devem surgir para você imediatamente:
 
-* We're hard-coding the database connection parameters. Ideally, these
-  parameters would be stored in the Django configuration.
-
-* We're having to write a fair bit of boilerplate code: creating a
-  connection, creating a cursor, executing a statement, and closing the
-  connection. Ideally, all we'd have to do is specify which results we
-  wanted.
+* Estamos fixando parâmetros de conexão a base de dados. Idealmente, 
+  esses parâmetros devem ser armazenados na configuração do Django.
+  
+* Vamos ter que escrever um pouco de código clichê: criar uma conexão, 
+  criar um cursor, executar uma declaração e fechar a conexão. Idealmente, 
+  todos nós teremos que especificar quais resultados queremos.
 
 * It ties us to MySQL. If, down the road, we switch from MySQL to
   PostgreSQL, we'll have to use a different database adapter (e.g.,
