@@ -1,30 +1,27 @@
 =================================
-Chapter 1: Introduction to Django
+Capítulo 1: Introdução ao Django
 =================================
 
-This book is about Django, a Web development framework that saves you time
-and makes Web development a joy. Using Django, you can build and maintain
-high-quality Web applications with minimal fuss.
+Este livro é sobre Django, um framework de desenvolvimento web que otimiza seu tempo
+e torna o desenvolvimento web divertido. Usando Django, você pode construir e manter 
+aplicações web de alta qualidade com mínimo trabalho.
 
-At its best, Web development is an exciting, creative act; at its worst,
-it can be a repetitive, frustrating nuisance. Django lets you focus on the fun
-stuff -- the crux of your Web application -- while easing the pain of the
-repetitive bits. In doing so, it provides high-level abstractions of common
-Web development patterns, shortcuts for frequent programming tasks, and
-clear conventions for how to solve problems. At the same time, Django tries to
-stay out of your way, letting you work outside the scope of the framework as
-needed.
+No seu melhor, o desenvolvimento web pode ser emocionante, criar coisas, fazer funcionar,
+no pior, pode ser repetitivo, frustrantemente chato. Django deixa seu foco na coisa divertida,
+o crucial em sua aplicação, enquanto as partes repetitivas são deixadas de lado.
+Ao fazer isso, são providos abstrações de algo nível comuns no padrão de desenvolvimento Web,
+atalhos para tarefas frequentes de programação, e conveções claras para resolução de problemas.
+Ao mesmo tempo, Django tenta ficar fora do seu caminho,
+deixando você trabalhar com liberdade de ação no framework como é necessário.
+O objetivo deste livro é tornar você um especialista em Django. Temos um foco duplo.
+Primeiro, nós explicamos, intimamente, o que o Django faz e como construir aplicações Web com ele.
+Segundo, nós discutiremos conceitos de alto nível apropriado, respondendo a questão
+"Como posso aplicar estas ferramentas efetivamente nos meus projetos?". Lendo este livro,
+Você aprenderá as ferramentas e habilidades necessárias para desenvolver poderosas
+aplicaçoes Web rapidamente, com código limpo e fácil de manter.
 
-The goal of this book is to make you a Django expert. The focus is twofold.
-First, we explain, in depth, what Django does and how to build Web
-applications with it. Second, we discuss higher-level concepts where
-appropriate, answering the question "How can I apply these tools effectively
-in my own projects?" By reading this book, you'll learn the skills needed to
-develop powerful Web sites quickly, with code that is clean and easy to
-maintain.
-
-What Is a Web Framework?
-========================
+O que é um Framework?
+=====================
 
 Django is a prominent member of a new generation of *Web frameworks* -- but
 what does that term mean, precisely?
