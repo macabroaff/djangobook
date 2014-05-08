@@ -64,19 +64,20 @@ Essa abordagem funciona, mas alguns problemas devem surgir para você imediatame
 * Vamos ter que escrever um pouco de código clichê: criar uma conexão, 
   criar um cursor, executar uma declaração e fechar a conexão. Idealmente, 
   todos nós teremos que especificar quais resultados queremos.
-
-* It ties us to MySQL. If, down the road, we switch from MySQL to
-  PostgreSQL, we'll have to use a different database adapter (e.g.,
-  ``psycopg`` rather than ``MySQLdb``), alter the connection parameters,
-  and -- depending on the nature of the SQL statement -- possibly rewrite
-  the SQL. Ideally, the database server we're using would be abstracted, so
-  that a database server change could be made in a single place. (This
-  feature is particularly relevant if you're building an open-source Django
-  application that you want to be used by as many people as possible.)
-
-As you might expect, Django's database layer aims to solve these problems.
-Here's a sneak preview of how the previous view can be rewritten using Django's
-database API::
+  
+* Ele nos amarra ao MySQL. Se, no caminho, trocamos do MySQL para 
+  PostgreSQL, teremos que usar um adaptador de banco de dados diferente 
+  (ex. ``psycopg`` ao invés de ``MySQLdb``), alterar os parâmetros de 
+  conexão, e -- dependendo da natureza da instrução SQL -- posivelmente 
+  reescrever o SQL. Idealmente, o servidor de banco de dados que usáremos 
+  deve estar abstraido, assim uma mudança de servidor de banco de dados 
+  pode ser realizada em um uníco lugar. (Esse recurso é particularmente 
+  relevante se você está construindo uma aplicação Django open-source 
+  que você que que seja por tantas pessoas quanto possível.)
+  
+Como você poderia esperar, a camada de banco de dados do Django visa resolver 
+estes problemas. Aqui está uma prévia de como a view anterior pode ser reescrita 
+usando a API de banco de dados do Django::
 
     from django.shortcuts import render
     from mysite.books.models import Book
@@ -85,8 +86,8 @@ database API::
         books = Book.objects.order_by('name')
         return render(request, 'book_list.html', {'books': books})
 
-We'll explain this code a little later in the chapter. For now, just get a
-feel for how it looks.
+Vamos explana esse código um pouco mais tarde no capítulo. Por agora, basta 
+ter uma idéia de como fica.
 
 The MTV (or MVC) Development Pattern
 ====================================
