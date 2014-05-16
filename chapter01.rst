@@ -64,42 +64,36 @@ conecta a um banco de dados e executa uma query para obter os nomes dos últimos
 Passando pelo registro dos livros, ele gera uma lista em HTML dos títulos. Finalmente, ele
 imprime o fechamento do HTML e fecha a conexão com o banco de dados.
 
-With a one-off page like this one, the write-it-from-scratch approach isn't
-necessarily bad. For one thing, this code is simple to comprehend -- even a
-novice developer can read these 16 lines of Python and understand everything it
-does, from start to finish. There's nothing else to learn, no other code to
-read. It's also simple to deploy: just save this code in a file that ends with
-".cgi", upload that file to a Web server, and visit that page with a browser.
+Com uma página deste tipo, a abordagem de escrita desde o rascunho não é necessariamente ruim.
+Por uma lado, este código é simples de compreender -- até mesmo um desenvolvedor não experiente
+pode ler estas 16 linhas de Python e entender tudo o que faz, do início ao fim.
+Não há nada a aprender, nada que não esteja explícito no código.
+É também simples de se fazer o deploy: basta salvar este código em um arquivo que tenha a extensão
+".cgi", fazer upload do mesmo em um Servidor Web e visitar esta página com um navegador.
+Mas esqueça a simplicidade, esta abordagem tem um número de problemas e não segue boa práticas.
+Faça a si mesmo as seguintes perguntas:
+* O que aconteceria quando várias partes da sua aplicação precisassem se conectar ao banco de dados?
+  Certamente a conexão de bancos de dados não deveriam estar duplicadas em cada script CGI.
+  O modo pragmático de se fazer deveria ser refatorar em uma função compartilhada.
 
-But despite its simplicity, this approach has a number of problems and
-annoyances. Ask yourself these questions:
+* Um desenvolvedor deveria realmente se preocupar em mostrar a linha "Content-Type" 
+  e lembrar de fechar a conexão com o banco de dados?
+  Este tipo de coisa, reduz a produtividade do programador e induz a oportunidade de erro.
+  Estas tarefas e configurações deveriam ser tarefas melhores a serem cuidadas por uma infraestrutura em comum.
+  
+* O que aconteceria quando este código fosse reutilizado em vários ambientes, cada um com seu banco de dados separado
+  ou outra senha? Neste ponto, algumas configurações de ambiente tornan-se essenciais.
 
-* What happens when multiple parts of your application need to connect to
-  the database? Surely that database-connecting code shouldn't need to be
-  duplicated in each individual CGI script. The pragmatic thing to do would
-  be to refactor it into a shared function.
+* O que aconteceria se um Web Designer que não tem experiência em Python quisesse refazer a página?
+  Um caracter errado poderia acabar com toda a aplicação. Como padrão ideal, a lógica da página --
+  a resposta dos títulos de livros do banco de dados -- deveriam ser separadas do código HTML da página, então um 
+  designer poderia editar toda a mesma sem afetar a lógica.
 
-* Should a developer really have to worry about printing the
-  "Content-Type" line and remembering to close the database connection?
-  This sort of boilerplate reduces programmer productivity and introduces
-  opportunities for mistakes. These setup- and teardown-related tasks would
-  best be handled by some common infrastructure.
+Estes problemas são precisamente o que um framework web intenciona resolver.
+Um framework web provê a infraestrutura de programação para suas aplicações, então você pode
+focar em escrever um código limpo, de fácil manutenção sem ter de reinventar a roda.
+Na sua essência, é o que o Django faz.
 
-* What happens when this code is reused in multiple environments, each with
-  a separate database and password? At this point, some
-  environment-specific configuration becomes essential.
-
-* What happens when a Web designer who has no experience coding Python
-  wishes to redesign the page? One wrong character could crash the entire
-  application. Ideally, the logic of the page -- the retrieval of book
-  titles from the database -- would be separate from the HTML display of
-  the page, so that a designer could edit the latter without affecting the
-  former.
-
-These problems are precisely what a Web framework intends to solve. A Web
-framework provides a programming infrastructure for your applications, so that
-you can focus on writing clean, maintainable code without having to reinvent
-the wheel. In a nutshell, that's what Django does.
 
 The MVC Design Pattern
 ======================
