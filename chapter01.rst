@@ -22,27 +22,19 @@ aplicaçoes Web rapidamente, com código limpo e fácil de manter.
 
 O que é um Framework?
 =====================
+Django é um proeminente membro de uma nova geração de "Frameworks Web", porém o que significa isso precisamente?
 
-Django is a prominent member of a new generation of *Web frameworks* -- but
-what does that term mean, precisely?
+Para responder a essa questão, vamos considerar o design de uma aplicação web escrita em Python "sem" um framework.
+Ao avançar este livro, mostraremos formas básicas de fazer todo o trabalho "sem" atalhos, na esperança que você reconheça
+porque atalhos ajudam tanto.(Também é de extrema valia saber fazer o trabalho sem os atalhos, pois os atalhos nem sempre estão disponíveis.
+E o mais importante, saber "porque" as coisas funcionam desta forma tornar você um melhor desenvolvedor Web.)
 
-To answer that question, let's consider the design of a Web application written
-in Python *without* a framework. Throughout this book, we'll take this approach
-of showing you basic ways of getting work done *without* shortcuts, in the hope
-that you'll recognize why shortcuts are so helpful. (It's also valuable to know
-how to get things done without shortcuts because shortcuts aren't always
-available. And most importantly, knowing *why* things work the way they do
-makes you a better Web developer.)
+Uma das mais simples e mais diretas maneiras de criar uma Aplicação Web em Python do desenho é usar o padrão CGI(Common Gateway Interface),
+que foi uma técnica muito popular em torno de 1998. Aqui está uma explicação em alto nível de como funciona: Crie um script Python que tem como saída
+HTML, então salve o script em um Servidor Web com a extensão ".cgi" e visite a página em seu navegador, é isso.
 
-One of the simplest, most direct ways to build a Python Web app from scratch is
-to use the Common Gateway Interface (CGI) standard, which was a popular
-technique circa 1998. Here's a high-level explanation of how it works: just
-create a Python script that outputs HTML, then save the script to a Web server
-with a ".cgi" extension and visit the page in your Web browser. That's it.
-
-Here's an example Python CGI script that displays the ten most recently
-published books from a database. Don't worry about syntax details; just get a
-feel for the basic things it's doing::
+Aqui está um exemplo de um script CGI que mostra os livros publicados recentemente a partir de um banco de dados.
+Não ligue para os detalhes de sintaxe; atente somente sobre as coisas básicas que o script faz::
 
     #!/usr/bin/env python
 
@@ -66,11 +58,11 @@ feel for the basic things it's doing::
 
     connection.close()
 
-First, to fulfill the requirements of CGI, this code prints a "Content-Type"
-line, followed by a blank line. It prints some introductory HTML, connects to a
-database and runs a query to retrieve the names of the latest ten books.
-Looping over those books, it generates an HTML list of the titles. Finally, it
-prints the closing HTML and closes the database connection.
+Primeiramente, para preencher os requisitos da CGI, este código imprime uma linha
+"Content-Type", seguida de uma linha em branco. É impresso a abertura do arquivo HTML,
+conecta a um banco de dados e executa uma query para obter os nomes dos últimos dez livros.
+Passando pelo registro dos livros, ele gera uma lista em HTML dos títulos. Finalmente, ele
+imprime o fechamento do HTML e fecha a conexão com o banco de dados.
 
 With a one-off page like this one, the write-it-from-scratch approach isn't
 necessarily bad. For one thing, this code is simple to comprehend -- even a
