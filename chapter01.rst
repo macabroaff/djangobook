@@ -72,6 +72,7 @@ Não há nada a aprender, nada que não esteja explícito no código.
 ".cgi", fazer upload do mesmo em um Servidor Web e visitar esta página com um navegador.
 Mas esqueça a simplicidade, esta abordagem tem um número de problemas e não segue boa práticas.
 Faça a si mesmo as seguintes perguntas:
+
 * O que aconteceria quando várias partes da sua aplicação precisassem se conectar ao banco de dados?
   Certamente a conexão de bancos de dados não deveriam estar duplicadas em cada script CGI.
   O modo pragmático de se fazer deveria ser refatorar em uma função compartilhada.
